@@ -43,26 +43,29 @@ model Manager {
 }
 
 model Objects {
-  id             String           @id @default(uuid())
-  name           String
-  companyId      String
-  companys       Company          @relation(fields: [companyId], references: [id])
-  CleaningObject CleaningObject[]
+  id        String              @id @default(uuid())
+  name      String
+  companyId String
+  companys  Company             @relation(fields: [companyId], references: [id])
+  cleanings CleaningOfObjects[]
 }
 
 model Cleaning {
-  id       String           @id @default(uuid())
+  id       String              @id @default(uuid())
   userId   String
-  createAt DateTime         @default(now())
+  createAt DateTime            @default(now())
   where    String
-  objects  CleaningObject[]
-  user     User             @relation(fields: [userId], references: [id])
+  user     User                @relation(fields: [userId], references: [id])
+  objects  CleaningOfObjects[]
 }
 
-model CleaningObject {
+model CleaningOfObjects {
   id         String   @id @default(uuid())
+  status     String   @default("pendente")
+  updateAt   DateTime @default(now())
+  createAt   DateTime @default(now())
   cleaning   Cleaning @relation(fields: [cleaningId], references: [id])
-  object     Objects  @relation(fields: [objectId], references: [id])
+  object     Objects  @relation(fields: [objectsId], references: [id])
   cleaningId String
-  objectId   String
+  objectsId  String
 }

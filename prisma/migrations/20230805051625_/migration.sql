@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "CleaningObject" ADD COLUMN     "updateAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;

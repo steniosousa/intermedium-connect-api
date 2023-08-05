@@ -10,7 +10,6 @@ export class companyDatabase {
         name,
       },
     });
-    console.log(verify);
 
     if (verify.length != 0) {
       throw new HttpException(
