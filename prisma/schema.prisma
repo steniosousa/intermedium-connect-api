@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @unique @default(uuid())
+  name         String
+  hashPassword String
+  loginHash    String     @unique
+  active       Boolean    @default(true)
+  createAt     DateTime   @default(now())
+  disableAt    DateTime   @updatedAt
+  company      Company?   @relation(fields: [companyId], references: [id])
+  companyId    String?
+  manager      Manager?   @relation(fields: [managerId], references: [id])
+  managerId    String?
+  Cleaning     Cleaning[]
+}
+
+model Company {
+  id       String    @id @default(uuid())
+  name     String
+  managers Manager[]
+  users    User[]
+  Objects  Objects[]
+}
+
+model Manager {
+  id           String  @id @default(uuid())
+  name         String
+  hashPassword String
+  companyId    String
+  users        User[]
+  companys     Company @relation(fields: [companyId], references: [id])
+}
+
+model Objects {
+  id             String           @id @default(uuid())
+  name           String
+  companyId      String
+  companys       Company          @relation(fields: [companyId], references: [id])
+  CleaningObject CleaningObject[]
+}
+
+model Cleaning {
+  id       String           @id @default(uuid())
+  userId   String
+  createAt DateTime         @default(now())
+  where    String
+  objects  CleaningObject[]
+  user     User             @relation(fields: [userId], references: [id])
+}
+
+model CleaningObject {
+  id         String   @id @default(uuid())
+  cleaning   Cleaning @relation(fields: [cleaningId], references: [id])
+  object     Objects  @relation(fields: [objectId], references: [id])
+  cleaningId String
+  objectId   String
+}
