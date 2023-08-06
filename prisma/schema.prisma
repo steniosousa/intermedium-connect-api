@@ -51,18 +51,20 @@ model Objects {
 }
 
 model Cleaning {
-  id       String              @id @default(uuid())
-  userId   String
-  createAt DateTime            @default(now())
-  where    String
-  user     User                @relation(fields: [userId], references: [id])
-  objects  CleaningOfObjects[]
+  id              String              @id @default(uuid())
+  userId          String
+  createAt        DateTime            @default(now())
+  status          String              @default("Pendente")
+  updateAt        DateTime            @default(now())
+  evidence_start  String              @default("")
+  evidence_finish String              @default("")
+  where           String
+  user            User                @relation(fields: [userId], references: [id])
+  objects         CleaningOfObjects[]
 }
 
 model CleaningOfObjects {
   id         String   @id @default(uuid())
-  status     String   @default("pendente")
-  updateAt   DateTime @default(now())
   createAt   DateTime @default(now())
   cleaning   Cleaning @relation(fields: [cleaningId], references: [id])
   object     Objects  @relation(fields: [objectsId], references: [id])

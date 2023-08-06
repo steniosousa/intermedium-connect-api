@@ -65,8 +65,6 @@ export class UserDatabase {
   }
 
   async authenticateUser(key: string) {
-    console.log(key);
-
     try {
       const user = await this.prisma.user.findUnique({
         where: {

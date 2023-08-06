@@ -3,13 +3,11 @@ import { PrismaService } from 'src/config/prisma.service';
 
 @Injectable()
 export class CleaningDatabase {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(body) {
     const { userId, where, objects } = body;
-    console.log(userId, where, objects);
     try {
-      // Primeiro, criamos a limpeza sem os objetos
       const cleaning = await this.prisma.cleaning.create({
         data: {
           userId,
@@ -17,7 +15,6 @@ export class CleaningDatabase {
         },
       });
 
-      // Em seguida, criamos a associação entre a limpeza e os objetos
       const cleaningObjects = objects.map((objectsId) => {
         return {
           cleaningId: cleaning.id,
@@ -31,7 +28,6 @@ export class CleaningDatabase {
 
       return cleaning;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Error - Erro ao cadastrar serviço',
         HttpStatus.BAD_REQUEST,
@@ -52,6 +48,22 @@ export class CleaningDatabase {
           where: {
             cleaningId: cleaning.id,
           },
+          select: {
+            cleaning: {
+              select: {
+                id: true,
+                where: true,
+                status: true,
+                createAt: true,
+              },
+            },
+            object: {
+              select: {
+                name: true,
+              },
+            },
+            id: true,
+          },
         });
 
         return clear;
@@ -63,6 +75,46 @@ export class CleaningDatabase {
     } catch {
       throw new HttpException(
         'Error - Erro ao recuperar serviços',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+  async updateCleaning(params) {
+    try {
+      const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(
+          ([key, value]) => value !== undefined && value !== null,
+        ),
+      );
+
+      const fieldsToExclude = ['id'];
+
+      filteredParams.updateAt = new Date();
+
+      const updateData = Object.fromEntries(
+        Object.entries(filteredParams).filter(
+          ([key, value]) => !fieldsToExclude.includes(key),
+        ),
+      );
+
+      const altered = await this.prisma.cleaning.update({
+        where: {
+          id: params.id,
+        },
+        data: updateData,
+        include: {
+          objects: {
+            include: {
+              object: true,
+            },
+          },
+        },
+      });
+
+      return altered;
+    } catch (error) {
+      throw new HttpException(
+        'Error - Erro ao cadastrar serviço',
         HttpStatus.BAD_REQUEST,
       );
     }
