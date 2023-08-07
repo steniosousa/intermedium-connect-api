@@ -81,27 +81,11 @@ export class CleaningDatabase {
   }
   async updateCleaning(params) {
     try {
-      const filteredParams = Object.fromEntries(
-        Object.entries(params).filter(
-          ([key, value]) => value !== undefined && value !== null,
-        ),
-      );
-
-      const fieldsToExclude = ['id'];
-
-      filteredParams.updateAt = new Date();
-
-      const updateData = Object.fromEntries(
-        Object.entries(filteredParams).filter(
-          ([key, value]) => !fieldsToExclude.includes(key),
-        ),
-      );
-
       const altered = await this.prisma.cleaning.update({
         where: {
           id: params.id,
         },
-        data: updateData,
+        data: params,
         include: {
           objects: {
             include: {

@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
-import { UpdateCleaningDto } from '../dto/updateCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -30,11 +29,8 @@ export class cleaningController {
   }
 
   @Post('/update')
-  @UseInterceptors(FileInterceptor('image'))
-  async updateCleaning(@Req() request: Request, @UploadedFile() image: any) {
-    const formData = request.body;
-
-    const update = await this.service.updateCleaning(formData);
+  async updateCleaning(@Body() body: any) {
+    const update = await this.service.updateCleaning(body);
     return update;
   }
 }

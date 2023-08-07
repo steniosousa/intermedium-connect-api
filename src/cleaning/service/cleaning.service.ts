@@ -15,6 +15,9 @@ export class cleaningService {
 
     for (const clear of find) {
       for (const item of clear) {
+        if (item.cleaning.status == 'Finalizado') {
+          continue;
+        }
         const locationName = item.cleaning.where;
         const objectName = item.object.name;
         const status = item.cleaning.status;
@@ -52,6 +55,7 @@ export class cleaningService {
     for (const objects of update.objects) {
       objectsSend.push(objects.object.name);
     }
+    console.log(update);
 
     return retunrObj;
   }
