@@ -1,21 +1,11 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Query,
-  Req,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/cleaning')
 export class cleaningController {
-  constructor(readonly service: cleaningService) { }
+  constructor(readonly service: cleaningService) {}
   @Post('/')
   async createCleaning(@Body() body: CreateCleaningDto) {
     const create = await this.service.create(body);

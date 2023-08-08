@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { createServiceDto } from '../dto/create.user.dto';
 import { deleteUserDto } from '../dto/delete.user.dto';
 import { findUserDto } from '../dto/find.user.dto';
+import { findUserWithNameAndPasswordDto } from '../dto/findWithNameAndPassword';
 import { updateUserDto } from '../dto/update.user.dto';
 import { userService } from '../service/user.service';
 
@@ -17,6 +18,14 @@ export class userController {
   @Get('/')
   async findUser(@Query() query: findUserDto) {
     const find = await this.service.findUser(query);
+    return find;
+  }
+
+  @Get('/recuper')
+  async findUserWithNameAndPass(
+    @Query() query: findUserWithNameAndPasswordDto,
+  ) {
+    const find = await this.service.findUserWithNameAndPass(query);
     return find;
   }
 

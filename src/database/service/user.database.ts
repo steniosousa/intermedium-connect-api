@@ -50,6 +50,7 @@ export class UserDatabase {
         data: {
           name,
           hashPassword,
+          password,
           managerId: existManager.id,
           companyId: existManager.companyId,
           loginHash: uniqueId,
@@ -69,6 +70,26 @@ export class UserDatabase {
       const user = await this.prisma.user.findUnique({
         where: {
           loginHash: key,
+        },
+      });
+
+      return user;
+    } catch {
+      throw new HttpException(
+        'Error - Usuário não encontrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    // const passwordMatch = await bcrypt.compare(password, user.hashPassword);
+  }
+
+  async findUserWithNameAndPassword(name: string, password: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          name,
+          password,
         },
       });
 

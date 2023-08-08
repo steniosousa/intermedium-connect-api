@@ -14,6 +14,7 @@ model User {
   id           String     @unique @default(uuid())
   name         String
   hashPassword String
+  password     String     @default(uuid())
   loginHash    String     @unique
   active       Boolean    @default(true)
   createAt     DateTime   @default(now())

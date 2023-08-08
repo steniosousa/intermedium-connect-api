@@ -14,6 +14,15 @@ export class userService {
     return createUser;
   }
 
+  async findUserWithNameAndPass(params) {
+    const { userId, password } = params;
+    const findUser = await this.dabatase.findUserWithNameAndPassword(
+      userId,
+      password,
+    );
+    return findUser;
+  }
+
   async findUser(params) {
     const { key } = params;
     const findUser = await this.dabatase.authenticateUser(key);
