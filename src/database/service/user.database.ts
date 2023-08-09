@@ -86,13 +86,12 @@ export class UserDatabase {
 
   async findUserWithNameAndPassword(name: string, password: string) {
     try {
-      const user = await this.prisma.user.findUnique({
+      const user = await this.prisma.user.findFirst({
         where: {
           name,
           password,
         },
       });
-
       return user;
     } catch {
       throw new HttpException(
