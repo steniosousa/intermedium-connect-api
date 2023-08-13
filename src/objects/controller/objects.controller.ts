@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { CreateObjectDto } from '../dto/createObject.dto';
 import { DeleteObjectDto } from '../dto/deleteObject.dto';
 import { objectService } from '../service/object.service';
+import { getObect } from '../dto/getObject.dto';
 
 @Controller('/object')
 export class objectController {
@@ -9,8 +10,17 @@ export class objectController {
   @Post('/')
   async createObject(@Body() body: CreateObjectDto) {
     const { name, companyId } = body;
+    console.log(name, companyId);
+
     const createObj = await this.service.createObject(name, companyId);
     return createObj;
+  }
+
+  @Get('/')
+  async findObjects(@Body() body: getObect) {
+    const { companyId } = body;
+    const find = await this.service.findObjects(companyId);
+    return find;
   }
 
   @Delete('/')

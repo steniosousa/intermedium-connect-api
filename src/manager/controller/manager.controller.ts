@@ -3,6 +3,7 @@ import { createManagerDto } from '../dto/createManager.dto';
 import { deleteManagerDto } from '../dto/deleteManager.dto';
 import { findManagerDto } from '../dto/findManager.dto';
 import { managerService } from '../service/manager.service';
+import { findUsersForManager } from '../dto/findUsersForManager.dto';
 
 @Controller('/manager')
 export class managerController {
@@ -22,7 +23,16 @@ export class managerController {
   async findManager(@Query() query: findManagerDto) {
     const { name, password } = query;
     const findManager = await this.service.findManager(name, password);
+
     return findManager;
+  }
+
+  @Get('/users')
+  async findUsersForManager(@Query() query: findUsersForManager) {
+    const { id } = query;
+    const findUsersForManager = await this.service.findUsersForManager(id);
+    console.log(findUsersForManager);
+    return findUsersForManager;
   }
 
   @Post('/update')

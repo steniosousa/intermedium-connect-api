@@ -52,7 +52,6 @@ export class managerDatabase {
       );
     }
     const passwordMatch = await bcrypt.compare(password, manager.hashPassword);
-
     if (passwordMatch) {
       return manager;
     } else {
@@ -63,6 +62,37 @@ export class managerDatabase {
     }
   }
 
+  async findUsersForManager(id: string) {
+    const manager = await this.prisma.manager.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        companys: true,
+        users: {
+          include: {
+            Cleaning: {
+              include: {
+                objects: {
+                  include: {
+                    object: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!manager) {
+      throw new HttpException(
+        'Error - Administrador não encontrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return manager;
+  }
   async updateManager(query) {
     const { managerId } = query;
     const indentify = await this.prisma.manager.findUnique({

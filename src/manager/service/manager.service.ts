@@ -19,6 +19,12 @@ export class managerService {
     return findManager;
   }
 
+  async findUsersForManager(id: string) {
+    const findUsersForManager = await this.database.findUsersForManager(id);
+
+    return findUsersForManager;
+  }
+
   async updateManager(query: any) {
     const updateManager = await this.database.updateManager(query);
     return updateManager;

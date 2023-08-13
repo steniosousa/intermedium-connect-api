@@ -9,6 +9,11 @@ export class objectService {
     return newObject;
   }
 
+  async findObjects(companyId: string) {
+    const allObjects = await this.database.findObjects(companyId);
+    return allObjects;
+  }
+
   async deleteObject(objectId: string) {
     const deleteObj = await this.database.deleteobj(objectId);
     return deleteObj;

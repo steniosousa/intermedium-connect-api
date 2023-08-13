@@ -3,10 +3,12 @@ import { PrismaService } from 'src/config/prisma.service';
 
 @Injectable()
 export class CleaningDatabase {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(body) {
     const { userId, where, objects } = body;
+    console.log(userId, where, objects);
+
     try {
       const cleaning = await this.prisma.cleaning.create({
         data: {
@@ -25,9 +27,10 @@ export class CleaningDatabase {
       await this.prisma.cleaningOfObjects.createMany({
         data: cleaningObjects,
       });
-
+      console.log(cleaning);
       return cleaning;
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         'Error - Erro ao cadastrar serviço',
         HttpStatus.BAD_REQUEST,
@@ -35,6 +38,26 @@ export class CleaningDatabase {
     }
   }
 
+  async deletion(id) {
+    try {
+      await this.prisma.cleaningOfObjects.deleteMany({
+        where: {
+          cleaningId: id,
+        },
+      });
+      await this.prisma.cleaning.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Error - Erro ao excluir solicitação',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
   async findCleaning(userId) {
     try {
       const allCleaning = await this.prisma.cleaning.findMany({

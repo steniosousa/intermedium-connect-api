@@ -21,6 +21,22 @@ export class objectDatabase {
     }
   }
 
+  async findObjects(companyId) {
+    try {
+      const objects = await this.prisma.objects.findMany({
+        where: {
+          companyId,
+        },
+      });
+      return objects;
+    } catch {
+      throw new HttpException(
+        'Error - Erro ao buscar objetos',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
   async deleteobj(objectId) {
     try {
       const deleteObj = await this.prisma.objects.delete({

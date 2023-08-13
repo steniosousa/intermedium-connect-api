@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
@@ -22,5 +22,12 @@ export class cleaningController {
   async updateCleaning(@Body() body: any) {
     const update = await this.service.updateCleaning(body);
     return update;
+  }
+
+  @Post('/delete')
+  async deleteCleaning(@Body() body: any) {
+    const { id } = body;
+    const deletion = await this.service.deletionCleaning(id);
+    return deletion;
   }
 }

@@ -59,6 +59,9 @@ model Cleaning {
   updateAt DateTime            @default(now())
   entrance String              @default("")
   exit     String              @default("")
+  obs1 String @default("")
+  obs2 String @default("")
+  obs3 String @default("")
   where    String
   user     User                @relation(fields: [userId], references: [id])
   objects  CleaningOfObjects[]

@@ -11,12 +11,14 @@ export class userController {
   constructor(readonly service: userService) {}
   @Post('/')
   async createUser(@Body() body: createServiceDto) {
+    console.log(body);
     const create = await this.service.createUser(body);
     return create;
   }
 
   @Get('/')
   async findUser(@Query() query: findUserDto) {
+    console.log(query);
     const find = await this.service.findUser(query);
     return find;
   }

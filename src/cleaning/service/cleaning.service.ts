@@ -8,6 +8,10 @@ export class cleaningService {
     const newCleaning = await this.database.create(body);
     return newCleaning;
   }
+  async deletionCleaning(id) {
+    const deletion = await this.database.deletion(id);
+    return deletion;
+  }
 
   async findCleaning(userId: string) {
     const find: any[] = await this.database.findCleaning(userId);
