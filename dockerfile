@@ -12,6 +12,7 @@ FROM development as builder
 WORKDIR /usr/src/app
 # Build the app with devDependencies still installed from "development" stage
 RUN npm run build
+RUN npx prisma generate
 # Clear dependencies and reinstall for production (no devDependencies)
 RUN rm -rf node_modules
 RUN npm ci --only=production
