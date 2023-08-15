@@ -2,7 +2,7 @@
 FROM node:16 as development
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN yarn
+RUN npm install
 RUN npx prisma migrate dev
 RUN npx prisma generate
 COPY tsconfig.json tsconfig.build.json ./
@@ -13,7 +13,7 @@ CMD [ "npm", "run", "start:dev" ]
 FROM development as builder
 WORKDIR /usr/src/app
 # Build the app with devDependencies still installed from "development" stage
-RUN yarn
+RUN npm install
 RUN npx prisma migrate dev
 RUN npx prisma generate
 RUN npm run build
@@ -24,7 +24,7 @@ RUN npm ci --only=production
 
 # Production stage
 FROM alpine:latest as production
-RUN yarn
+RUN npm install
 RUN npx prisma migrate dev
 RUN npx prisma generate
 RUN apk --no-cache add nodejs ca-certificates
