@@ -24,9 +24,6 @@ RUN npm ci --only=production
 
 # Production stage
 FROM alpine:latest as production
-RUN npm install
-RUN npx prisma migrate dev
-RUN npx prisma generate
 RUN apk --no-cache add nodejs ca-certificates
 WORKDIR /root/
 COPY --from=builder /usr/src/app ./
