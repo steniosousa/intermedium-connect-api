@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   // Configurar o CORS
   app.enableCors({
     origin: '*', // Substitua '*' pelo domínio do seu aplicativo React
