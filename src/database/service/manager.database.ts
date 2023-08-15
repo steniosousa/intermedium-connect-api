@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/config/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'config/prisma.service';
 
 @Injectable()
 export class managerDatabase {

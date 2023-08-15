@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/config/prisma.service';
 import { CleaningDatabase } from './service/cleaning.database';
 import { companyDatabase } from './service/company.database';
 import { historyDatabase } from './service/history.database';
 import { managerDatabase } from './service/manager.database';
 import { objectDatabase } from './service/object.database';
 import { UserDatabase } from './service/user.database';
+import { PrismaService } from 'config/prisma.service';
 
 @Module({
   providers: [
