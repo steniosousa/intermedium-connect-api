@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -10,6 +10,6 @@ COPY . .
 RUN yarn prisma generate
 RUN yarn build
 
-EXPOSE 8080
+EXPOSE 3000
 
-CMD ["node", "dist/main"]
+CMD [ "npm", "run", "start:dev" ]
