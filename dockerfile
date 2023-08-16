@@ -6,7 +6,8 @@ COPY prisma ./
 COPY .env ./
 RUN npm install -g npm@9.8.1
 RUN npm install
-RUN npx prisma migrate dev 
+# usar somente caso precise editar o eschema no banco
+# RUN npx prisma migrate dev 
 RUN npx prisma generate 
 COPY tsconfig.json tsconfig.build.json ./
 COPY ./src ./src
