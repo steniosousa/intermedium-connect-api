@@ -3,7 +3,7 @@ FROM node:18
 WORKDIR /app
 
 COPY package.json package.json
-RUN yarn ci
+RUN yarn
 
 COPY . .
 
