@@ -3,8 +3,6 @@ FROM node:16 as development
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
-RUN npx prisma migrate dev
-RUN npx prisma generate
 COPY tsconfig.json tsconfig.build.json ./
 COPY ./src ./src
 CMD [ "npm", "run", "start" ]
