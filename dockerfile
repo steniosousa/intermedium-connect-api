@@ -1,31 +1,15 @@
-# Development stage
-FROM node:16 as development
-WORKDIR /usr/src/app
-COPY package*.json ./
-COPY prisma ./
-COPY .env ./
-RUN npm install -g npm@9.8.1
-RUN npm install
-# usar somente caso precise editar o eschema no banco
-RUN npx prisma migrate dev 
-RUN npx prisma generate 
-COPY tsconfig.json tsconfig.build.json ./
-COPY ./src ./src
-CMD [ "npm", "run", "start" ]
+FROM node:18
 
-# Builder stage
-FROM development as builder
-WORKDIR /usr/src/app
-# Build the app with devDependencies still installed from "development" stage
-RUN npm run build
-# Clear dependencies and reinstall for production (no devDependencies)
-RUN rm -rf node_modules
-RUN npm ci --only=production
+WORKDIR /app
 
+COPY package.json package.json
+RUN yarn ci
 
-# Production stage
-FROM alpine:latest as production
-RUN apk --no-cache add nodejs ca-certificates
-WORKDIR /root/
-COPY --from=builder /usr/src/app ./
-CMD [ "node", "dist/main" ]
+COPY . .
+
+RUN yarn prisma generate
+RUN yarn build
+
+EXPOSE 3000
+
+CMD ["yarn", "start:prod"]
