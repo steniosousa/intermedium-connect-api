@@ -3,6 +3,7 @@ FROM node:16 as development
 WORKDIR /usr/src/app
 COPY package*.json ./
 COPY prisma ./
+COPY .env ./
 RUN npm install -g npm@9.8.1
 RUN npm install
 RUN npx prisma migrate dev 
