@@ -14,11 +14,17 @@ export class companyController {
     return create;
   }
 
-  @Get('')
+  @Get('/')
   async findCompany(@Query() query: findCompanyDto) {
     const { name } = query;
     const find = await this.service.findCompany(name);
     return find;
+  }
+
+  @Get('/all')
+  async getCompanys(){
+    const allCompanys = await this.service.allCompanys()
+    return allCompanys
   }
 
   @Delete('/delete')

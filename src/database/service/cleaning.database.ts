@@ -7,7 +7,6 @@ export class CleaningDatabase {
 
   async create(body) {
     const { userId, where, objects } = body;
-    console.log(userId, where, objects);
 
     try {
       const cleaning = await this.prisma.cleaning.create({
@@ -27,10 +26,8 @@ export class CleaningDatabase {
       await this.prisma.cleaningOfObjects.createMany({
         data: cleaningObjects,
       });
-      console.log(cleaning);
       return cleaning;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Error - Erro ao cadastrar serviço',
         HttpStatus.BAD_REQUEST,
@@ -51,7 +48,6 @@ export class CleaningDatabase {
         },
       });
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Error - Erro ao excluir solicitação',
         HttpStatus.BAD_REQUEST,

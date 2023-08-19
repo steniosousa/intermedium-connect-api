@@ -10,7 +10,6 @@ export class objectController {
   @Post('/')
   async createObject(@Body() body: CreateObjectDto) {
     const { name, companyId } = body;
-    console.log(name, companyId);
 
     const createObj = await this.service.createObject(name, companyId);
     return createObj;

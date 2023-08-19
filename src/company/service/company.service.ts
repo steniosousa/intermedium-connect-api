@@ -15,6 +15,11 @@ export class companyService {
     return find;
   }
 
+  async allCompanys(){
+    const allCompanys = await this.database.allCompanys();
+    return allCompanys
+  }
+
   async deleteCompany(name: string) {
     const deleteCompany = await this.database.deleteCompany(name);
     return deleteCompany;

@@ -6,7 +6,6 @@ export class historyService {
   constructor(private readonly database: historyDatabase) {}
   async findHistory(userId) {
     const history = await this.database.findHistory(userId);
-    console.log(history);
     return history;
   }
 }

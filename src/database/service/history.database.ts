@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'config/prisma.service';
 
 @Injectable()
@@ -14,7 +14,10 @@ export class historyDatabase {
       });
       return history;
     } catch (error) {
-      console.log(error);
+      throw new HttpException(
+        'Error - Erro ao recuperar histórico',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

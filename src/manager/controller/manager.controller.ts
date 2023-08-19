@@ -31,7 +31,6 @@ export class managerController {
   async findUsersForManager(@Query() query: findUsersForManager) {
     const { id } = query;
     const findUsersForManager = await this.service.findUsersForManager(id);
-    console.log(findUsersForManager);
     return findUsersForManager;
   }
 

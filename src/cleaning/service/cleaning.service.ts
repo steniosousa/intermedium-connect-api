@@ -59,7 +59,6 @@ export class cleaningService {
     for (const objects of update.objects) {
       objectsSend.push(objects.object.name);
     }
-    console.log(update);
 
     return retunrObj;
   }
