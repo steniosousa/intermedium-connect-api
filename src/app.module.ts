@@ -6,6 +6,7 @@ import { historyModel } from './history/history.model';
 import { managerModule } from './manager/manager.module';
 import { objectModule } from './objects/object.module';
 import { userModule } from './user/user.module';
+import { placeModule } from 'place/place.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { userModule } from './user/user.module';
     objectModule,
     cleaningModule,
     historyModel,
+    placeModule
   ],
   controllers: [],
   providers: [databaseModule],

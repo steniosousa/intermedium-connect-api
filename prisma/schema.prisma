@@ -33,6 +33,7 @@ model Company {
   managers Manager[]
   users    User[]
   Objects  Objects[]
+  Place Place[]
 }
 
 model Manager {
@@ -42,6 +43,13 @@ model Manager {
   companyId    String
   users        User[]
   companys     Company @relation(fields: [companyId], references: [id])
+}
+
+model Place {
+   id        String              @id @default(uuid())
+   name String
+    companyId String
+  company  Company             @relation(fields: [companyId], references: [id])
 }
 
 model Objects {
