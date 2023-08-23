@@ -72,9 +72,19 @@ export class cleaningService {
   }
 
   async createCron(body){
-    const {dayOfWeek, horsOfDay, userId, objectsIds} = body
-    console.log(dayOfWeek,horsOfDay, userId, objectsIds)
-    cron.schedule('0 9 * * 2', async () => {
+    const {daySelected, userId, objects, where,horsSelected} = body
+   
+    if(objects.length == 0){
+      throw new HttpException(
+        'Error - Objetos vazios',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    
+    console.log(daySelected, userId, objects, where,horsSelected)
+    const dateCron = `${horsSelected} * * ${daySelected}`
+    cron.schedule(dateCron, async () => {
+      await this.database.create(body);
       
     });
   }

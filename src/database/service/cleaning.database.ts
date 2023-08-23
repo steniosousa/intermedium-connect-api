@@ -7,7 +7,6 @@ export class CleaningDatabase {
 
   async create(body) {
     const { userId, where, objects } = body;
-
     try {
       const cleaning = await this.prisma.cleaning.create({
         data: {
