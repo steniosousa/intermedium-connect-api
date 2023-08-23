@@ -33,7 +33,6 @@ export class cleaningController {
 
   @Post('/cron')
   async createScheduling(@Body() body:any){
-    console.log(body)
     const createCron = await this.service.createCron(body)
     return createCron
    

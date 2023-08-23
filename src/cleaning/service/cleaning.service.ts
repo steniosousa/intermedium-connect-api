@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CleaningDatabase } from 'database/service/cleaning.database';
-import cron from 'node-cron'
+const cron = require("node-cron");
+const schedule = require('node-schedule');
 
 @Injectable()
 export class cleaningService {
@@ -72,7 +73,9 @@ export class cleaningService {
   }
 
   async createCron(body){
-    const {daySelected, userId, objects, where,horsSelected} = body
+    const {daySelected, userId, objects, where,horsSelected,repeat,continueCron} = body
+    const dateSplit = horsSelected.split('')
+    const dateCron = `${dateSplit[0]} ${dateSplit[1]} * * ${daySelected}`
    
     if(objects.length == 0){
       throw new HttpException(
@@ -80,12 +83,22 @@ export class cleaningService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    if(repeat == true){
+       const repetition =  cron.schedule(dateCron, async () => {
+          await this.database.create(body);
+        });
+
+        if(continueCron == true){
+          repetition.stop()
+        }
+      }
+    else{
+      const job = schedule.scheduleJob(dateCron, async function(){
+        await this.database.create(body);
+        job.cancel()
+      });
+    }
     
-    console.log(daySelected, userId, objects, where,horsSelected)
-    const dateCron = `${horsSelected} * * ${daySelected}`
-    cron.schedule(dateCron, async () => {
-      await this.database.create(body);
-      
-    });
   }
 }
