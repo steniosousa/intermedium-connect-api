@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CleaningDatabase } from 'database/service/cleaning.database';
+import cron from 'node-cron'
 
 @Injectable()
 export class cleaningService {
@@ -68,5 +69,13 @@ export class cleaningService {
     }
 
     return retunrObj;
+  }
+
+  async createCron(body){
+    const {dayOfWeek, horsOfDay, userId, objectsIds} = body
+    console.log(dayOfWeek,horsOfDay, userId, objectsIds)
+    cron.schedule('0 9 * * 2', async () => {
+      
+    });
   }
 }

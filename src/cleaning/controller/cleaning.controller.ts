@@ -30,4 +30,11 @@ export class cleaningController {
     const deletion = await this.service.deletionCleaning(id);
     return deletion;
   }
+
+  @Post('/scheduling')
+  async createScheduling(@Body() body:any){
+    const createCron = await this.service.createCron(body)
+    return createCron
+   
+  }
 }
