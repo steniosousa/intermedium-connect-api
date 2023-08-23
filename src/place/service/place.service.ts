@@ -9,4 +9,10 @@ export class PlaceService{
         const save = await this.database.createPlace(name, companyId)
         return save
     }
+
+    async findPlaces(body){
+        const {companyId} = body
+        const findAll = await this.database.findAllPlaces(companyId)
+        return findAll
+    }
 }

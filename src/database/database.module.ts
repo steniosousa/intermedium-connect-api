@@ -6,6 +6,7 @@ import { managerDatabase } from './service/manager.database';
 import { objectDatabase } from './service/object.database';
 import { UserDatabase } from './service/user.database';
 import { PrismaService } from 'config/prisma.service';
+import { PlaceDatabase } from './service/place.database';
 
 @Module({
   providers: [
@@ -16,6 +17,7 @@ import { PrismaService } from 'config/prisma.service';
     objectDatabase,
     CleaningDatabase,
     historyDatabase,
+    PlaceDatabase
   ],
 
   exports: [
@@ -25,6 +27,7 @@ import { PrismaService } from 'config/prisma.service';
     objectDatabase,
     CleaningDatabase,
     historyDatabase,
+    PlaceDatabase
   ],
 })
 export class databaseModule {}

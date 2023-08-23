@@ -14,12 +14,30 @@ export class PlaceDatabase{
             })
             return save
         }
-        catch{
+        catch(error){
+            console.log(name, companyId)
             throw new HttpException(
                 'Error - Erro ao cadastrar ambiente',
                 HttpStatus.BAD_REQUEST,
               ); 
         }
 
+    }
+
+    async findAllPlaces(companyId:string) {
+            try{
+                const find = await this.prisma.place.findMany({
+                    where:{
+                        companyId
+                    }
+                })
+                return find
+            }
+            catch{
+                throw new HttpException(
+                    'Error - Erro ao recuperar ambientes',
+                    HttpStatus.BAD_REQUEST,
+                  ); 
+            }
     }
 }
