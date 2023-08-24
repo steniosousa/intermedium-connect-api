@@ -7,6 +7,7 @@ import { managerModule } from './manager/manager.module';
 import { objectModule } from './objects/object.module';
 import { userModule } from './user/user.module';
 import { placeModule } from 'place/place.module';
+import { StartupModule } from 'cron/cron.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { placeModule } from 'place/place.module';
     objectModule,
     cleaningModule,
     historyModel,
-    placeModule
+    placeModule,
+    StartupModule
   ],
   controllers: [],
   providers: [databaseModule],

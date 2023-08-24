@@ -1,7 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CleaningDatabase } from 'database/service/cleaning.database';
-const cron = require("node-cron");
-const schedule = require('node-schedule');
 
 @Injectable()
 export class cleaningService {
@@ -72,33 +70,4 @@ export class cleaningService {
     return retunrObj;
   }
 
-  async createCron(body){
-    const {daySelected, userId, objects, where,horsSelected,repeat,continueCron} = body
-    const dateSplit = horsSelected.split('')
-    const dateCron = `${dateSplit[0]} ${dateSplit[1]} * * ${daySelected}`
-   
-    if(objects.length == 0){
-      throw new HttpException(
-        'Error - Objetos vazios',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    if(repeat == true){
-       const repetition =  cron.schedule(dateCron, async () => {
-          await this.database.create(body);
-        });
-
-        if(continueCron == true){
-          repetition.stop()
-        }
-      }
-    else{
-      const job = schedule.scheduleJob(dateCron, async function(){
-        await this.database.create(body);
-        job.cancel()
-      });
-    }
-    
-  }
 }

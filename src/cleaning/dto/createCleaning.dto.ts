@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCleaningDto {
   @IsString()
@@ -10,4 +10,15 @@ export class CreateCleaningDto {
   @IsArray()
   @IsNotEmpty()
   objects: string[];
+
+  @IsString()
+  @IsOptional()
+  daySelected:string;
+
+  @IsString()
+  @IsOptional()
+  horsSelected:string
+
+  @IsBoolean()
+  automated:Boolean
 }

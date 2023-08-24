@@ -31,10 +31,5 @@ export class cleaningController {
     return deletion;
   }
 
-  @Post('/cron')
-  async createScheduling(@Body() body:any){
-    const createCron = await this.service.createCron(body)
-    return createCron
-   
-  }
+
 }

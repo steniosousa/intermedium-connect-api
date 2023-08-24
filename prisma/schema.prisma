@@ -25,6 +25,14 @@ model User {
   manager      Manager?   @relation(fields: [managerId], references: [id])
   managerId    String?
   Cleaning     Cleaning[]
+  Cron         Cron[]
+}
+
+model Cron{
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId],references: [id])
+  
 }
 
 model Company {
@@ -46,9 +54,9 @@ model Manager {
 }
 
 model Place {
-   id        String              @id @default(uuid())
-   name String
-    companyId String
+  id        String              @id @default(uuid())
+  name String
+  companyId String
   company  Company             @relation(fields: [companyId], references: [id])
 }
 
@@ -62,6 +70,9 @@ model Objects {
 
 model Cleaning {
   id       String              @id @default(uuid())
+  cron     String              @default("Hoje")
+  cronHors String              @default("00")
+  count Int          @default(0)
   userId   String
   createAt DateTime            @default(now())
   status   String              @default("Pendente")
@@ -84,3 +95,5 @@ model CleaningOfObjects {
   cleaningId String
   objectsId  String
 }
+
+
