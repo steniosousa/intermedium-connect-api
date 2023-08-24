@@ -14,22 +14,51 @@ export class CronDatabase{
         const updatedCleanings = [];
       
         for (const cleaning of existingCleanings) {
-            const horaInteira = parseInt(cleaning.cronHors, 10); // Converte para número inteiro
+            const horaInteira = parseInt(cleaning.cronHors, 10);
           
             const currentCronHors = new Date();
             currentCronHors.setUTCHours(horaInteira, 0, 0, 0);
+
+            if(cleaning.count == 1){
+                const updatedCleaning = await this.prisma.cleaning.update({
+                    where: {
+                      id: cleaning.id
+                    },
+                    data: {
+                      cron: 'Hoje',
+                      cronHors: currentCronHors.toISOString(),
+                      count:2
+                    }
+                  });
+                  updatedCleanings.push(updatedCleaning);
+                  continue
+            }
+            else if(cleaning.count == 2){
+                const updatedCleaning = await this.prisma.cleaning.update({
+                    where: {
+                      id: cleaning.id
+                    },
+                    data: {
+                      status:'Finalizado'
+                    }
+                  });
+                  updatedCleanings.push(updatedCleaning);
+                  continue
+            }
+            else{
+                const updatedCleaning = await this.prisma.cleaning.update({
+                  where: {
+                    id: cleaning.id
+                  },
+                  data: {
+                    cron: 'Hoje',
+                    cronHors: currentCronHors.toISOString()
+                  }
+                });
+              
+                updatedCleanings.push(updatedCleaning);
+            }
           
-            const updatedCleaning = await this.prisma.cleaning.update({
-              where: {
-                id: cleaning.id
-              },
-              data: {
-                cron: 'Hoje',
-                cronHors: currentCronHors.toISOString()
-              }
-            });
-          
-            updatedCleanings.push(updatedCleaning);
           }
       
         return updatedCleanings;
