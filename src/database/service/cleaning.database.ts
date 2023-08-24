@@ -6,37 +6,9 @@ export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(body) {
-    const { userId, where, objects,daySelected ,horsSelected,automated,repeat} = body;
+    const { userId, where, objects,daySelected ,horsSelected,repeat} = body;
 
-    if(automated){
-      try {
-        const cleaning = await this.prisma.cleaning.create({
-          data: {
-            userId,
-            where,
-            cron:daySelected,
-            cronHors:horsSelected
-          },
-        });
-
-        const cleaningObjects = objects.map((objectsId) => {
-          return {
-            cleaningId: cleaning.id,
-            objectsId,
-          };
-        });
-  
-        await this.prisma.cleaningOfObjects.createMany({
-          data: cleaningObjects,
-        });
-        return cleaning;
-      } catch (error) {
-        throw new HttpException(
-          'Error - Erro ao cadastrar serviço',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    }else if(!automated){
+    
       try {
         const cleaning = await this.prisma.cleaning.create({
           data: {
@@ -65,7 +37,7 @@ export class CleaningDatabase {
           HttpStatus.BAD_REQUEST,
         );
       }
-    }
+    
   }
 
   async deletion(id) {

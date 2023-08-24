@@ -20,8 +20,6 @@ export class CreateCleaningDto {
   @IsOptional()
   horsSelected:string
 
-  @IsBoolean()
-  automated:Boolean
 
   @IsBoolean()
   @IsOptional()
