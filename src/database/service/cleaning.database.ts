@@ -7,16 +7,17 @@ export class CleaningDatabase {
 
   async create(body) {
     const { userId, where, objects,daySelected ,horsSelected,repeat} = body;
-
+    console.log(daySelected)
     
       try {
         const cleaning = await this.prisma.cleaning.create({
           data: {
             userId,
             where,
-            cron:daySelected,
-            cronHors:horsSelected,
-            repeat
+            cron:daySelected ? daySelected : 'Hoje',
+            cronHors:horsSelected ? horsSelected : '00',
+            repeat,
+            
           },
         });
 
@@ -32,6 +33,7 @@ export class CleaningDatabase {
         });
         return cleaning;
       } catch (error) {
+        console.log(error)
         throw new HttpException(
           'Error - Erro ao cadastrar serviço',
           HttpStatus.BAD_REQUEST,

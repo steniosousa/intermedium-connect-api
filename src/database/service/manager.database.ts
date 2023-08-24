@@ -62,37 +62,7 @@ export class managerDatabase {
     }
   }
 
-  async findUsersForManager(id: string) {
-    const manager = await this.prisma.manager.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        companys: true,
-        users: {
-          include: {
-            Cleaning: {
-              include: {
-                objects: {
-                  include: {
-                    object: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
 
-    if (!manager) {
-      throw new HttpException(
-        'Error - Administrador não encontrado',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    return manager;
-  }
   async updateManager(query) {
     const { managerId } = query;
     const indentify = await this.prisma.manager.findUnique({
@@ -115,7 +85,60 @@ export class managerDatabase {
     });
     return updateManager;
   }
-
+  async findUsersForManager(id: string) {
+    const manager = await this.prisma.manager.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        companys: true,
+        users: {
+          include: {
+            Cleaning: {
+              where: {
+                cron: 'Hoje',
+              },
+            },
+          },
+        },
+      },
+    });
+  
+    if (!manager) {
+      throw new HttpException(
+        'Error - Administrador não encontrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  
+    const updatedCleanings = [];
+  
+    for (const user of manager.users) {
+      for (const cleaning of user.Cleaning) {
+        const horaInteira = parseInt(cleaning.cronHors, 10); // Converte para número inteiro
+  
+        const currentCronHors = new Date();
+        currentCronHors.setUTCHours(horaInteira, 0, 0, 0);
+  
+        const updatedCleaning = await this.prisma.cleaning.update({
+          where: {
+            id: cleaning.id,
+          },
+          data: {
+            cronHors: currentCronHors.toISOString(),
+          },
+        });
+  
+        updatedCleanings.push(updatedCleaning);
+      }
+    }
+  
+    return {
+      ...manager,
+      updatedCleanings,
+    };
+  }
+  
   async deleteUser(managerId: string) {
     const deleteManager = await this.prisma.manager.delete({
       where: {
