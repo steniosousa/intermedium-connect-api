@@ -1,4 +1,5 @@
-import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCleaningDto {
   @IsString()
@@ -21,4 +22,8 @@ export class CreateCleaningDto {
 
   @IsBoolean()
   automated:Boolean
+
+  @IsBoolean()
+  @IsOptional()
+  repeat:Boolean
 }

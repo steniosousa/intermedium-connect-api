@@ -18,48 +18,54 @@ export class CronDatabase{
           
             const currentCronHors = new Date();
             currentCronHors.setUTCHours(horaInteira, 0, 0, 0);
-
-            if(cleaning.count == 1){
-                const updatedCleaning = await this.prisma.cleaning.update({
-                    where: {
-                      id: cleaning.id
-                    },
-                    data: {
-                      cron: 'Hoje',
-                      cronHors: currentCronHors.toISOString(),
-                      count:2
-                    }
+            if(cleaning.repeat){
+                const updatedCleaning = await this.prisma.cleaning.create({
+                   data:{
+                    where:cleaning.where,
+                    createAt:currentCronHors.toISOString(),
+                    cron:'Hoje',
+                    cronHors:currentCronHors.toISOString(),
+                    entrance:'',
+                    exit:'',
+                    userId:cleaning.userId,
+                    obs1:'',
+                    obs2:'',
+                    obs3:'',
+                    status:'Pendente',
+                    updateAt:currentCronHors.toISOString(),
+                    repeat:false,
+                   }
                   });
-                  updatedCleanings.push(updatedCleaning);
-                  continue
-            }
-            else if(cleaning.count == 2){
-                const updatedCleaning = await this.prisma.cleaning.update({
-                    where: {
-                      id: cleaning.id
-                    },
-                    data: {
-                      status:'Finalizado'
+                  const objects = await this.prisma.cleaningOfObjects.findMany({
+                    where:{
+                        id:cleaning.id
                     }
-                  });
-                  updatedCleanings.push(updatedCleaning);
+                })
+                for(const newObject of objects){
+                    await this.prisma.cleaningOfObjects.create({
+                        data:{
+                            cleaningId:updatedCleaning.id,
+                            objectsId:newObject.objectsId,
+                            createAt:currentCronHors.toISOString(),
+                        }
+                    })
+                }
                   continue
             }
             else{
-                const updatedCleaning = await this.prisma.cleaning.update({
-                  where: {
-                    id: cleaning.id
-                  },
-                  data: {
-                    cron: 'Hoje',
-                    cronHors: currentCronHors.toISOString()
-                  }
-                });
-              
-                updatedCleanings.push(updatedCleaning);
+                await this.prisma.cleaning.update({
+                    where: {
+                      id: cleaning.id
+                    },
+                    data: {
+                      cron:'Hoje'
+                    }
+                  });
+                  continue
             }
-          
-          }
+        }
+
+       
       
         return updatedCleanings;
       }

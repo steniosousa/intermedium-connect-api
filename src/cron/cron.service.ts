@@ -12,7 +12,7 @@ export class CronService implements OnModuleInit {
     const nomeDiaSemana = nomesDiasSemana[hoje.getDay()];
 
     
-    cron.schedule("* * * * *", async () => {
+    cron.schedule("0 0 * * *", async () => {
         await this.database.Started(nomeDiaSemana)
     });
   }

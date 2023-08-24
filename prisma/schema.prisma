@@ -72,7 +72,7 @@ model Cleaning {
   id       String              @id @default(uuid())
   cron     String              @default("Hoje")
   cronHors String              @default("00")
-  count Int          @default(0)
+  repeat    Boolean                 @default(false)
   userId   String
   createAt DateTime            @default(now())
   status   String              @default("Pendente")
