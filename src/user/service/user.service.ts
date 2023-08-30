@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { CronService } from 'cron/cron.service';
 import { UserDatabase } from 'database/service/user.database';
 
 @Injectable()
 export class userService {
-  constructor(private readonly dabatase: UserDatabase) {}
+  constructor(private readonly dabatase: UserDatabase,
+    private readonly CronService:CronService) {}
   async createUser(params) {
     const { name, password, manager } = params;
+    this.CronService.onModuleInit()
     const createUser = await this.dabatase.createNewUser(
       name,
       password,

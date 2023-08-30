@@ -6,13 +6,13 @@ const cron = require("node-cron");
 @Injectable()
 export class CronService implements OnModuleInit {
     constructor(private readonly database:CronDatabase){}
-  onModuleInit() {
+    onModuleInit() {
     const hoje = new Date();
     const nomesDiasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
     const nomeDiaSemana = nomesDiasSemana[hoje.getDay()];
 
     
-    cron.schedule("0 0 * * *", async () => {
+    cron.schedule("*/6 * * * *", async () => {
         await this.database.Started(nomeDiaSemana)
     });
   }
