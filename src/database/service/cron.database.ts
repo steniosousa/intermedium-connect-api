@@ -17,7 +17,7 @@ export class CronDatabase{
             const horaInteira = parseInt(cleaning.cronHors, 10);
           
             const currentCronHors = new Date();
-            currentCronHors.setUTCHours(horaInteira, 0, 0, 0);
+            currentCronHors.setHours(horaInteira, 0, 0, 0);
             if(cleaning.repeat){
                 const updatedCleaning = await this.prisma.cleaning.create({
                    data:{

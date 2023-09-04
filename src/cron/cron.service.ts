@@ -12,8 +12,8 @@ export class CronService implements OnModuleInit {
     const nomeDiaSemana = nomesDiasSemana[hoje.getDay()];
 
     
-    cron.schedule("*/6 * * * *", async () => {
-        await this.database.Started(nomeDiaSemana)
+    const idCron = cron.schedule("* * * * *", async () => {
+      const responseCron =  await this.database.Started(nomeDiaSemana)
     });
   }
 }

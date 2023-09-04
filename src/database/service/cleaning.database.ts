@@ -130,4 +130,20 @@ export class CleaningDatabase {
       );
     }
   }
+
+  async findAllCrons(userId){
+    try{
+      const all = await this.prisma.cleaning.findMany({
+        where:{
+          repeat:true,
+          userId
+        }
+      })
+      return all
+    }
+    catch(error){
+      console.log(error)
+    }
+
+  }
 }

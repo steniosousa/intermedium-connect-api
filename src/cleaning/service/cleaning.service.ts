@@ -70,4 +70,10 @@ export class cleaningService {
     return retunrObj;
   }
 
+
+  async findAllCrons(userId){
+    const received = await this.database.findAllCrons(userId)
+    return received
+  }
+
 }

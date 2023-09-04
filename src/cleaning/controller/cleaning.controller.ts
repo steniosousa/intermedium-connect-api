@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
+import { GetAllCrons } from 'cleaning/dto/getAllCrons.dto';
 
 @Controller('/cleaning')
 export class cleaningController {
@@ -31,5 +32,11 @@ export class cleaningController {
     return deletion;
   }
 
+  @Get('/cron')
+  async getAllCron(@Query() Query:GetAllCrons){
+    const {userId} = Query;
+    const findAll = await this.service.findAllCrons(userId)
+    return findAll
+  }
 
 }
