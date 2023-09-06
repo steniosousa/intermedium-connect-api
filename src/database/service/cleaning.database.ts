@@ -68,37 +68,17 @@ export class CleaningDatabase {
           userId,
           cron:'Hoje'
         },
+        include:{
+          objects:{
+            select:{
+              object:true
+            }
+          },
+
+        }
       });
 
-      const clearPromises = allCleaning.map(async (cleaning) => {
-        const clear = await this.prisma.cleaningOfObjects.findMany({
-          where: {
-            cleaningId: cleaning.id,
-          },
-          select: {
-            cleaning: {
-              select: {
-                id: true,
-                where: true,
-                status: true,
-                createAt: true,
-              },
-            },
-            object: {
-              select: {
-                name: true,
-              },
-            },
-            id: true,
-          },
-        });
-
-        return clear;
-      });
-
-      const clearResults = await Promise.all(clearPromises);
-
-      return clearResults;
+      return allCleaning;
     } catch {
       throw new HttpException(
         'Error - Erro ao recuperar serviços',
