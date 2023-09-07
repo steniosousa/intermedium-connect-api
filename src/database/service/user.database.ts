@@ -42,6 +42,7 @@ export class UserDatabase {
 
       return randomString;
     }
+    
     const hashPassword = await bcrypt.hash(password, 6);
     const uniqueId = generateRandomAlphanumeric(6);
 

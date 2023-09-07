@@ -1,18 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { Transporter } from 'nodemailer';
+import { MailerService } from '@nestjs-modules/mailer';
+import { managerDatabase } from 'database/service/manager.database';
 
 @Injectable()
-export class EmailService {
-  constructor(private readonly transporter: Transporter) {}
+export class CatsService {
+  private readonly cats = [];
 
-  async sendEmail(to: string, subject: string, text: string) {
-    const mailOptions = {
-      from: 'AnySoftware@gmail.com',
-      to,
-      subject,
-      text,
-    };
+  constructor(private readonly mailerService: MailerService, private readonly dabatase:managerDatabase) {}
 
-    return await this.transporter.sendMail(mailOptions);
+  findAll() {
+    return this.cats;
+  }
+
+  create(cat: any) {
+    this.cats.push(cat);
+    return cat;
+  }
+
+  async sendNotificationEmail(cat: any) {
+    const resetPassword = await this.dabatase.editionPassword(cat)
+    await this.mailerService.sendMail({
+      to: cat,
+      subject: 'Recuperação de senha - Intermédium',
+      text: `Sua nova senha de acesso é ${resetPassword}`,
+    });
   }
 }

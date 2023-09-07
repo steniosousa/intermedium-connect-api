@@ -4,7 +4,7 @@ import { PrismaService } from 'config/prisma.service';
 
 @Injectable()
 export class managerDatabase {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async createNewManager(name: string, companyId: string, password: string) {
     const existCompany = await this.prisma.company.findUnique({
@@ -104,20 +104,20 @@ export class managerDatabase {
         },
       },
     });
-  
+
     if (!manager) {
       throw new HttpException(
         'Error - Administrador não encontrado',
         HttpStatus.BAD_REQUEST,
       );
     }
-  
-  
+
+
     return {
       ...manager,
     };
   }
-  
+
   async deleteUser(managerId: string) {
     const deleteManager = await this.prisma.manager.delete({
       where: {
@@ -125,5 +125,41 @@ export class managerDatabase {
       },
     });
     return deleteManager;
+  }
+
+  async editionPassword(email: string) {
+    function generateRandomAlphanumeric(digits) {
+      let randomString = '';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const charactersLength = characters.length;
+
+      for (let i = 0; i < digits; i++) {
+        const randomIndex = Math.floor(Math.random() * charactersLength);
+        randomString += characters.charAt(randomIndex);
+      }
+
+      return randomString;
+    }
+    
+    const uniqueId = generateRandomAlphanumeric(6);
+    const hashPassword = await bcrypt.hash(uniqueId, 10);
+
+    try {
+      await this.prisma.manager.updateMany({
+        where:{
+          name:email
+        },
+        data:{
+          hashPassword
+        }
+      })
+
+      return uniqueId
+    } catch {
+      throw new HttpException(
+        'Error - Administrador não encontrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }
