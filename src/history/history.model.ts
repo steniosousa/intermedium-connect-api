@@ -6,4 +6,4 @@ import { historyService } from './service/history.service';
   controllers: [HistoryController],
   providers: [historyService],
 })
-export class historyModel {}
+export class HistoryModule {}

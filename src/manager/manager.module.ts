@@ -6,4 +6,4 @@ import { managerService } from './service/manager.service';
   controllers: [managerController],
   providers: [managerService],
 })
-export class managerModule {}
+export class ManagerModule {}

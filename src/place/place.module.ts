@@ -6,4 +6,4 @@ import { PlaceService } from './service/place.service';
   controllers: [PlaceController],
   providers: [PlaceService],
 })
-export class placeModule {}
+export class PlaceModule {}
