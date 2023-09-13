@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { cleaningModule } from './cleaning/cleaning.module';
 import { companyModule } from './company/company.module';
-import { databaseModule } from './database/database.module';
+import { DatabaseModule } from './database/database.module';
 import { historyModel } from './history/history.model';
 import { managerModule } from './manager/manager.module';
 import { objectModule } from './objects/object.module';
@@ -18,9 +18,9 @@ import { StartupModule } from 'cron/cron.module';
     cleaningModule,
     historyModel,
     placeModule,
-    StartupModule
+    StartupModule,
+    DatabaseModule
   ],
   controllers: [],
-  providers: [databaseModule],
 })
 export class AppModule {}

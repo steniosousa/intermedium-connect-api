@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { CleaningDatabase } from './service/cleaning.database';
 import { companyDatabase } from './service/company.database';
 import { historyDatabase } from './service/history.database';
@@ -9,6 +9,7 @@ import { PrismaService } from 'config/prisma.service';
 import { PlaceDatabase } from './service/place.database';
 import { CronDatabase } from './service/cron.database';
 
+@Global()
 @Module({
   providers: [
     companyDatabase,
@@ -33,4 +34,4 @@ import { CronDatabase } from './service/cron.database';
     CronDatabase
   ],
 })
-export class databaseModule {}
+export class DatabaseModule {}
