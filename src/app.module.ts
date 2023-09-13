@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { cleaningModule } from './cleaning/cleaning.module';
+import { CleaningModule } from './cleaning/cleaning.module';
 import { companyModule } from './company/company.module';
 import { DatabaseModule } from './database/database.module';
 import { historyModel } from './history/history.model';
@@ -15,7 +15,7 @@ import { CronModule } from 'cron/cron.module';
     managerModule,
     userModule,
     objectModule,
-    cleaningModule,
+    CleaningModule,
     historyModel,
     placeModule,
     CronModule,

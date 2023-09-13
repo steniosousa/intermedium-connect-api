@@ -20,7 +20,7 @@ import { CronDatabase } from './service/cron.database';
     CleaningDatabase,
     historyDatabase,
     PlaceDatabase,
-    CronDatabase
+    CronDatabase,
   ],
 
   exports: [
@@ -31,7 +31,7 @@ import { CronDatabase } from './service/cron.database';
     CleaningDatabase,
     historyDatabase,
     PlaceDatabase,
-    CronDatabase
+    CronDatabase,
   ],
 })
 export class DatabaseModule {}

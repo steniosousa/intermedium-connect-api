@@ -5,11 +5,8 @@ import { CleaningDatabase } from 'database/service/cleaning.database';
 export class cleaningService {
   constructor(private readonly database: CleaningDatabase) {}
   async create(body) {
-    if(body.objects.length == 0){
-      throw new HttpException(
-        'Error - Objetos vazios',
-        HttpStatus.BAD_REQUEST,
-      );
+    if (body.objects.length == 0) {
+      throw new HttpException('Error - Objetos vazios', HttpStatus.BAD_REQUEST);
     }
     const newCleaning = await this.database.create(body);
 
@@ -69,5 +66,4 @@ export class cleaningService {
 
     return retunrObj;
   }
-
 }

@@ -6,40 +6,38 @@ export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(body) {
-    const { userId, where, objects,daySelected ,horsSelected,repeat} = body;
-    console.log(daySelected)
-    
-      try {
-        const cleaning = await this.prisma.cleaning.create({
-          data: {
-            userId,
-            where,
-            cron:daySelected ? daySelected : 'Hoje',
-            cronHors:horsSelected ? horsSelected : '00',
-            repeat,
-            
-          },
-        });
+    const { userId, where, objects, daySelected, horsSelected, repeat } = body;
+    console.log(daySelected);
 
-        const cleaningObjects = objects.map((objectsId) => {
-          return {
-            cleaningId: cleaning.id,
-            objectsId,
-          };
-        });
-  
-        await this.prisma.cleaningOfObjects.createMany({
-          data: cleaningObjects,
-        });
-        return cleaning;
-      } catch (error) {
-        console.log(error)
-        throw new HttpException(
-          'Error - Erro ao cadastrar serviço',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    
+    try {
+      const cleaning = await this.prisma.cleaning.create({
+        data: {
+          userId,
+          where,
+          cron: daySelected ? daySelected : 'Hoje',
+          cronHors: horsSelected ? horsSelected : '00',
+          repeat,
+        },
+      });
+
+      const cleaningObjects = objects.map((objectsId) => {
+        return {
+          cleaningId: cleaning.id,
+          objectsId,
+        };
+      });
+
+      await this.prisma.cleaningOfObjects.createMany({
+        data: cleaningObjects,
+      });
+      return cleaning;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Error - Erro ao cadastrar serviço',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async deletion(id) {
@@ -66,7 +64,7 @@ export class CleaningDatabase {
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
           userId,
-          cron:'Hoje'
+          cron: 'Hoje',
         },
       });
 

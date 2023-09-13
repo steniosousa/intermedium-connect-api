@@ -1,5 +1,10 @@
-import { Type } from 'class-transformer';
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateCleaningDto {
   @IsString()
@@ -14,14 +19,13 @@ export class CreateCleaningDto {
 
   @IsString()
   @IsOptional()
-  daySelected:string;
+  daySelected: string;
 
   @IsString()
   @IsOptional()
-  horsSelected:string
-
+  horsSelected: string;
 
   @IsBoolean()
   @IsOptional()
-  repeat:Boolean
+  repeat: boolean;
 }

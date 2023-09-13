@@ -22,9 +22,9 @@ export class companyController {
   }
 
   @Get('/all')
-  async getCompanys(){
-    const allCompanys = await this.service.allCompanys()
-    return allCompanys
+  async getCompanys() {
+    const allCompanys = await this.service.allCompanys();
+    return allCompanys;
   }
 
   @Delete('/delete')

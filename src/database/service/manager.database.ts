@@ -62,7 +62,6 @@ export class managerDatabase {
     }
   }
 
-
   async updateManager(query) {
     const { managerId } = query;
     const indentify = await this.prisma.manager.findUnique({
@@ -103,23 +102,23 @@ export class managerDatabase {
         },
       },
     });
-  
+
     if (!manager) {
       throw new HttpException(
         'Error - Administrador não encontrado',
         HttpStatus.BAD_REQUEST,
       );
     }
-  
+
     const updatedCleanings = [];
-  
+
     for (const user of manager.users) {
       for (const cleaning of user.Cleaning) {
         const horaInteira = parseInt(cleaning.cronHors, 10); // Converte para número inteiro
-  
+
         const currentCronHors = new Date();
         currentCronHors.setUTCHours(horaInteira, 0, 0, 0);
-  
+
         const updatedCleaning = await this.prisma.cleaning.update({
           where: {
             id: cleaning.id,
@@ -128,17 +127,17 @@ export class managerDatabase {
             cronHors: currentCronHors.toISOString(),
           },
         });
-  
+
         updatedCleanings.push(updatedCleaning);
       }
     }
-  
+
     return {
       ...manager,
       updatedCleanings,
     };
   }
-  
+
   async deleteUser(managerId: string) {
     const deleteManager = await this.prisma.manager.delete({
       where: {

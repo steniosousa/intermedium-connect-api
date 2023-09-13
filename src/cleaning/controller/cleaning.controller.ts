@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
 
 @Controller('/cleaning')
-export class cleaningController {
+export class CleaningController {
   constructor(readonly service: cleaningService) {}
   @Post('/')
   async createCleaning(@Body() body: CreateCleaningDto) {
@@ -30,6 +30,4 @@ export class cleaningController {
     const deletion = await this.service.deletionCleaning(id);
     return deletion;
   }
-
-
 }

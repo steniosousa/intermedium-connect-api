@@ -48,13 +48,12 @@ export class companyDatabase {
     }
   }
 
-  async allCompanys(){
-    try{
-      const all = await this.prisma.company.findMany()
-      console.log(all)
-      return all
-    }
-    catch{
+  async allCompanys() {
+    try {
+      const all = await this.prisma.company.findMany();
+      console.log(all);
+      return all;
+    } catch {
       throw new HttpException(
         'Error - Erro ao recuperar Empresas',
         HttpStatus.BAD_REQUEST,
