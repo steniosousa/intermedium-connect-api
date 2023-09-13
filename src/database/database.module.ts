@@ -32,6 +32,7 @@ import { CronDatabase } from './service/cron.database';
     historyDatabase,
     PlaceDatabase,
     CronDatabase,
+    PrismaService,
   ],
 })
 export class DatabaseModule {}

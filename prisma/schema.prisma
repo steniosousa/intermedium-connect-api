@@ -26,6 +26,7 @@ model User {
   managerId    String?
   Cleaning     Cleaning[]
   Cron         Cron[]
+  Schedule     Schedule[]
 }
 
 model Cron {
@@ -53,37 +54,51 @@ model Manager {
 }
 
 model Place {
-  id        String  @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
   companyId String
-  company   Company @relation(fields: [companyId], references: [id])
+  company   Company    @relation(fields: [companyId], references: [id])
+  Schedule  Schedule[]
+  Cleaning  Cleaning[]
 }
 
 model Objects {
-  id        String              @id @default(uuid())
-  name      String
-  companyId String
-  companys  Company             @relation(fields: [companyId], references: [id])
-  cleanings CleaningOfObjects[]
+  id              String              @id @default(uuid())
+  name            String
+  companyId       String
+  companys        Company             @relation(fields: [companyId], references: [id])
+  cleanings       CleaningOfObjects[]
+  ScheduleObject  ScheduleObject[]
+  CleaningObjects CleaningObjects[]
 }
 
 model Cleaning {
-  id       String              @id @default(uuid())
-  cron     String              @default("Hoje")
-  cronHors String              @default("00")
-  repeat   Boolean             @default(false)
+  id       String   @id @default(uuid())
   userId   String
-  createAt DateTime            @default(now())
-  status   String              @default("Pendente")
-  updateAt DateTime            @default(now())
-  entrance String              @default("")
-  exit     String              @default("")
-  obs1     String              @default("")
-  obs2     String              @default("")
-  obs3     String              @default("")
-  where    String
-  user     User                @relation(fields: [userId], references: [id])
-  objects  CleaningOfObjects[]
+  createAt DateTime @default(now())
+  status   String   @default("Pendente")
+  updateAt DateTime @default(now())
+  entrance String?
+  exit     String?
+  obs1     String?
+  obs2     String?
+  obs3     String?
+  placeId  String
+
+  user            User                @relation(fields: [userId], references: [id])
+  place           Place               @relation(fields: [placeId], references: [id])
+  objects         CleaningOfObjects[]
+  CleaningObjects CleaningObjects[]
+}
+
+model CleaningObjects {
+  cleaningId String
+  objectId   String
+
+  cleaning Cleaning @relation(fields: [cleaningId], references: [id])
+  object   Objects  @relation(fields: [objectId], references: [id])
+
+  @@id([cleaningId, objectId])
 }
 
 model CleaningOfObjects {
@@ -93,4 +108,27 @@ model CleaningOfObjects {
   object     Objects  @relation(fields: [objectsId], references: [id])
   cleaningId String
   objectsId  String
+}
+
+model ScheduleObject {
+  scheduleId String
+  objectId   String
+
+  schedule Schedule @relation(fields: [scheduleId], references: [id])
+  object   Objects  @relation(fields: [objectId], references: [id])
+
+  @@id([scheduleId, objectId])
+}
+
+model Schedule {
+  id            String    @id @default(uuid())
+  placeId       String
+  responsibleId String
+  eventDate     DateTime
+  repeatable    Boolean
+  deactivatedAt DateTime?
+
+  place       Place            @relation(fields: [placeId], references: [id])
+  responsible User             @relation(fields: [responsibleId], references: [id])
+  objects     ScheduleObject[]
 }

@@ -13,7 +13,7 @@ export class CleaningDatabase {
       const cleaning = await this.prisma.cleaning.create({
         data: {
           userId,
-          where,
+          placeId: '',
           cron: daySelected ? daySelected : 'Hoje',
           cronHors: horsSelected ? horsSelected : '00',
           repeat,
@@ -77,7 +77,7 @@ export class CleaningDatabase {
             cleaning: {
               select: {
                 id: true,
-                where: true,
+                place: true,
                 status: true,
                 createAt: true,
               },

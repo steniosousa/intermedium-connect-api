@@ -21,7 +21,7 @@ export class CronDatabase {
       if (cleaning.repeat) {
         const updatedCleaning = await this.prisma.cleaning.create({
           data: {
-            where: cleaning.where,
+            placeId: '',
             createAt: currentCronHors.toISOString(),
             cron: 'Hoje',
             cronHors: currentCronHors.toISOString(),
@@ -50,7 +50,6 @@ export class CronDatabase {
             },
           });
         }
-        continue;
       } else {
         await this.prisma.cleaning.update({
           where: {
@@ -60,7 +59,6 @@ export class CronDatabase {
             cron: 'Hoje',
           },
         });
-        continue;
       }
     }
 

@@ -8,6 +8,7 @@ import { ObjectModule } from './objects/object.module';
 import { UserModule } from './user/user.module';
 import { PlaceModule } from 'place/place.module';
 import { CronModule } from 'cron/cron.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CronModule } from 'cron/cron.module';
     PlaceModule,
     CronModule,
     DatabaseModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [],
 })

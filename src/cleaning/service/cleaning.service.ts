@@ -54,7 +54,7 @@ export class cleaningService {
     const update = await this.database.updateCleaning(params);
     const objectsSend = [];
     const retunrObj = {
-      name: update.where,
+      name: '',
       object: objectsSend,
       status: update.status,
       createAt: update.createAt,
