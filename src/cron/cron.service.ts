@@ -1,19 +1,25 @@
-// startup.service.ts
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { CronDatabase } from 'database/service/cron.database';
-const cron = require("node-cron");
 
 @Injectable()
-export class CronService implements OnModuleInit {
-    constructor(private readonly database:CronDatabase){}
-    onModuleInit() {
+export class CronService {
+  constructor(private readonly database: CronDatabase) {}
+
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async handleCron() {
     const hoje = new Date();
-    const nomesDiasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+    const nomesDiasSemana = [
+      'Domingo',
+      'Segunda-feira',
+      'Terça-feira',
+      'Quarta-feira',
+      'Quinta-feira',
+      'Sexta-feira',
+      'Sábado',
+    ];
     const nomeDiaSemana = nomesDiasSemana[hoje.getDay()];
 
-    
-    cron.schedule("*/6 * * * *", async () => {
-        await this.database.Started(nomeDiaSemana)
-    });
+    await this.database.Started(nomeDiaSemana);
   }
 }
