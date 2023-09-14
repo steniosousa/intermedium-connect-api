@@ -8,6 +8,5 @@ import { ScheduleCleaningCron } from './cron/schedule-cleaning.cron';
     ListTodayScheduleService,
     ScheduleCleaningService,
     ScheduleCleaningCron,
-  ],
-})
+  ]})
 export class ScheduleModule {}

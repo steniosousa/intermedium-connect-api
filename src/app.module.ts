@@ -7,8 +7,8 @@ import { ManagerModule } from './manager/manager.module';
 import { ObjectModule } from './objects/object.module';
 import { UserModule } from './user/user.module';
 import { PlaceModule } from 'place/place.module';
-import { CronModule } from 'cron/cron.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleRoute } from 'schedule/scheduleRoute.module';
 
 @Module({
   imports: [
@@ -19,9 +19,9 @@ import { ScheduleModule } from '@nestjs/schedule';
     CleaningModule,
     HistoryModule,
     PlaceModule,
-    CronModule,
     DatabaseModule,
     ScheduleModule.forRoot(),
+    ScheduleRoute
   ],
   controllers: [],
 })

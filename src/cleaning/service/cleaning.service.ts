@@ -21,33 +21,7 @@ export class cleaningService {
     const find: any[] = await this.database.findCleaning(userId);
     const locations = {};
 
-    for (const clear of find) {
-      for (const item of clear) {
-        if (item.cleaning.status == 'Finalizado') {
-          continue;
-        }
-        const locationName = item.cleaning.where;
-        const objectName = item.object.name;
-        const status = item.cleaning.status;
-        const createAt = item.cleaning.createAt;
-
-        if (locations[locationName]) {
-          locations[locationName].object.push(objectName);
-        } else {
-          locations[locationName] = {
-            name: locationName,
-            object: [objectName],
-            status,
-            createAt,
-            id: item.cleaning.id,
-          };
-        }
-      }
-    }
-
-    const groupedResults = Object.values(locations);
-
-    return groupedResults;
+    return find;
   }
 
   async updateCleaning(params) {

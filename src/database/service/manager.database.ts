@@ -91,15 +91,6 @@ export class managerDatabase {
       },
       include: {
         companys: true,
-        users: {
-          include: {
-            Cleaning: {
-              where: {
-                cron: 'Hoje',
-              },
-            },
-          },
-        },
       },
     });
 
@@ -110,31 +101,9 @@ export class managerDatabase {
       );
     }
 
-    const updatedCleanings = [];
-
-    for (const user of manager.users) {
-      for (const cleaning of user.Cleaning) {
-        const horaInteira = parseInt(cleaning.cronHors, 10); // Converte para número inteiro
-
-        const currentCronHors = new Date();
-        currentCronHors.setUTCHours(horaInteira, 0, 0, 0);
-
-        const updatedCleaning = await this.prisma.cleaning.update({
-          where: {
-            id: cleaning.id,
-          },
-          data: {
-            cronHors: currentCronHors.toISOString(),
-          },
-        });
-
-        updatedCleanings.push(updatedCleaning);
-      }
-    }
 
     return {
       ...manager,
-      updatedCleanings,
     };
   }
 

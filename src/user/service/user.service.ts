@@ -38,4 +38,9 @@ export class userService {
     const deleteUser = await this.dabatase.deleteUser(params);
     return deleteUser;
   }
+
+  async getAllUsers(managerId){
+    const allReturn = await this.dabatase.getUsers(managerId)
+    return allReturn
+  }
 }

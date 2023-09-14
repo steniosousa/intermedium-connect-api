@@ -51,7 +51,6 @@ export class companyDatabase {
   async allCompanys() {
     try {
       const all = await this.prisma.company.findMany();
-      console.log(all);
       return all;
     } catch {
       throw new HttpException(

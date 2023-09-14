@@ -14,7 +14,6 @@ export class PlaceDatabase {
       });
       return save;
     } catch (error) {
-      console.log(name, companyId);
       throw new HttpException(
         'Error - Erro ao cadastrar ambiente',
         HttpStatus.BAD_REQUEST,

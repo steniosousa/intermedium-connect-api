@@ -17,6 +17,8 @@ export class companyController {
   @Get('/')
   async findCompany(@Query() query: findCompanyDto) {
     const { name } = query;
+    console.log(name)
+
     const find = await this.service.findCompany(name);
     return find;
   }
