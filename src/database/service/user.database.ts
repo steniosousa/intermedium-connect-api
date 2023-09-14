@@ -134,4 +134,25 @@ export class UserDatabase {
     });
     return deleteUser;
   }
+
+  async getUsers(managerId:string){
+    try{
+      const allUsers = await this.prisma.user.findMany({
+        where:{
+          managerId
+        }
+      })
+      if(allUsers.length == 0){
+        return 'Sem usuários'
+      }
+      return allUsers
+    }
+
+    catch{
+      throw new HttpException(
+        'Error - Usuários não encontrado',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }

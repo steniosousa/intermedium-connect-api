@@ -6,20 +6,15 @@ export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(body) {
-    const { userId, where, objects, daySelected, horsSelected, repeat } = body;
-    console.log(daySelected);
-
+    const { userId,  objects, placeId } = body;
     try {
       const cleaning = await this.prisma.cleaning.create({
         data: {
           userId,
-          placeId: '',
-          cron: daySelected ? daySelected : 'Hoje',
-          cronHors: horsSelected ? horsSelected : '00',
-          repeat,
+          placeId,
+          
         },
       });
-
       const cleaningObjects = objects.map((objectsId) => {
         return {
           cleaningId: cleaning.id,
@@ -32,7 +27,6 @@ export class CleaningDatabase {
       });
       return cleaning;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Error - Erro ao cadastrar serviço',
         HttpStatus.BAD_REQUEST,
@@ -64,39 +58,14 @@ export class CleaningDatabase {
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
           userId,
-          cron: 'Hoje',
         },
+        include:{
+          objects:true,
+          place:true
+        }
       });
-
-      const clearPromises = allCleaning.map(async (cleaning) => {
-        const clear = await this.prisma.cleaningOfObjects.findMany({
-          where: {
-            cleaningId: cleaning.id,
-          },
-          select: {
-            cleaning: {
-              select: {
-                id: true,
-                place: true,
-                status: true,
-                createAt: true,
-              },
-            },
-            object: {
-              select: {
-                name: true,
-              },
-            },
-            id: true,
-          },
-        });
-
-        return clear;
-      });
-
-      const clearResults = await Promise.all(clearPromises);
-
-      return clearResults;
+      
+      return allCleaning;
     } catch {
       throw new HttpException(
         'Error - Erro ao recuperar serviços',

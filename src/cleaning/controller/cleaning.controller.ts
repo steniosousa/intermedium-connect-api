@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
@@ -13,7 +13,7 @@ export class CleaningController {
   }
 
   @Get('/')
-  async getCleaning(@Query() query: findCleaningDto) {
+  async getCleaning(@Param() query: findCleaningDto) {
     const find = await this.service.findCleaning(query.userId);
     return find;
   }
