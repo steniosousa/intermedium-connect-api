@@ -60,8 +60,12 @@ export class CleaningDatabase {
           userId,
         },
         include:{
-          objects:true,
-          place:true
+          objects:{
+            select:{
+              object:true
+            }
+          },
+          place:true,
         }
       });
       
