@@ -19,6 +19,7 @@ export class ListTodayScheduleService {
             .millisecond(0)
             .toDate(),
         },
+        deactivatedAt:{not:null}
       },
       include: {
         objects: true,
