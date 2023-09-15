@@ -42,8 +42,9 @@ export class userController {
   }
 
   @Get('/allUsers')
-  async getAllUsers(@Param() managerId:string){
-    const allUsers = await this.service.getAllUsers(managerId)
+  async getAllUsers(@Query() managerId:any){
+    const {id} = managerId
+    const allUsers = await this.service.getAllUsers(id)
     return allUsers
   }
 }

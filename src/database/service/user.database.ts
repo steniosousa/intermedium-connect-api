@@ -142,6 +142,7 @@ export class UserDatabase {
           managerId
         }
       })
+
       if(allUsers.length == 0){
         return 'Sem usuários'
       }
