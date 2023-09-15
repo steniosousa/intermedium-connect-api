@@ -6,6 +6,8 @@ import * as dayjs from 'dayjs';
 export class ListTodayScheduleService {
   constructor(private readonly prismaService: PrismaService) {}
   async execute() {
+    console.log('start')
+
     const currentDate = dayjs();
 
     const schedules = await this.prismaService.schedule.findMany({
@@ -19,6 +21,7 @@ export class ListTodayScheduleService {
             .millisecond(0)
             .toDate(),
         },
+        deactivatedAt:{not:null}
       },
       include: {
         objects: true,
