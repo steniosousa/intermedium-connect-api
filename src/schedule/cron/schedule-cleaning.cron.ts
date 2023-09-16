@@ -10,35 +10,34 @@ export class ScheduleCleaningCron {
     private readonly listTodaySchedule: ListTodayScheduleService,
     private readonly prismaService: PrismaService,
   ) {}
-  @Cron(CronExpression.EVERY_SECOND)
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handle() {
     const schedules = await this.listTodaySchedule.execute();
-    console.log('oi')
-    // for (const schedule of schedules) {
-    //   await this.prismaService.cleaning.create({
-    //     data: {
-    //       userId: schedule.responsibleId,
-    //       placeId: schedule.placeId,
-    //       CleaningObjects: {
-    //         createMany: {
-    //           data: schedule.objects.map((obj) => ({
-    //             objectId: obj.objectId,
-    //           })),
-    //         },
-    //       },
-    //     },
-    //   });
+    for (const schedule of schedules) {
+      await this.prismaService.cleaning.create({
+        data: {
+          userId: schedule.responsibleId,
+          placeId: schedule.placeId,
+          CleaningObjects: {
+            createMany: {
+              data: schedule.objects.map((obj) => ({
+                objectId: obj.objectId,
+              })),
+            },
+          },
+        },
+      });
 
-    //   if (schedule.repeatable) {
-    //     await this.prismaService.schedule.update({
-    //       where: {
-    //         id: schedule.id,
-    //       },
-    //       data: {
-    //         eventDate: dayjs(schedule.eventDate).add(7, 'days').toDate(),
-    //       },
-    //     });
-    //   }
-    // }
+      if (schedule.repeatable) {
+        await this.prismaService.schedule.update({
+          where: {
+            id: schedule.id,
+          },
+          data: {
+            eventDate: dayjs(schedule.eventDate).add(7, 'days').toDate(),
+          },
+        });
+      }
+    }
   }
 }
