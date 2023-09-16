@@ -7,11 +7,13 @@ import { ManagerModule } from './manager/manager.module';
 import { ObjectModule } from './objects/object.module';
 import { UserModule } from './user/user.module';
 import { PlaceModule } from 'place/place.module';
-import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleModule as ScheduleModuleConfig } from '@nestjs/schedule';
 import { ScheduleRoute } from 'schedule/scheduleRoute.module';
+import { ScheduleModule } from 'schedule/schedule.module';
 
 @Module({
   imports: [
+    ScheduleModuleConfig.forRoot(),
     CompanyModule,
     ManagerModule,
     UserModule,
@@ -20,8 +22,8 @@ import { ScheduleRoute } from 'schedule/scheduleRoute.module';
     HistoryModule,
     PlaceModule,
     DatabaseModule,
-    ScheduleModule.forRoot(),
-    ScheduleRoute
+    ScheduleModule,
+    ScheduleRoute,
   ],
   controllers: [],
 })
