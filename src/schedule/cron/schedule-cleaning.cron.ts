@@ -10,7 +10,7 @@ export class ScheduleCleaningCron {
     private readonly listTodaySchedule: ListTodayScheduleService,
     private readonly prismaService: PrismaService,
   ) {}
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Cron(CronExpression.EVERY_12_HOURS)
   async handle() {
     const schedules = await this.listTodaySchedule.execute();
     for (const schedule of schedules) {
@@ -39,5 +39,7 @@ export class ScheduleCleaningCron {
         });
       }
     }
+    console.log(schedules)
+
   }
 }

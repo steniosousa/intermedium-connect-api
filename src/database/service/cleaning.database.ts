@@ -83,8 +83,11 @@ export class CleaningDatabase {
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
           userId,
+
           status:{
-            not:"Finalizado"
+            not:{
+              equals:"Finalizado"
+            }
           }
         },
         include:{
