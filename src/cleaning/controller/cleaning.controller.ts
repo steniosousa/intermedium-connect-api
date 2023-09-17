@@ -18,6 +18,12 @@ export class CleaningController {
     return find;
   }
 
+  @Get('/withApp')
+  async getAllCleaning(@Param() query: findCleaningDto) {
+    const find = await this.service.findCleaningFiltered(query.userId);
+    return find;
+  }
+
   @Post('/update')
   async updateCleaning(@Body() body: any) {
     const update = await this.service.updateCleaning(body);

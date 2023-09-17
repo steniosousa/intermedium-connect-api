@@ -77,6 +77,36 @@ export class CleaningDatabase {
       );
     }
   }
+
+  async   findCleaningFiltered(userId) {
+    try {
+      const allCleaning = await this.prisma.cleaning.findMany({
+        where: {
+          userId,
+          status:{
+            not:"Finalizado"
+          }
+        },
+        include:{
+          objects:{
+            select:{
+              object:true
+            }
+          },
+          place:true,
+        }
+      });
+      
+      return allCleaning;
+    } catch {
+      throw new HttpException(
+        'Error - Erro ao recuperar serviços',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+
   async updateCleaning(params) {
     try {
       const altered = await this.prisma.cleaning.update({

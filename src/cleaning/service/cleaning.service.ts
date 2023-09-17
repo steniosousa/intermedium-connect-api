@@ -20,8 +20,17 @@ export class cleaningService {
   async findCleaning(userId: string) {
     const find: any[] = await this.database.findCleaning(userId);
 
+
     return find;
   }
+
+  async findCleaningFiltered(userId: string) {
+    const find: any[] = await this.database.findCleaning(userId);
+
+
+    return find;
+  }
+
 
   async updateCleaning(params) {
     const update = await this.database.updateCleaning(params);
