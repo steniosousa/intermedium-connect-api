@@ -36,7 +36,7 @@ export class CleaningDatabase {
 
   async deletion(id) {
     try {
-      await this.prisma.cleaningOfObjects.deleteMany({
+      await this.prisma.cleaningObjects.deleteMany({
         where: {
           cleaningId: id,
         },
@@ -47,6 +47,7 @@ export class CleaningDatabase {
         },
       });
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Erro ao excluir solicitação',
         HttpStatus.BAD_REQUEST,
