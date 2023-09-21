@@ -19,7 +19,15 @@ export class ScheduleController{
 
     @Post('/edit')
     async edit(@Body() data){
-        const editSchedule = await this.service.edit(data)
+        const {schudeleId} = data
+        const editSchedule = await this.service.edit(schudeleId)
         return editSchedule
+    }
+
+    @Post('/delete')
+    async deletion(@Body() data){
+        const {schudeleId} = data
+        const deletionSchudele = await this.service.deletion(schudeleId)
+        return deletionSchudele
     }
 }

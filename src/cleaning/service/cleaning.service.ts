@@ -25,7 +25,7 @@ export class cleaningService {
   }
 
   async findCleaningFiltered(userId: string) {
-    const find: any[] = await this.database.findCleaning(userId);
+    const find: any[] = await this.database.findCleaningFiltered(userId);
 
 
     return find;

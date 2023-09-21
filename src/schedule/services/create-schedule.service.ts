@@ -55,6 +55,9 @@ export default class CreateScheduleService{
             eventDate:true,
             deactivatedAt:true,
             repeatable:true
+          },
+          orderBy:{
+            eventDate:"asc"
           }
         })
         return allSchedule
@@ -64,25 +67,44 @@ export default class CreateScheduleService{
       }
     }
 
-    async edit(scheduleIds){
+    async edit(scheduleId){
       try{
-        scheduleIds.params.map(async (item) =>{
           const activ = await this.Prisma.schedule.findUnique({
             where:{
-              id:item
+              id:scheduleId
             }
           })
           await this.Prisma.schedule.update({
             where:{
-              id:item
+              id:scheduleId
             },
             data:{
               deactivatedAt:activ.deactivatedAt ? null :new Date()
             }
           })
-        })
+          return activ
       }catch(err){
         console.log(err)
+      }
+    }
+
+    async deletion(scheduleId){
+      try{
+        await this.Prisma.scheduleObject.deleteMany({
+          where:{
+            scheduleId:scheduleId
+          }
+        })
+        const deleteItem = await this.Prisma.schedule.delete({
+          where:{
+            id:scheduleId
+          }
+        })
+        return deleteItem
+      }
+      catch(erro){
+
+        console.log(erro)
       }
     }
 
