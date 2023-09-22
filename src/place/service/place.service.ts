@@ -15,4 +15,9 @@ export class PlaceService {
     const findAll = await this.database.findAllPlaces(companyId);
     return findAll;
   }
+
+  async deletePlace(placeId){
+    const placeIdDeletion = await this.database.deletePlace(placeId)
+    return placeIdDeletion
+  }
 }

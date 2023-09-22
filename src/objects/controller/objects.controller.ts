@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { CreateObjectDto } from '../dto/createObject.dto';
 import { DeleteObjectDto } from '../dto/deleteObject.dto';
 import { objectService } from '../service/object.service';
@@ -23,7 +23,7 @@ export class objectController {
   }
 
   @Delete('/')
-  async deleteObject(@Body() body: DeleteObjectDto) {
+  async deleteObject(@Query() body: DeleteObjectDto) {
     const { objectId } = body;
     const deleteObject = await this.service.deleteObject(objectId);
     return deleteObject;

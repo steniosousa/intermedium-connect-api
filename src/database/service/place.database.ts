@@ -36,4 +36,23 @@ export class PlaceDatabase {
       );
     }
   }
+
+  
+  async deletePlace(placeId:string){
+    try{
+      await this.prisma.place.delete({
+        where:{
+          id:placeId,
+
+        }
+      })
+    }
+    catch(error){
+      console.log(error)
+      throw new HttpException(
+        'Error - Erro ao deletar ambiente',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }
