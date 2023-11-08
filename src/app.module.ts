@@ -9,9 +9,11 @@ import { UserModule } from './user/user.module';
 import { PlaceModule } from 'place/place.module';
 import { ScheduleModule as ScheduleModuleConfig } from '@nestjs/schedule';
 import { ScheduleModule } from 'schedule/schedule.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ScheduleModuleConfig.forRoot(),
     CompanyModule,
     ManagerModule,
