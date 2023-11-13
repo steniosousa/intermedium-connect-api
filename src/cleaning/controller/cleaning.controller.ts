@@ -13,13 +13,15 @@ export class CleaningController {
   }
 
   @Get('/')
-  async getCleaning(@Param() query: findCleaningDto) {
+  async getCleaning(@Query() query: findCleaningDto) {
     const find = await this.service.findCleaning(query.userId);
+
     return find;
   }
 
   @Get('/withApp')
   async getAllCleaning(@Param() query: findCleaningDto) {
+
     const find = await this.service.findCleaningFiltered(query.userId);
     return find;
   }

@@ -18,6 +18,9 @@ export class cleaningService {
   }
 
   async findCleaning(userId: string) {
+    if(!userId) {
+      throw new HttpException('Error - Sem userId', HttpStatus.BAD_REQUEST);
+    }
     const find: any[] = await this.database.findCleaning(userId);
 
 
