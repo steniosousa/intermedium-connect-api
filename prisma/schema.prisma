@@ -11,46 +11,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           String     @unique @default(uuid())
-  name         String
-  hashPassword String
-  password     String     @default(uuid())
-  loginHash    String     @unique
-  active       Boolean    @default(true)
-  createAt     DateTime   @default(now())
-  disableAt    DateTime   @updatedAt
-  company      Company?   @relation(fields: [companyId], references: [id])
-  companyId    String?
-  manager      Manager?   @relation(fields: [managerId], references: [id])
-  managerId    String?
-  Cleaning     Cleaning[]
-  Cron         Cron[]
-  Schedule     Schedule[]
+enum EvidenceType {
+  ENTRANCE
+  EXIT
+  OBSERVATION
 }
 
-model Cron {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  password      String
+  loginHash     String    @unique
+  createdAt     DateTime  @default(now())
+  deactivatedAt DateTime?
+  companyId     String?
+
+  company  Company?   @relation(fields: [companyId], references: [id])
+  cleaning Cleaning[]
+  schedule Schedule[]
 }
 
 model Company {
-  id       String    @id @default(uuid())
-  name     String
-  managers Manager[]
-  users    User[]
-  Objects  Objects[]
-  Place    Place[]
-}
-
-model Manager {
-  id           String  @id @default(uuid())
-  name         String
-  hashPassword String
-  companyId    String
-  users        User[]
-  companys     Company @relation(fields: [companyId], references: [id])
+  id      String    @id @default(uuid())
+  name    String
+  users   User[]
+  Objects Objects[]
+  Place   Place[]
 }
 
 model Place {
@@ -63,31 +49,35 @@ model Place {
 }
 
 model Objects {
-  id              String              @id @default(uuid())
+  id              String            @id @default(uuid())
   name            String
   companyId       String
-  companys        Company             @relation(fields: [companyId], references: [id])
-  cleanings       CleaningOfObjects[]
+  companys        Company           @relation(fields: [companyId], references: [id])
   ScheduleObject  ScheduleObject[]
   CleaningObjects CleaningObjects[]
 }
 
-model Cleaning {
-  id       String   @id @default(uuid())
-  userId   String
-  createAt DateTime @default(now())
-  status   String   @default("Pendente")
-  updateAt DateTime @default(now())
-  entrance String?
-  exit     String?
-  obs1     String?
-  obs2     String?
-  obs3     String?
-  placeId  String
+model Evidence {
+  id          String       @id @default(uuid())
+  cleaningId  String
+  evidenceUrl String
+  type        EvidenceType
+  createdAt   DateTime     @default(now())
 
-  user            User                @relation(fields: [userId], references: [id])
-  place           Place               @relation(fields: [placeId], references: [id])
-  objects         CleaningOfObjects[]
+  cleaning Cleaning @relation(fields: [cleaningId], references: [id])
+}
+
+model Cleaning {
+  id        String    @id @default(uuid())
+  userId    String
+  placeId   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  evidences       Evidence[]
+  User            User              @relation(fields: [userId], references: [id])
+  Place           Place             @relation(fields: [placeId], references: [id])
   CleaningObjects CleaningObjects[]
 }
 
@@ -99,15 +89,6 @@ model CleaningObjects {
   object   Objects  @relation(fields: [objectId], references: [id])
 
   @@id([cleaningId, objectId])
-}
-
-model CleaningOfObjects {
-  id         String   @id @default(uuid())
-  createAt   DateTime @default(now())
-  cleaning   Cleaning @relation(fields: [cleaningId], references: [id])
-  object     Objects  @relation(fields: [objectsId], references: [id])
-  cleaningId String
-  objectsId  String
 }
 
 model ScheduleObject {
