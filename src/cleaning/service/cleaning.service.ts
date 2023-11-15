@@ -12,14 +12,14 @@ export class cleaningService {
 
     return newCleaning;
   }
+
   async deletionCleaning(id) {
     const deletion = await this.database.deletion(id);
     return deletion;
   }
 
   async findCleaning(userId: string) {
-    const find: any[] = await this.database.findCleaning(userId);
-    const locations = {};
+    const find = await this.database.findCleaning(userId);
 
     return find;
   }
