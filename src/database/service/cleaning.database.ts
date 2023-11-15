@@ -1,30 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(body) {
-    const { userId,  objects, placeId } = body;
+    const { userId, placeId } = body;
     try {
       const cleaning = await this.prisma.cleaning.create({
         data: {
           userId,
           placeId,
-          
         },
       });
-      const cleaningObjects = objects.map((objectsId) => {
-        return {
-          cleaningId: cleaning.id,
-          objectsId,
-        };
-      });
 
-      await this.prisma.cleaningOfObjects.createMany({
-        data: cleaningObjects,
-      });
       return cleaning;
     } catch (error) {
       throw new HttpException(
@@ -36,11 +26,6 @@ export class CleaningDatabase {
 
   async deletion(id) {
     try {
-      await this.prisma.cleaningOfObjects.deleteMany({
-        where: {
-          cleaningId: id,
-        },
-      });
       await this.prisma.cleaning.delete({
         where: {
           id,
@@ -59,12 +44,8 @@ export class CleaningDatabase {
         where: {
           userId,
         },
-        include:{
-          objects:true,
-          place:true
-        }
       });
-      
+
       return allCleaning;
     } catch {
       throw new HttpException(
@@ -80,13 +61,6 @@ export class CleaningDatabase {
           id: params.id,
         },
         data: params,
-        include: {
-          objects: {
-            include: {
-              object: true,
-            },
-          },
-        },
       });
 
       return altered;

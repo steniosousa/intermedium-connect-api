@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from 'database/service/prisma.service';
 import * as dayjs from 'dayjs';
 import { ListTodayScheduleService } from 'schedule/services/list-today-schedule.service';
 
@@ -20,13 +20,6 @@ export class ScheduleCleaningCron {
         data: {
           userId: schedule.responsibleId,
           placeId: schedule.placeId,
-          CleaningObjects: {
-            createMany: {
-              data: schedule.objects.map((obj) => ({
-                objectId: obj.objectId,
-              })),
-            },
-          },
         },
       });
 

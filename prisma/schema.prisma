@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
@@ -32,29 +29,22 @@ model User {
 }
 
 model Company {
-  id      String    @id @default(uuid())
-  name    String
-  users   User[]
-  Objects Objects[]
-  Place   Place[]
+  id   String @id @default(uuid())
+  name String
+
+  users User[]
+  Place Place[]
 }
 
 model Place {
-  id        String     @id @default(uuid())
-  name      String
-  companyId String
-  company   Company    @relation(fields: [companyId], references: [id])
-  Schedule  Schedule[]
-  Cleaning  Cleaning[]
-}
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  companyId   String
 
-model Objects {
-  id              String            @id @default(uuid())
-  name            String
-  companyId       String
-  companys        Company           @relation(fields: [companyId], references: [id])
-  ScheduleObject  ScheduleObject[]
-  CleaningObjects CleaningObjects[]
+  company  Company    @relation(fields: [companyId], references: [id])
+  Schedule Schedule[]
+  Cleaning Cleaning[]
 }
 
 model Evidence {
@@ -75,30 +65,9 @@ model Cleaning {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  evidences       Evidence[]
-  User            User              @relation(fields: [userId], references: [id])
-  Place           Place             @relation(fields: [placeId], references: [id])
-  CleaningObjects CleaningObjects[]
-}
-
-model CleaningObjects {
-  cleaningId String
-  objectId   String
-
-  cleaning Cleaning @relation(fields: [cleaningId], references: [id])
-  object   Objects  @relation(fields: [objectId], references: [id])
-
-  @@id([cleaningId, objectId])
-}
-
-model ScheduleObject {
-  scheduleId String
-  objectId   String
-
-  schedule Schedule @relation(fields: [scheduleId], references: [id])
-  object   Objects  @relation(fields: [objectId], references: [id])
-
-  @@id([scheduleId, objectId])
+  evidences Evidence[]
+  User      User       @relation(fields: [userId], references: [id])
+  Place     Place      @relation(fields: [placeId], references: [id])
 }
 
 model Schedule {
@@ -109,7 +78,6 @@ model Schedule {
   repeatable    Boolean
   deactivatedAt DateTime?
 
-  place       Place            @relation(fields: [placeId], references: [id])
-  responsible User             @relation(fields: [responsibleId], references: [id])
-  objects     ScheduleObject[]
+  place       Place @relation(fields: [placeId], references: [id])
+  responsible User  @relation(fields: [responsibleId], references: [id])
 }

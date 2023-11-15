@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from 'database/service/prisma.service';
 
 interface ScheduleCleaningParams {
   placeId: string;
@@ -21,14 +21,7 @@ export class ScheduleCleaningService {
     }
 
     await this.prismaService.schedule.create({
-      data: {
-        ...params,
-        objects: {
-          createMany: {
-            data: params.objectsIds.map((id) => ({ objectId: id })),
-          },
-        },
-      },
+      data: params,
     });
   }
 }

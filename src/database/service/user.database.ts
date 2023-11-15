@@ -1,58 +1,32 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from './prisma.service';
 @Injectable()
 export class UserDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createNewUser(name: string, password: string, manager: string) {
-    const existManager = await this.prisma.manager.findFirst({
-      where: {
-        name: manager,
-      },
-    });
-    const existUser = await this.prisma.user.findFirst({
-      where: {
-        name,
-      },
-    });
-    if (existUser) {
-      throw new HttpException(
-        'Error - Usuário já cadastrado',
-        HttpStatus.BAD_REQUEST,
-      );
+  private generateRandomAlphanumeric(digits) {
+    let randomString = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < digits; i++) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      randomString += characters.charAt(randomIndex);
     }
 
-    if (!existManager) {
-      throw new HttpException(
-        'Error - Administrador não encontrado',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    return randomString;
+  }
 
-    function generateRandomAlphanumeric(digits) {
-      let randomString = '';
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      const charactersLength = characters.length;
-
-      for (let i = 0; i < digits; i++) {
-        const randomIndex = Math.floor(Math.random() * charactersLength);
-        randomString += characters.charAt(randomIndex);
-      }
-
-      return randomString;
-    }
+  async createNewUser(name: string, password: string) {
     const hashPassword = await bcrypt.hash(password, 6);
-    const uniqueId = generateRandomAlphanumeric(6);
+    const uniqueId = this.generateRandomAlphanumeric(6);
 
     try {
       const newUser = await this.prisma.user.create({
         data: {
           name,
-          hashPassword,
-          password,
-          managerId: existManager.id,
-          companyId: existManager.companyId,
+          password: hashPassword,
           loginHash: uniqueId,
         },
       });
@@ -80,8 +54,6 @@ export class UserDatabase {
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    // const passwordMatch = await bcrypt.compare(password, user.hashPassword);
   }
 
   async findUserWithNameAndPassword(name: string, password: string) {
@@ -99,8 +71,6 @@ export class UserDatabase {
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    // const passwordMatch = await bcrypt.compare(password, user.hashPassword);
   }
 
   async updateUser(query) {
@@ -133,26 +103,5 @@ export class UserDatabase {
       },
     });
     return deleteUser;
-  }
-
-  async getUsers(managerId:string){
-    try{
-      const allUsers = await this.prisma.user.findMany({
-        where:{
-          managerId
-        }
-      })
-      if(allUsers.length == 0){
-        return 'Sem usuários'
-      }
-      return allUsers
-    }
-
-    catch{
-      throw new HttpException(
-        'Error - Usuários não encontrado',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
   }
 }

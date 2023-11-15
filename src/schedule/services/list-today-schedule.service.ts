@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from 'database/service/prisma.service';
 import * as dayjs from 'dayjs';
 
 @Injectable()
@@ -19,9 +19,6 @@ export class ListTodayScheduleService {
             .millisecond(0)
             .toDate(),
         },
-      },
-      include: {
-        objects: true,
       },
     });
 
