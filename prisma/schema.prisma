@@ -14,14 +14,23 @@ enum EvidenceType {
   OBSERVATION
 }
 
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String
+  email         String    @unique
   password      String
-  loginHash     String    @unique
+  loginHash     String?   @unique
   createdAt     DateTime  @default(now())
   deactivatedAt DateTime?
+  deletedAt     DateTime?
   companyId     String?
+  role          Role      @default(EMPLOYEE)
 
   company  Company?   @relation(fields: [companyId], references: [id])
   cleaning Cleaning[]

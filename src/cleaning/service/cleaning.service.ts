@@ -30,13 +30,8 @@ export class cleaningService {
     const retunrObj = {
       name: '',
       object: objectsSend,
-      status: update.status,
-      createAt: update.createAt,
       id: update.id,
     };
-    for (const objects of update.objects) {
-      objectsSend.push(objects.object.name);
-    }
 
     return retunrObj;
   }

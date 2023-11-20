@@ -1,15 +1,19 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class createServiceDto {
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty()
   @IsString()
-  manager: string;
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   @IsString()
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  companyId: string;
 }

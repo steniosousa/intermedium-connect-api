@@ -13,14 +13,25 @@ import { findUserDto } from '../dto/find.user.dto';
 import { findUserWithNameAndPasswordDto } from '../dto/findWithNameAndPassword';
 import { updateUserDto } from '../dto/update.user.dto';
 import { userService } from '../service/user.service';
+import { CreateUserService } from 'user/service/create-employee.service';
 
 @Controller('/user')
 export class userController {
-  constructor(readonly service: userService) {}
+  constructor(
+    readonly service: userService,
+    private readonly createUserService: CreateUserService,
+  ) {}
+
   @Post('/')
   async createUser(@Body() body: createServiceDto) {
-    const create = await this.service.createUser(body);
-    return create;
+    const user = await this.createUserService.execute({
+      name: body.name,
+      email: body.email,
+      password: body.password,
+      companyId: body.companyId,
+    });
+
+    return user;
   }
 
   @Get('/')
@@ -51,7 +62,7 @@ export class userController {
 
   @Get('/allUsers')
   async getAllUsers(@Param() managerId: string) {
-    const allUsers = await this.service.getAllUsers(managerId);
+    const allUsers = await this.service.getAllUsers();
     return allUsers;
   }
 }

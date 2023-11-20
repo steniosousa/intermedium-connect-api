@@ -1,38 +1,28 @@
 import { Global, Module } from '@nestjs/common';
 import { CleaningDatabase } from './service/cleaning.database';
 import { companyDatabase } from './service/company.database';
-import { historyDatabase } from './service/history.database';
-import { managerDatabase } from './service/manager.database';
-import { objectDatabase } from './service/object.database';
 import { UserDatabase } from './service/user.database';
-import { PrismaService } from 'config/prisma.service';
 import { PlaceDatabase } from './service/place.database';
-import { CronDatabase } from './service/cron.database';
+import { PrismaService } from './service/prisma.service';
+import { PrismaUsersRepository } from './prisma/repositories/prisma-users.repository';
 
 @Global()
 @Module({
   providers: [
     companyDatabase,
-    managerDatabase,
     UserDatabase,
     PrismaService,
-    objectDatabase,
     CleaningDatabase,
-    historyDatabase,
     PlaceDatabase,
-    CronDatabase,
+    PrismaUsersRepository,
   ],
-
   exports: [
     UserDatabase,
     companyDatabase,
-    managerDatabase,
-    objectDatabase,
     CleaningDatabase,
-    historyDatabase,
     PlaceDatabase,
-    CronDatabase,
     PrismaService,
+    PrismaUsersRepository,
   ],
 })
 export class DatabaseModule {}

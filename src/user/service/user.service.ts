@@ -3,20 +3,11 @@ import { UserDatabase } from 'database/service/user.database';
 
 @Injectable()
 export class userService {
-  constructor(private readonly dabatase: UserDatabase) {}
-  async createUser(params) {
-    const { name, password, manager } = params;
-    const createUser = await this.dabatase.createNewUser(
-      name,
-      password,
-      manager,
-    );
-    return createUser;
-  }
+  constructor(private readonly database: UserDatabase) {}
 
   async findUserWithNameAndPass(params) {
     const { userId, password } = params;
-    const findUser = await this.dabatase.findUserWithNameAndPassword(
+    const findUser = await this.database.findUserWithNameAndPassword(
       userId,
       password,
     );
@@ -25,22 +16,22 @@ export class userService {
 
   async findUser(params) {
     const { key } = params;
-    const findUser = await this.dabatase.authenticateUser(key);
+    const findUser = await this.database.authenticateUser(key);
     return findUser;
   }
 
   async updateUser(params) {
-    const updateUser = await this.dabatase.updateUser(params);
+    const updateUser = await this.database.updateUser(params);
     return updateUser;
   }
 
   async delete(params) {
-    const deleteUser = await this.dabatase.deleteUser(params);
+    const deleteUser = await this.database.deleteUser(params);
     return deleteUser;
   }
 
-  async getAllUsers(managerId){
-    const allReturn = await this.dabatase.getUsers(managerId)
-    return allReturn
+  async getAllUsers() {
+    const allReturn = await this.database.getUsers();
+    return allReturn;
   }
 }
