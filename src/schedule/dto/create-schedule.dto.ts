@@ -15,7 +15,4 @@ export class CreateScheduleDto{
     @IsBoolean()
     repeatable:Boolean
 
-    @IsArray()
-    @IsNotEmpty()
-    objects: string[];
 }

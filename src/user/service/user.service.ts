@@ -1,9 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CleaningDatabase } from 'database/service/cleaning.database';
 import { UserDatabase } from 'database/service/user.database';
 
 @Injectable()
 export class userService {
-  constructor(private readonly database: UserDatabase) { }
+  constructor(private readonly database: UserDatabase,
+    readonly databaseCleaning: CleaningDatabase) { }
 
   async findUserWithNameAndPass(params) {
     const { userId, password } = params;
@@ -34,8 +36,18 @@ export class userService {
     return updateUser;
   }
 
-  async delete(params) {
-    const deleteUser = await this.database.deleteUser(params);
+  async delete(userId: string) {
+    const userWithCleaning = await this.databaseCleaning.findCleaning(userId)
+    const inProgress = userWithCleaning.find(item => item.deletedAt == null)
+    console.log(inProgress)
+    if (inProgress) {
+      throw new HttpException(
+        'Error - User with a schedule in progress',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const deleteUser = await this.database.deleteUser(userId);
+
     return deleteUser;
   }
 

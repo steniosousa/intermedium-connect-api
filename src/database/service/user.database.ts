@@ -66,10 +66,13 @@ export class UserDatabase {
   }
   async deleteUser(userId: string) {
     try {
-      const deleteUser = await this.prisma.user.delete({
+      const deleteUser = await this.prisma.user.update({
         where: {
           id: userId,
         },
+        data: {
+          deletedAt: new Date()
+        }
       });
       return deleteUser;
 

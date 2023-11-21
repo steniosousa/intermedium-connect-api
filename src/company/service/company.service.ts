@@ -7,7 +7,7 @@ export class companyService {
 
   async createCompany(name: string) {
     const verify = await this.database.findCompany(name)
-    if (!verify) {
+    if (verify) {
       throw new HttpException(
         'Error - Company already registered',
         HttpStatus.BAD_REQUEST,
