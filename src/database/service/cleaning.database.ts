@@ -3,7 +3,7 @@ import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class CleaningDatabase {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(body) {
     const { userId, placeId } = body;
@@ -12,13 +12,13 @@ export class CleaningDatabase {
         data: {
           userId,
           placeId,
-        },
+        }
       });
 
       return cleaning;
     } catch (error) {
       throw new HttpException(
-        'Error - Erro ao cadastrar serviço',
+        'Error - Error when registering service',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -44,12 +44,14 @@ export class CleaningDatabase {
         where: {
           userId,
         },
+        orderBy: {
+          createdAt: 'asc'
+        }
       });
-
       return allCleaning;
     } catch {
       throw new HttpException(
-        'Error - Erro ao recuperar serviços',
+        'Error - Error recovering services',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -66,7 +68,7 @@ export class CleaningDatabase {
       return altered;
     } catch (error) {
       throw new HttpException(
-        'Error - Erro ao cadastrar serviço',
+        'Error - Error editing service',
         HttpStatus.BAD_REQUEST,
       );
     }

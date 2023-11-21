@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 @Injectable()
 export class UserDatabase {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async authenticateUser(key: string) {
     try {
@@ -15,7 +15,7 @@ export class UserDatabase {
       return user;
     } catch {
       throw new HttpException(
-        'Error - Usuário não encontrado',
+        'Error - User not found',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -38,36 +38,47 @@ export class UserDatabase {
     }
   }
 
-  async updateUser(query) {
-    const { userId } = query;
-    const indentify = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
-    if (!indentify) {
-      throw new HttpException(
-        'Error - Usuário não encontrado',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
+  async updateUser(userId, datas) {
     const updateUser = await this.prisma.user.update({
       where: {
         id: userId,
       },
-      data: query,
+      data: datas,
     });
     return updateUser;
   }
 
+  async findUser(userId: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: userId
+        }
+      })
+      return user
+
+    } catch (error) {
+      throw new HttpException(
+        'Error - User not found',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
   async deleteUser(userId: string) {
-    const deleteUser = await this.prisma.user.delete({
-      where: {
-        id: userId,
-      },
-    });
-    return deleteUser;
+    try {
+      const deleteUser = await this.prisma.user.delete({
+        where: {
+          id: userId,
+        },
+      });
+      return deleteUser;
+
+    } catch {
+      throw new HttpException(
+        'Error - Error when deleting user',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async getUsers() {

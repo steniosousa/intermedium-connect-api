@@ -22,7 +22,7 @@ export class userController {
     private readonly createUserService: CreateUserService,
   ) {}
 
-  @Post('/')
+  @Post('/create')
   async createUser(@Body() body: createServiceDto) {
     const user = await this.createUserService.execute({
       name: body.name,
@@ -34,12 +34,14 @@ export class userController {
     return user;
   }
 
-  @Get('/')
+  @Get('/find')
   async findUser(@Query() query: findUserDto) {
-    const find = await this.service.findUser(query);
+    const {key} = query
+    const find = await this.service.findUser(key);
     return find;
   }
 
+  //validar rota
   @Get('/recuper')
   async findUserWithNameAndPass(
     @Query() query: findUserWithNameAndPasswordDto,
@@ -60,9 +62,10 @@ export class userController {
     return deleteUser;
   }
 
-  @Get('/allUsers')
+  @Get('/recover')
   async getAllUsers(@Param() managerId: string) {
     const allUsers = await this.service.getAllUsers();
     return allUsers;
   }
+
 }

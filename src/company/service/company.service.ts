@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { companyDatabase } from 'database/service/company.database';
 
 @Injectable()
 export class companyService {
-  constructor(private readonly database: companyDatabase) {}
+  constructor(private readonly database: companyDatabase) { }
 
   async createCompany(name: string) {
+    const verify = await this.database.findCompany(name)
+    if (!verify) {
+      throw new HttpException(
+        'Error - Company already registered',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const createCompany = await this.database.createCompany(name);
     return createCompany;
   }
@@ -20,8 +27,8 @@ export class companyService {
     return allCompanys;
   }
 
-  async deleteCompany(name: string) {
-    const deleteCompany = await this.database.deleteCompany(name);
+  async deleteCompany(companyId: string) {
+    const deleteCompany = await this.database.deleteCompany(companyId);
     return deleteCompany;
   }
 }

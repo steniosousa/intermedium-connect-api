@@ -15,6 +15,7 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users.reposi
     CleaningDatabase,
     PlaceDatabase,
     PrismaUsersRepository,
+
   ],
   exports: [
     UserDatabase,
@@ -25,4 +26,4 @@ import { PrismaUsersRepository } from './prisma/repositories/prisma-users.reposi
     PrismaUsersRepository,
   ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

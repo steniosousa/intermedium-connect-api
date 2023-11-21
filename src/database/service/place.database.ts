@@ -3,8 +3,9 @@ import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class PlaceDatabase {
-  constructor(private readonly prisma: PrismaService) {}
-  async createPlace(name, companyId) {
+  constructor(private readonly prisma: PrismaService) { }
+
+  async createPlace(name: string, companyId: string) {
     try {
       const save = await this.prisma.place.create({
         data: {
@@ -15,7 +16,7 @@ export class PlaceDatabase {
       return save;
     } catch (error) {
       throw new HttpException(
-        'Error - Erro ao cadastrar ambiente',
+        'Error - Error when registering environment',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -27,11 +28,14 @@ export class PlaceDatabase {
         where: {
           companyId,
         },
+        orderBy: {
+          name: 'asc'
+        }
       });
       return find;
     } catch {
       throw new HttpException(
-        'Error - Erro ao recuperar ambientes',
+        'Error - Error recovering environments',
         HttpStatus.BAD_REQUEST,
       );
     }

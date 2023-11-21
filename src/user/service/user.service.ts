@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserDatabase } from 'database/service/user.database';
 
 @Injectable()
 export class userService {
-  constructor(private readonly database: UserDatabase) {}
+  constructor(private readonly database: UserDatabase) { }
 
   async findUserWithNameAndPass(params) {
     const { userId, password } = params;
@@ -14,14 +14,23 @@ export class userService {
     return findUser;
   }
 
-  async findUser(params) {
-    const { key } = params;
+  async findUser(key: string) {
+
     const findUser = await this.database.authenticateUser(key);
     return findUser;
   }
 
   async updateUser(params) {
-    const updateUser = await this.database.updateUser(params);
+    const { userId } = params;
+
+    const indentify = await this.database.findUser(userId)
+    if (!indentify) {
+      throw new HttpException(
+        'Error - User not found',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const updateUser = await this.database.updateUser(indentify.id, params);
     return updateUser;
   }
 
