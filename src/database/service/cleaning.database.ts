@@ -5,26 +5,32 @@ import { PrismaService } from './prisma.service';
 export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(body) {
-    const { userId, placeId } = body;
+  async create(userId, objectId, placeId) {
+
     try {
       const cleaning = await this.prisma.cleaning.create({
         data: {
           userId,
           placeId,
-        }
+          ObjectOfCleaning: {
+            createMany: {
+              data: objectId.map((item: string) => ({ objectId: item }))
+            }
+          },
+        },
+
       });
 
       return cleaning;
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Error when registering service',
         HttpStatus.BAD_REQUEST,
       );
     }
   }
-
-  async deletion(id) {
+  async deletion(id: string) {
     try {
       await this.prisma.cleaning.delete({
         where: {
@@ -38,7 +44,7 @@ export class CleaningDatabase {
       );
     }
   }
-  async findCleaning(userId) {
+  async findCleaning(userId: string) {
     try {
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
@@ -46,6 +52,24 @@ export class CleaningDatabase {
         },
         orderBy: {
           createdAt: 'asc'
+        },
+        include: {
+          Place: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
+          ObjectOfCleaning: {
+            select: {
+              object: {
+                select: {
+                  name: true,
+                  id: true
+                }
+              }
+            }
+          }
         }
       });
       return allCleaning;
@@ -73,4 +97,5 @@ export class CleaningDatabase {
       );
     }
   }
+
 }

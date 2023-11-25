@@ -41,7 +41,7 @@ export class companyDatabase {
       const all = await this.prisma.company.findMany({
         orderBy: {
           name: 'asc'
-        }
+        },
       });
       return all;
     } catch {

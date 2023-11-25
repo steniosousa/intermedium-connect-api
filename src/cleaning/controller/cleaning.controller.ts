@@ -6,13 +6,14 @@ import { cleaningService } from '../service/cleaning.service';
 @Controller('/cleaning')
 export class CleaningController {
   constructor(readonly service: cleaningService) { }
+
   @Post('/create')
   async createCleaning(@Body() body: CreateCleaningDto) {
     const create = await this.service.create(body);
     return create;
   }
 
-  @Get('/find')
+  @Get('/recover')
   async getCleaning(@Query() query: findCleaningDto) {
     const find = await this.service.findCleaning(query.userId);
     return find;

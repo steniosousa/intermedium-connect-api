@@ -11,7 +11,7 @@ export interface CreateUserServiceParams {
 
 @Injectable()
 export class CreateUserService {
-  constructor(private readonly usersRepository: PrismaUsersRepository) {}
+  constructor(private readonly usersRepository: PrismaUsersRepository) { }
 
   private generateRandomAlphanumeric(digits: number) {
     let randomString = '';
@@ -31,7 +31,7 @@ export class CreateUserService {
     const hashPassword = await bcrypt.hash(password, 12);
     const hashToLogin = this.generateRandomAlphanumeric(6);
 
-    await this.usersRepository.create({
+    const newUser = await this.usersRepository.create({
       name,
       email,
       role: 'EMPLOYEE',
@@ -44,5 +44,6 @@ export class CreateUserService {
       },
       createdAt: new Date(),
     });
+    return newUser
   }
 }

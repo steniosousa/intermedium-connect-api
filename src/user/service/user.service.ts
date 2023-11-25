@@ -39,7 +39,6 @@ export class userService {
   async delete(userId: string) {
     const userWithCleaning = await this.databaseCleaning.findCleaning(userId)
     const inProgress = userWithCleaning.find(item => item.deletedAt == null)
-    console.log(inProgress)
     if (inProgress) {
       throw new HttpException(
         'Error - User with a schedule in progress',
@@ -51,8 +50,8 @@ export class userService {
     return deleteUser;
   }
 
-  async getAllUsers() {
-    const allReturn = await this.database.getUsers();
+  async getAllUsers(companyId) {
+    const allReturn = await this.database.getUsers(companyId);
     return allReturn;
   }
 }

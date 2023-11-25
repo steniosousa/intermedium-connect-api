@@ -3,7 +3,7 @@ import { PrismaService } from 'database/service/prisma.service';
 
 interface ScheduleCleaningParams {
   placeId: string;
-  responsibleId: string;
+  userId: string;
   objectsIds: string[];
   eventDate: Date;
   repeatable: boolean;

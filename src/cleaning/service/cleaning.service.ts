@@ -4,8 +4,9 @@ import { CleaningDatabase } from 'database/service/cleaning.database';
 @Injectable()
 export class cleaningService {
   constructor(private readonly database: CleaningDatabase) { }
-  async create(body) {
-    const newCleaning = await this.database.create(body);
+  async create({ userId, objectsId, placeId }) {
+
+    const newCleaning = await this.database.create(userId, objectsId, placeId );
 
     return newCleaning;
   }

@@ -11,4 +11,8 @@ export class CreateCleaningDto {
   @IsString()
   @IsNotEmpty()
   placeId: string
+
+  @IsArray()
+  @IsNotEmpty()
+  objectsId: string[];
 }

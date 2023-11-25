@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class createServiceDto {
   @IsString()
@@ -7,6 +7,7 @@ export class createServiceDto {
 
   @IsString()
   @IsEmail()
+  @IsOptional()
   email: string;
 
   @IsNotEmpty()
@@ -16,4 +17,10 @@ export class createServiceDto {
   @IsString()
   @IsNotEmpty()
   companyId: string;
+
+  @IsString()
+  @IsOptional()
+  role:string
+
+
 }

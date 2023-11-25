@@ -14,6 +14,7 @@ import { findUserWithNameAndPasswordDto } from '../dto/findWithNameAndPassword';
 import { updateUserDto } from '../dto/update.user.dto';
 import { userService } from '../service/user.service';
 import { CreateUserService } from 'user/service/create-employee.service';
+import { recoverUserDto } from 'user/dto/recover.user';
 
 @Controller('/user')
 export class userController {
@@ -57,15 +58,16 @@ export class userController {
   }
 
   @Delete('/delete')
-  async deleteUser(@Query() query: deleteUserDto) {
-    const {userId} = query
+  async deleteUser(@Query() Query: deleteUserDto) {
+    const {userId} = Query
     const deleteUser = await this.service.delete(userId);
+
     return deleteUser;
   }
 
   @Get('/recover')
-  async getAllUsers(@Param() managerId: string) {
-    const allUsers = await this.service.getAllUsers();
+  async getAllUsers(@Query() {companyId}: recoverUserDto) {
+    const allUsers = await this.service.getAllUsers(companyId);
     return allUsers;
   }
 

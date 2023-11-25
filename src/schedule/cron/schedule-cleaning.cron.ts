@@ -18,7 +18,7 @@ export class ScheduleCleaningCron {
     for (const schedule of schedules) {
       await this.prismaService.cleaning.create({
         data: {
-          userId: schedule.responsibleId,
+          userId: schedule.userId,
           placeId: schedule.placeId,
         },
       });

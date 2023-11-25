@@ -1,18 +1,19 @@
-import { IsArray, IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsArray, IsNotEmpty, IsString } from "class-validator"
 
-export class CreateScheduleDto{
+export class CreateScheduleDto {
     @IsNotEmpty()
     @IsString()
-    placeId:  String
+    placeId: String
 
     @IsNotEmpty()
     @IsString()
-    responsibleId: String
+    userId: String
 
-    @IsDate()
-    eventDate: Date
+    @IsNotEmpty()
+    @IsArray()
+    eventDate: String[];
 
     @IsBoolean()
-    repeatable:Boolean
+    repeatable: Boolean
 
 }

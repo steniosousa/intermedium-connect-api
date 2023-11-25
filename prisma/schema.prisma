@@ -14,6 +14,12 @@ enum EvidenceType {
   OBSERVATION
 }
 
+enum Status {
+  PENDENTE
+  ASSUMIDO
+  CONCLUIDO
+}
+
 enum Role {
   ADMIN
   MANAGER
@@ -23,7 +29,7 @@ enum Role {
 model User {
   id            String    @id @default(uuid())
   name          String
-  email         String    @unique
+  email         String?   @unique
   password      String
   loginHash     String?   @unique
   createdAt     DateTime  @default(now())
@@ -41,8 +47,9 @@ model Company {
   id   String @id @default(uuid())
   name String
 
-  users User[]
-  Place Place[]
+  users  User[]
+  Place  Place[]
+  Object Object[]
 }
 
 model Place {
@@ -56,6 +63,15 @@ model Place {
   Cleaning Cleaning[]
 }
 
+model Object {
+  id        String @id @default(uuid())
+  name      String
+  companyId String
+
+  company          Company            @relation(fields: [companyId], references: [id])
+  ObjectOfCleaning ObjectOfCleaning[]
+}
+
 model Evidence {
   id          String       @id @default(uuid())
   cleaningId  String
@@ -66,6 +82,16 @@ model Evidence {
   cleaning Cleaning @relation(fields: [cleaningId], references: [id])
 }
 
+model ObjectOfCleaning {
+  objectId   String
+  cleaningId String
+
+  object   Object   @relation(fields: [objectId], references: [id])
+  cleaning Cleaning @relation(fields: [cleaningId], references: [id])
+
+  @@id([objectId, cleaningId])
+}
+
 model Cleaning {
   id        String    @id @default(uuid())
   userId    String
@@ -73,20 +99,22 @@ model Cleaning {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+  status    Status    @default(PENDENTE)
 
-  evidences Evidence[]
-  User      User       @relation(fields: [userId], references: [id])
-  Place     Place      @relation(fields: [placeId], references: [id])
+  evidences        Evidence[]
+  User             User               @relation(fields: [userId], references: [id])
+  Place            Place              @relation(fields: [placeId], references: [id])
+  ObjectOfCleaning ObjectOfCleaning[]
 }
 
 model Schedule {
   id            String    @id @default(uuid())
   placeId       String
-  responsibleId String
+  userId String
   eventDate     DateTime
   repeatable    Boolean
   deactivatedAt DateTime?
 
   place       Place @relation(fields: [placeId], references: [id])
-  responsible User  @relation(fields: [responsibleId], references: [id])
+  responsible User  @relation(fields: [userId], references: [id])
 }
