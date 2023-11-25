@@ -4,7 +4,4 @@ export class DeleteScheduleDto {
     @IsNotEmpty()
     @IsString()
     scheduleId: String
-
-
-
 }

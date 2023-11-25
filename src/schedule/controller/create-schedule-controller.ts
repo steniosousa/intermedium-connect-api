@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Delete, Query, Get } from '@nestjs/common';
+import { Body, Controller, Post, Delete, Query, Get, Param } from '@nestjs/common';
 import { CreateScheduleDto } from 'schedule/dto/create-schedule.dto';
 import { DeleteScheduleDto } from 'schedule/dto/delete-schedule.dto';
 import { recoverScheduleDto } from 'schedule/dto/recover.schedule';
@@ -25,5 +25,10 @@ export class ScheduleController {
   async recover(@Query() { userId }: recoverScheduleDto) {
     const all = await this.service.recover(userId as string)
     return all
+  }
+
+  @Post('/edit')
+  async edit(@Body() { scheduleId }: DeleteScheduleDto) {
+    await this.service.edit(scheduleId)
   }
 }

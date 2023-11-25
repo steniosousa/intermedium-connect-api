@@ -10,7 +10,7 @@ export class EmailController {
     return this.emailService.findAll();
   }
 
-  @Post('/')
+  @Post('/recover')
   async create(@Body() createCatDto: any) {
     const {to} = createCatDto;
     const cat = this.emailService.create(to);

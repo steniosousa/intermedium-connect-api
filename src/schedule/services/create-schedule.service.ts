@@ -24,20 +24,12 @@ export default class CreateScheduleService {
 
   async delete(scheduleId: string) {
     try {
-      await this.Prisma.cleaning.update({
+      await this.Prisma.schedule.delete({
         where: {
           id: scheduleId,
-          AND: {
-            status: {
-              equals: 'PENDENTE'
-            }
-          }
-        }, data: {
-          deletedAt: new Date()
         }
       })
-
-    } catch {
+    } catch (error) {
       throw new HttpException(
         'Error - Error when deleting schedule',
         HttpStatus.BAD_REQUEST,
@@ -64,7 +56,6 @@ export default class CreateScheduleService {
           eventDate: 'asc'
         }
       })
-      console.log(recoverSchedule)
       return recoverSchedule
     } catch (error) {
       let message = 'Error ao recuperar agendamentos'
@@ -72,6 +63,35 @@ export default class CreateScheduleService {
         message = error.message
       }
       throw new Error(message)
+    }
+  }
+
+  async edit(scheduleId) {
+    try {
+      const date = await this.Prisma.schedule.findUnique({
+        where: {
+          id: scheduleId
+        }
+      })
+      if (!date) {
+        throw new HttpException(
+          'Error - Schedule not found',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      await this.Prisma.schedule.update({
+        where: {
+          id: scheduleId,
+        },
+        data: {
+          deactivatedAt: date.deactivatedAt ? null : new Date()
+        }
+      })
+    } catch (error) {
+      throw new HttpException(
+        'Error - Error when deleting schedule',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

@@ -23,7 +23,6 @@ export class CleaningDatabase {
 
       return cleaning;
     } catch (error) {
-      console.log(error)
       throw new HttpException(
         'Error - Error when registering service',
         HttpStatus.BAD_REQUEST,
