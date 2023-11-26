@@ -39,9 +39,9 @@ export class ObjectController {
     }
 
     @Delete('/delete')
-    async delete(@Query() { companyId }: deleteObjectDto) {
+    async delete(@Query() { objectsId }: deleteObjectDto) {
         try {
-            const foundObjects = await this.service.delete(companyId)
+            const foundObjects = await this.service.delete(objectsId)
             return foundObjects
         } catch (error) {
             let messager = 'Unable to delete object'

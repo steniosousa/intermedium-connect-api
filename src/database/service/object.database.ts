@@ -11,7 +11,7 @@ export class objectDatabase {
                 data: {
                     name,
                     companyId,
-                    
+
                 }
             });
             return newObj;
@@ -79,9 +79,13 @@ export class objectDatabase {
 
     async objectInUse(id: string) {
         try {
-            const object = await this.prisma.object.findUnique({
+            const object = await this.prisma.cleaning.findFirst({
                 where: {
-                    id,
+                    ObjectOfCleaning: {
+                        some: {
+                            objectId: id
+                        }
+                    }
                 },
             });
             return object;

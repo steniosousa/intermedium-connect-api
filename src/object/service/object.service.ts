@@ -40,13 +40,13 @@ export class ObjectService {
         }
     }
 
-    async delete(objectId: string) {
+    async delete(objectsId: string) {
         try {
-            const verify = await this.idatabase.objectInUse(objectId)
+            const verify = await this.idatabase.objectInUse(objectsId)
             if (verify) {
                 throw new Error('Object In Use')
             }
-            const foundObjects = await this.idatabase.deleteobj(objectId)
+            const foundObjects = await this.idatabase.deleteobj(objectsId)
             return foundObjects
 
         } catch (error) {
