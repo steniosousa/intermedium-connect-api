@@ -42,6 +42,7 @@ export default class CreateScheduleService {
       const recoverSchedule = await this.Prisma.schedule.findMany({
         where: {
           userId,
+
         },
         include: {
           place: {

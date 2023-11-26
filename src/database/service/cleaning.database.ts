@@ -31,12 +31,22 @@ export class CleaningDatabase {
   }
   async deletion(id: string) {
     try {
-      await this.prisma.cleaning.delete({
+      await this.prisma.cleaning.update({
         where: {
           id,
+          AND: {
+            status: {
+              equals: 'PENDENTE'
+            }
+          }
         },
+        data: {
+          deletedAt: new Date()
+        }
+
       });
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Erro ao excluir solicitação',
         HttpStatus.BAD_REQUEST,
@@ -48,6 +58,11 @@ export class CleaningDatabase {
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
           userId,
+          AND: {
+            deletedAt: {
+              equals: null
+            }
+          }
         },
         orderBy: {
           createdAt: 'asc'

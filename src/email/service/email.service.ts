@@ -31,7 +31,7 @@ export class EmailService {
         await this.mailerService.sendMail({
             to: cat,
             subject: 'Alteração de senha - Intermédium',
-            text: `Sua senha é:  ${resetPassword.password}`,
+            text: `Seu código de recuperação é:  ${resetPassword.password}`,
         });
     }
 }
