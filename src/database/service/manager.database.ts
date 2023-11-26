@@ -35,7 +35,10 @@ export class ManagerDatabase {
                 select: {
                     id: true,
                     companyId: true,
-                    password: true
+                    password: true,
+                    name: true,
+                    role: true,
+                    email: true
                 }
             })
             const hashPassword = bcrypt.compareSync(password, pass.password);
@@ -43,7 +46,10 @@ export class ManagerDatabase {
             if (hashPassword) {
                 const retunrUser = {
                     id: pass.id,
-                    companyId: pass.companyId
+                    companyId: pass.companyId,
+                    name: pass.name,
+                    role: pass.role,
+                    email: pass.email
                 }
                 return retunrUser
             }
@@ -52,6 +58,23 @@ export class ManagerDatabase {
         } catch (error) {
             throw new HttpException(
                 'Error - Unable to find admin',
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+    }
+
+    async edit(datas) {
+        delete datas.codigo;
+        try {
+           return await this.prisma.user.update({
+                where: {
+                    id: datas.id
+                },
+                data: datas
+            })
+        } catch (error) {
+            throw new HttpException(
+                'Error - Unable to update admin',
                 HttpStatus.BAD_REQUEST,
             );
         }

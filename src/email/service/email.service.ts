@@ -24,4 +24,14 @@ export class EmailService {
             text: `Sua nova senha de acesso é ${resetPassword}`,
         });
     }
+
+    async receiveCod(cat: any) {
+        const resetPassword = await this.dabatase.findUserWithEmail(cat)
+        console.log(resetPassword)
+        await this.mailerService.sendMail({
+            to: cat,
+            subject: 'Alteração de senha - Intermédium',
+            text: `Sua senha é:  ${resetPassword.password}`,
+        });
+    }
 }

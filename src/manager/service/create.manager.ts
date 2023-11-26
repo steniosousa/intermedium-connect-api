@@ -41,4 +41,14 @@ export class ManagerService {
         }
         return login
     }
+
+    async edit(datas) {
+
+        if (datas.password) {
+            const hashPassword = await bcrypt.hash(datas.password, 12);
+            datas['password'] = hashPassword
+        }
+        const edit = await this.database.edit(datas)
+        return edit
+    }
 }

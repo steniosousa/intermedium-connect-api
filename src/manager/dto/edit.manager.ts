@@ -1,20 +1,24 @@
 import { IsArray, IsBoolean, IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
 
-export class CreateManagerDto{
+export class EditManagerDto {
     @IsNotEmpty()
     @IsString()
-    companyId:  String
+    id: string
 
-    @IsNotEmpty()
     @IsString()
+    @IsOptional()
     name: String
 
     @IsString()
     @IsOptional()
     password: String
 
-    @IsNotEmpty()
     @IsEmail()
-    email:String
+    @IsOptional()
+    email: String
+
+    @IsNotEmpty()
+    @IsString()
+    codigo: String
 
 }
