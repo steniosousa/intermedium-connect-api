@@ -9,6 +9,7 @@ import { ManagerDatabase } from './service/manager.database';
 import { objectDatabase } from './service/object.database';
 import { EpiDatabase } from './service/epi.database';
 import { AvaliationDatabase } from './service/avaliation.database';
+import { HistoryDatabase } from './service/history.database';
 
 @Global()
 @Module({
@@ -22,7 +23,8 @@ import { AvaliationDatabase } from './service/avaliation.database';
     ManagerDatabase,
     objectDatabase,
     EpiDatabase,
-    AvaliationDatabase
+    AvaliationDatabase,
+    HistoryDatabase
 
   ],
   exports: [
@@ -35,7 +37,8 @@ import { AvaliationDatabase } from './service/avaliation.database';
     ManagerDatabase,
     objectDatabase,
     EpiDatabase,
-    AvaliationDatabase
+    AvaliationDatabase,
+    HistoryDatabase
   ],
 })
 export class DatabaseModule { }

@@ -12,6 +12,7 @@ import { ObjectModule } from 'object/object.module';
 import { EpiModule } from 'epi/epi.module';
 import { AvaliationModule } from 'avaliation/avaliation.module';
 import { emailModule } from 'Email/email.module';
+import { historyModule } from 'App/history/history.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { emailModule } from 'Email/email.module';
     ManagerModule,
     ObjectModule,
     EpiModule,
-    AvaliationModule
+    AvaliationModule,
+    historyModule
   ],
   controllers: [],
 })
