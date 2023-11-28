@@ -6,7 +6,6 @@ export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) { }
 
   async create(userId, objectId, placeId) {
-
     try {
       const cleaning = await this.prisma.cleaning.create({
         data: {
@@ -29,7 +28,7 @@ export class CleaningDatabase {
       );
     }
   }
-  
+
   async deletion(id: string) {
     try {
       await this.prisma.cleaning.update({
@@ -75,6 +74,7 @@ export class CleaningDatabase {
               name: true,
             }
           },
+          evidences:true,
           ObjectOfCleaning: {
             select: {
               object: {
