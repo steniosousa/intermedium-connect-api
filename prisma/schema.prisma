@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
 }
 
@@ -11,89 +8,154 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           String     @unique @default(uuid())
-  name         String
-  hashPassword String
-  password     String     @default(uuid())
-  loginHash    String     @unique
-  active       Boolean    @default(true)
-  createAt     DateTime   @default(now())
-  disableAt    DateTime   @updatedAt
-  company      Company?   @relation(fields: [companyId], references: [id])
-  companyId    String?
-  manager      Manager?   @relation(fields: [managerId], references: [id])
-  managerId    String?
-  Cleaning     Cleaning[]
-  Cron         Cron[]
+enum EvidenceType {
+  ENTRANCE
+  EXIT
+  OBSERVATION
 }
 
-model Cron{
-  id String @id @default(uuid())
-  userId String
-  user User @relation(fields: [userId],references: [id])
-  
+enum Status {
+  PENDENTE
+  ASSUMIDO
+  CONCLUIDO
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum StatusAvaliacao {
+  RUIM
+  BOM
+  PERFEITO
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String?   @unique
+  password      String
+  loginHash     String?   @unique
+  createdAt     DateTime  @default(now())
+  deactivatedAt DateTime?
+  deletedAt     DateTime?
+  companyId     String?
+  role          Role      @default(EMPLOYEE)
+  firstAcess    Boolean?
+
+  company    Company?     @relation(fields: [companyId], references: [id])
+  cleaning   Cleaning[]
+  schedule   Schedule[]
+  Avaliation Avaliation[]
 }
 
 model Company {
-  id       String    @id @default(uuid())
-  name     String
-  managers Manager[]
-  users    User[]
-  Objects  Objects[]
-  Place Place[]
+  id   String @id @default(uuid())
+  name String
+
+  users  User[]
+  Epis   Equipment[]
+  Place  Place[]
+  Object Object[]
 }
 
-model Manager {
-  id           String  @id @default(uuid())
-  name         String
-  hashPassword String
-  companyId    String
-  users        User[]
-  companys     Company @relation(fields: [companyId], references: [id])
+model Equipment {
+  id        String    @id @default(uuid())
+  name      String
+  companyId String
+  deleteAt  DateTime?
+
+  company                Company                  @relation(fields: [companyId], references: [id])
+  EquipmentsOfAvaliation EquipmentsOfAvaliation[]
+}
+
+model Avaliation {
+  id                     String                   @id @default(uuid())
+  managerId              String
+  status                 StatusAvaliacao
+  observation            String?
+  User                   User                     @relation(fields: [managerId], references: [id])
+  EquipmentsOfAvaliation EquipmentsOfAvaliation[]
+  Cleaning               Cleaning[]
+}
+
+model EquipmentsOfAvaliation {
+  avaliationid String
+  equipamentId String
+
+  avaliation Avaliation @relation(fields: [avaliationid], references: [id])
+  equipament Equipment  @relation(fields: [equipamentId], references: [id])
+
+  @@id([avaliationid, equipamentId])
 }
 
 model Place {
-  id        String              @id @default(uuid())
-  name String
-  companyId String
-  company  Company             @relation(fields: [companyId], references: [id])
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  companyId   String
+
+  company  Company    @relation(fields: [companyId], references: [id])
+  Schedule Schedule[]
+  Cleaning Cleaning[]
 }
 
-model Objects {
-  id        String              @id @default(uuid())
+model Object {
+  id        String @id @default(uuid())
   name      String
   companyId String
-  companys  Company             @relation(fields: [companyId], references: [id])
-  cleanings CleaningOfObjects[]
+
+  company          Company            @relation(fields: [companyId], references: [id])
+  ObjectOfCleaning ObjectOfCleaning[]
+}
+
+model Evidence {
+  id          String       @id @default(uuid())
+  cleaningId  String
+  evidenceUrl String
+  type        EvidenceType
+  createdAt   DateTime     @default(now())
+
+  cleaning Cleaning @relation(fields: [cleaningId], references: [id])
+}
+
+model ObjectOfCleaning {
+  objectId   String
+  cleaningId String
+
+  object   Object   @relation(fields: [objectId], references: [id])
+  cleaning Cleaning @relation(fields: [cleaningId], references: [id])
+
+  @@id([objectId, cleaningId])
 }
 
 model Cleaning {
-  id       String              @id @default(uuid())
-  cron     String              @default("Hoje")
-  cronHors String              @default("00")
-  repeat    Boolean            @default(false)
-  userId   String
-  createAt DateTime            @default(now())
-  status   String              @default("Pendente")
-  updateAt DateTime            @default(now())
-  entrance String              @default("")
-  exit     String              @default("")
-  obs1 String @default("")
-  obs2 String @default("")
-  obs3 String @default("")
-  where    String
-  user     User                @relation(fields: [userId], references: [id])
-  objects  CleaningOfObjects[]
+  id           String    @id @default(uuid())
+  userId       String
+  placeId      String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  status       Status    @default(PENDENTE)
+  avaliationId String?
+
+  avaliation       Avaliation?        @relation(fields: [avaliationId], references: [id])
+  evidences        Evidence[]
+  User             User               @relation(fields: [userId], references: [id])
+  Place            Place              @relation(fields: [placeId], references: [id])
+  ObjectOfCleaning ObjectOfCleaning[]
 }
 
-model CleaningOfObjects {
-  id         String   @id @default(uuid())
-  createAt   DateTime @default(now())
-  cleaning   Cleaning @relation(fields: [cleaningId], references: [id])
-  object     Objects  @relation(fields: [objectsId], references: [id])
-  cleaningId String
-  objectsId  String
+model Schedule {
+  id            String    @id @default(uuid())
+  placeId       String
+  userId        String
+  eventDate     DateTime
+  repeatable    Boolean
+  deactivatedAt DateTime?
+
+  place       Place @relation(fields: [placeId], references: [id])
+  responsible User  @relation(fields: [userId], references: [id])
 }
-
-

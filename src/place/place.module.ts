@@ -1,12 +1,9 @@
-import { Module } from "@nestjs/common";
-import { PlaceController } from "./controller/place.controller";
-import { PlaceService } from "./service/place.service";
-import { databaseModule } from "database/database.module";
+import { Module } from '@nestjs/common';
+import { PlaceController } from './controller/place.controller';
+import { PlaceService } from './service/place.service';
 
 @Module({
-    controllers:[PlaceController],
-    providers:[PlaceService],
-    imports:[databaseModule]
+  controllers: [PlaceController],
+  providers: [PlaceService],
 })
-
-export class placeModule {}
+export class PlaceModule {}

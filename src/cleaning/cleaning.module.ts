@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { cleaningController } from './controller/cleaning.controller';
+import { CleaningController } from './controller/cleaning.controller';
 import { cleaningService } from './service/cleaning.service';
-import { databaseModule } from 'database/database.module';
 
 @Module({
-  controllers: [cleaningController],
+  controllers: [CleaningController],
   providers: [cleaningService],
-  imports: [databaseModule],
 })
-export class cleaningModule {}
+export class CleaningModule {}

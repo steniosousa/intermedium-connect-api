@@ -1,87 +1,96 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class CleaningDatabase {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
-  async create(body) {
-    const { userId, where, objects,daySelected ,horsSelected,repeat} = body;
-    console.log(daySelected)
-    
-      try {
-        const cleaning = await this.prisma.cleaning.create({
-          data: {
-            userId,
-            where,
-            cron:daySelected ? daySelected : 'Hoje',
-            cronHors:horsSelected ? horsSelected : '00',
-            repeat,
-            
-          },
-        });
+  async create(userId, objectId, placeId) {
 
-        const cleaningObjects = objects.map((objectsId) => {
-          return {
-            cleaningId: cleaning.id,
-            objectsId,
-          };
-        });
-  
-        await this.prisma.cleaningOfObjects.createMany({
-          data: cleaningObjects,
-        });
-        return cleaning;
-      } catch (error) {
-        console.log(error)
-        throw new HttpException(
-          'Error - Erro ao cadastrar serviço',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    
-  }
-
-  async deletion(id) {
     try {
-      await this.prisma.cleaningOfObjects.deleteMany({
-        where: {
-          cleaningId: id,
+      const cleaning = await this.prisma.cleaning.create({
+        data: {
+          userId,
+          placeId,
+          ObjectOfCleaning: {
+            createMany: {
+              data: objectId.map((item: string) => ({ objectId: item }))
+            }
+          },
         },
+
       });
-      await this.prisma.cleaning.delete({
+
+      return cleaning;
+    } catch (error) {
+      throw new HttpException(
+        'Error - Error when registering service',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+  
+  async deletion(id: string) {
+    try {
+      await this.prisma.cleaning.update({
         where: {
           id,
+          AND: {
+            status: {
+              equals: 'PENDENTE'
+            }
+          }
         },
+        data: {
+          deletedAt: new Date()
+        }
+
       });
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Erro ao excluir solicitação',
         HttpStatus.BAD_REQUEST,
       );
     }
   }
-  async findCleaning(userId) {
+  async findCleaning(userId: string) {
     try {
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
           userId,
-          cron:'Hoje'
+          AND: {
+            deletedAt: {
+              equals: null
+            }
+          }
         },
-        include:{
-          objects:{
-            select:{
-              object:true
+        orderBy: {
+          createdAt: 'asc'
+        },
+        include: {
+          Place: {
+            select: {
+              id: true,
+              name: true,
             }
           },
-
+          ObjectOfCleaning: {
+            select: {
+              object: {
+                select: {
+                  name: true,
+                  id: true
+                }
+              }
+            }
+          }
         }
       });
-
       return allCleaning;
     } catch {
       throw new HttpException(
-        'Error - Erro ao recuperar serviços',
+        'Error - Error recovering services',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -93,37 +102,15 @@ export class CleaningDatabase {
           id: params.id,
         },
         data: params,
-        include: {
-          objects: {
-            include: {
-              object: true,
-            },
-          },
-        },
       });
 
       return altered;
     } catch (error) {
       throw new HttpException(
-        'Error - Erro ao cadastrar serviço',
+        'Error - Error editing service',
         HttpStatus.BAD_REQUEST,
       );
     }
   }
 
-  async findAllCrons(userId){
-    try{
-      const all = await this.prisma.cleaning.findMany({
-        where:{
-          repeat:true,
-          userId
-        }
-      })
-      return all
-    }
-    catch(error){
-      console.log(error)
-    }
-
-  }
 }

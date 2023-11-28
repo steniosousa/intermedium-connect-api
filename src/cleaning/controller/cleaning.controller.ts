@@ -1,19 +1,20 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
 import { GetAllCrons } from 'cleaning/dto/getAllCrons.dto';
 
 @Controller('/cleaning')
-export class cleaningController {
-  constructor(readonly service: cleaningService) {}
-  @Post('/')
+export class CleaningController {
+  constructor(readonly service: cleaningService) { }
+
+  @Post('/create')
   async createCleaning(@Body() body: CreateCleaningDto) {
     const create = await this.service.create(body);
     return create;
   }
 
-  @Get('/')
+  @Get('/recover')
   async getCleaning(@Query() query: findCleaningDto) {
     const find = await this.service.findCleaning(query.userId);
     return find;
@@ -32,11 +33,6 @@ export class cleaningController {
     return deletion;
   }
 
-  @Get('/cron')
-  async getAllCron(@Query() Query:GetAllCrons){
-    const {userId} = Query;
-    const findAll = await this.service.findAllCrons(userId)
-    return findAll
-  }
+
 
 }

@@ -1,22 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class companyDatabase {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
   async createCompany(name: string) {
-    const verify = await this.prisma.company.findMany({
-      where: {
-        name,
-      },
-    });
-
-    if (verify.length != 0) {
-      throw new HttpException(
-        'Error - Empresa já cadastrada',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
     try {
       const create = await this.prisma.company.create({
         data: {
@@ -26,7 +14,7 @@ export class companyDatabase {
       return create;
     } catch {
       throw new HttpException(
-        'Error - Não foi possível cadastrar a empresa',
+        'Error - Unable to register company',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -42,37 +30,39 @@ export class companyDatabase {
       return company;
     } catch {
       throw new HttpException(
-        'Error - Empresa não cadastrada',
+        'Error - Company not found',
         HttpStatus.BAD_REQUEST,
       );
     }
   }
 
-  async allCompanys(){
-    try{
-      const all = await this.prisma.company.findMany()
-      console.log(all)
-      return all
-    }
-    catch{
-      throw new HttpException(
-        'Error - Erro ao recuperar Empresas',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  async deleteCompany(name: string) {
+  async allCompanys() {
     try {
-      const deleteCompany = await this.prisma.company.deleteMany({
+      const all = await this.prisma.company.findMany({
+        orderBy: {
+          name: 'asc'
+        },
+      });
+      return all;
+    } catch {
+      throw new HttpException(
+        'Error - Error recovering Companies',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async deleteCompany(companyId: string) {
+    try {
+      const deleteCompany = await this.prisma.company.delete({
         where: {
-          name,
+          id: companyId,
         },
       });
       return deleteCompany;
     } catch {
       throw new HttpException(
-        'Error - Empresa já cadastrada',
+        'Error - Unable to delete company',
         HttpStatus.BAD_REQUEST,
       );
     }

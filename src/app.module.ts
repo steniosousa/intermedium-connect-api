@@ -1,28 +1,34 @@
 import { Module } from '@nestjs/common';
-import { cleaningModule } from './cleaning/cleaning.module';
-import { companyModule } from './company/company.module';
-import { databaseModule } from './database/database.module';
-import { historyModel } from './history/history.model';
-import { managerModule } from './manager/manager.module';
-import { objectModule } from './objects/object.module';
-import { userModule } from './user/user.module';
-import { placeModule } from 'place/place.module';
-import { StartupModule } from 'cron/cron.module';
-import { CatsModule } from 'Email/email.module';
+import { CleaningModule } from './cleaning/cleaning.module';
+import { CompanyModule } from './company/company.module';
+import { DatabaseModule } from './database/database.module';
+import { UserModule } from './user/user.module';
+import { PlaceModule } from 'place/place.module';
+import { ScheduleModule as ScheduleModuleConfig } from '@nestjs/schedule';
+import { ScheduleModule } from 'schedule/schedule.module';
+import { ConfigModule } from '@nestjs/config';
+import { ManagerModule } from 'manager/manager.module';
+import { ObjectModule } from 'object/object.module';
+import { EpiModule } from 'epi/epi.module';
+import { AvaliationModule } from 'avaliation/avaliation.module';
+import { emailModule } from 'Email/email.module';
 
 @Module({
   imports: [
-    companyModule,
-    managerModule,
-    userModule,
-    objectModule,
-    cleaningModule,
-    historyModel,
-    placeModule,
-    StartupModule,
-    CatsModule
+    ConfigModule.forRoot(),
+    ScheduleModuleConfig.forRoot(),
+    CompanyModule,
+    UserModule,
+    CleaningModule,
+    PlaceModule,
+    DatabaseModule,
+    ScheduleModule,
+    emailModule,
+    ManagerModule,
+    ObjectModule,
+    EpiModule,
+    AvaliationModule
   ],
   controllers: [],
-  providers: [databaseModule],
 })
-export class AppModule {}
+export class AppModule { }

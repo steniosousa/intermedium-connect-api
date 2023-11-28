@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
+import { DatabaseModule } from 'database/database.module';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { CatsController } from './controller/email.controller';
-import { CatsService } from './service/email.service';
-import { databaseModule } from 'database/database.module';
+import { EmailController } from './controller/email.controller';
+import { EmailService } from './service/email.service';
 
 @Module({
-    controllers: [CatsController],
-    providers: [CatsService],
+    controllers: [EmailController],
+    providers: [EmailService],
     imports: [
         MailerModule.forRoot({
             transport: {
@@ -22,7 +22,7 @@ import { databaseModule } from 'database/database.module';
                 from: '"stenio" <macacovelho.ss@gmail.com>',
             },
         }),
-        databaseModule
+        DatabaseModule
     ],
 })
-export class CatsModule { }
+export class emailModule { }

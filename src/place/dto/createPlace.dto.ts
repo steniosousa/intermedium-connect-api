@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class createPlaceDto{
-    @IsString()
-    @IsNotEmpty()
-    companyId:string
-    
-    @IsString()
-    @IsNotEmpty()
-    name:string
+export class createPlaceDto {
+  @IsString()
+  @IsNotEmpty()
+  companyId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 }

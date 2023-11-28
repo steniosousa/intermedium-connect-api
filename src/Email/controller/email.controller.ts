@@ -1,20 +1,27 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { CatsService } from 'Email/service/email.service';
+import { EmailService } from 'Email/service/email.service';
 
-@Controller('cats')
-export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+@Controller('/email')
+export class EmailController {
+  constructor(private readonly emailService: EmailService) { }
 
   @Get()
   async findAll() {
-    return this.catsService.findAll();
+    return this.emailService.findAll();
   }
 
-  @Post()
+  @Post('/recover')
   async create(@Body() createCatDto: any) {
-    const {to} = createCatDto;
-    const cat = this.catsService.create(to);
-    await this.catsService.sendNotificationEmail(cat);
+    const { to } = createCatDto;
+    const cat = this.emailService.create(to);
+    await this.emailService.sendNotificationEmail(cat);
     return cat;
+  }
+
+  @Post('/receiver')
+  async receiver(@Body() datas) {
+    const { email } = datas
+    const cat = this.emailService.create(email);
+    await this.emailService.receiveCod(cat)
   }
 }

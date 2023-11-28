@@ -1,70 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'config/prisma.service';
+import { PrismaService } from './prisma.service';
 @Injectable()
 export class UserDatabase {
-  constructor(private readonly prisma: PrismaService) {}
-
-  async createNewUser(name: string, password: string, manager: string) {
-    const existManager = await this.prisma.manager.findFirst({
-      where: {
-        name: manager,
-      },
-    });
-    const existUser = await this.prisma.user.findFirst({
-      where: {
-        name,
-      },
-    });
-    if (existUser) {
-      throw new HttpException(
-        'Error - Usuário já cadastrado',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    if (!existManager) {
-      throw new HttpException(
-        'Error - Administrador não encontrado',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    function generateRandomAlphanumeric(digits) {
-      let randomString = '';
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      const charactersLength = characters.length;
-
-      for (let i = 0; i < digits; i++) {
-        const randomIndex = Math.floor(Math.random() * charactersLength);
-        randomString += characters.charAt(randomIndex);
-      }
-
-      return randomString;
-    }
-    
-    const hashPassword = await bcrypt.hash(password, 6);
-    const uniqueId = generateRandomAlphanumeric(6);
-
-    try {
-      const newUser = await this.prisma.user.create({
-        data: {
-          name,
-          hashPassword,
-          password,
-          managerId: existManager.id,
-          companyId: existManager.companyId,
-          loginHash: uniqueId,
-        },
-      });
-      return newUser;
-    } catch {
-      throw new HttpException(
-        'Error - Não foi possível cadastrar usuário',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
+  constructor(private readonly prisma: PrismaService) { }
 
   async authenticateUser(key: string) {
     try {
@@ -77,12 +15,10 @@ export class UserDatabase {
       return user;
     } catch {
       throw new HttpException(
-        'Error - Usuário não encontrado',
+        'Error - User not found',
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    // const passwordMatch = await bcrypt.compare(password, user.hashPassword);
   }
 
   async findUserWithNameAndPassword(name: string, password: string) {
@@ -96,43 +32,111 @@ export class UserDatabase {
       return user;
     } catch {
       throw new HttpException(
-        'Error - Usuário não encontrado',
+        'Error - User not found',
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    // const passwordMatch = await bcrypt.compare(password, user.hashPassword);
   }
 
-  async updateUser(query) {
-    const { userId } = query;
-    const indentify = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
-    if (!indentify) {
+  async findUserWithEmail(email: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          email
+        },
+        select: {
+          password: true
+        }
+      });
+      return user;
+    } catch {
       throw new HttpException(
-        'Error - Usuário não encontrado',
+        'Error - User not found',
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
 
+
+  async updateUser(userId, datas) {
     const updateUser = await this.prisma.user.update({
       where: {
         id: userId,
       },
-      data: query,
+      data: { ...datas },
     });
     return updateUser;
   }
 
-  async deleteUser(userId: string) {
-    const deleteUser = await this.prisma.user.delete({
-      where: {
-        id: userId,
-      },
-    });
-    return deleteUser;
+  async findUser(userId: string) {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: userId
+        }
+      })
+      return user
+
+    } catch (error) {
+      throw new HttpException(
+        'Error - User not found',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
+  async deleteUser(userId: string) {
+    try {
+      const deleteUser = await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          deletedAt: new Date()
+        }
+      });
+      return deleteUser;
+
+    } catch {
+      throw new HttpException(
+        'Error - Error when deleting user',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async getUsers(companyId: string) {
+    try {
+      const allUsers = await this.prisma.user.findMany({
+        where: {
+          companyId,
+          AND: {
+            role: {
+              equals: 'EMPLOYEE'
+            },
+            deletedAt: {
+              equals: null
+            },
+            
+          }
+        },
+        select: {
+          id: true,
+          loginHash: true,
+          name: true,
+          deletedAt: true,
+          companyId:true,
+          role:true
+        }
+      });
+      return allUsers;
+
+    } catch (error) {
+      let message = "Error to recover users"
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
 }

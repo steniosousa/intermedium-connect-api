@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { managerController } from './controller/manager.controller';
-import { managerService } from './service/manager.service';
-import { databaseModule } from 'database/database.module';
+import { ManagerController } from './controller/create.manager';
+import { ManagerService } from './service/create.manager';
 
 @Module({
-  controllers: [managerController],
-  providers: [managerService],
-  imports: [databaseModule],
+  controllers: [ManagerController],
+  providers: [ManagerService],
 })
-export class managerModule {}
+export class ManagerModule {}
