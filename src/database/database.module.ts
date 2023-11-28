@@ -7,6 +7,8 @@ import { PrismaService } from './service/prisma.service';
 import { PrismaUsersRepository } from './prisma/repositories/prisma-users.repository';
 import { ManagerDatabase } from './service/manager.database';
 import { objectDatabase } from './service/object.database';
+import { EpiDatabase } from './service/epi.database';
+import { AvaliationDatabase } from './service/avaliation.database';
 
 @Global()
 @Module({
@@ -18,7 +20,9 @@ import { objectDatabase } from './service/object.database';
     PlaceDatabase,
     PrismaUsersRepository,
     ManagerDatabase,
-    objectDatabase
+    objectDatabase,
+    EpiDatabase,
+    AvaliationDatabase
 
   ],
   exports: [
@@ -29,7 +33,9 @@ import { objectDatabase } from './service/object.database';
     PrismaService,
     PrismaUsersRepository,
     ManagerDatabase,
-    objectDatabase
+    objectDatabase,
+    EpiDatabase,
+    AvaliationDatabase
   ],
 })
 export class DatabaseModule { }

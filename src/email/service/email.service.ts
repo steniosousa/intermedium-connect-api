@@ -21,17 +21,31 @@ export class EmailService {
         await this.mailerService.sendMail({
             to: cat,
             subject: 'Recuperação de senha - Intermédium',
-            text: `Sua nova senha de acesso é ${resetPassword}`,
+            html: `
+              <h1>Intermédium</h1>
+              <Img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNAORCoEIyPfhuYFNMATcDK8vBZKwrdlOE9w&usqp=CAU"/>
+
+              <p>Sua nova senha de acesso é: <strong>${resetPassword}</strong></p>
+              <p>Obrigado por usar o nosso serviço.</p>
+              <p>Atenciosamente, <br> Equipe Any Software</p>
+            `,
         });
     }
 
     async receiveCod(cat: any) {
         const resetPassword = await this.dabatase.findUserWithEmail(cat)
-        console.log(resetPassword)
+
         await this.mailerService.sendMail({
             to: cat,
             subject: 'Alteração de senha - Intermédium',
-            text: `Seu código de recuperação é:  ${resetPassword.password}`,
+            html: `
+              <h1>Intermédium</h1>
+              <Img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNAORCoEIyPfhuYFNMATcDK8vBZKwrdlOE9w&usqp=CAU"/>
+              <p>Seu código de recuperação é: <strong>${resetPassword.password}</strong></p>
+              <p>Obrigado por usar o nosso serviço.</p>
+              <p>Atenciosamente, <br> Equipe Any Software</p>
+            `,
         });
+
     }
 }

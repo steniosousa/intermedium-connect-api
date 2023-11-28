@@ -29,6 +29,7 @@ export class CleaningDatabase {
       );
     }
   }
+  
   async deletion(id: string) {
     try {
       await this.prisma.cleaning.update({

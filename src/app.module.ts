@@ -10,6 +10,8 @@ import { ConfigModule } from '@nestjs/config';
 import { emailModule } from 'email/email.module';
 import { ManagerModule } from 'manager/manager.module';
 import { ObjectModule } from 'object/object.module';
+import { EpiModule } from 'epi/epi.module';
+import { AvaliationModule } from 'avaliation/avaliation.module';
 
 @Module({
   imports: [
@@ -23,7 +25,9 @@ import { ObjectModule } from 'object/object.module';
     ScheduleModule,
     emailModule,
     ManagerModule,
-    ObjectModule
+    ObjectModule,
+    EpiModule,
+    AvaliationModule
   ],
   controllers: [],
 })

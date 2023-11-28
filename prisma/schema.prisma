@@ -26,6 +26,12 @@ enum Role {
   EMPLOYEE
 }
 
+enum StatusAvaliacao {
+  RUIM
+  BOM
+  PERFEITO
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String
@@ -37,10 +43,12 @@ model User {
   deletedAt     DateTime?
   companyId     String?
   role          Role      @default(EMPLOYEE)
+  firstAcess    Boolean?
 
-  company  Company?   @relation(fields: [companyId], references: [id])
-  cleaning Cleaning[]
-  schedule Schedule[]
+  company    Company?     @relation(fields: [companyId], references: [id])
+  cleaning   Cleaning[]
+  schedule   Schedule[]
+  Avaliation Avaliation[]
 }
 
 model Company {
@@ -48,8 +56,39 @@ model Company {
   name String
 
   users  User[]
+  Epis   Equipment[]
   Place  Place[]
   Object Object[]
+}
+
+model Equipment {
+  id        String    @id @default(uuid())
+  name      String
+  companyId String
+  deleteAt  DateTime?
+
+  company                Company                  @relation(fields: [companyId], references: [id])
+  EquipmentsOfAvaliation EquipmentsOfAvaliation[]
+}
+
+model Avaliation {
+  id                     String                   @id @default(uuid())
+  managerId              String
+  status                 StatusAvaliacao
+  observation            String?
+  User                   User                     @relation(fields: [managerId], references: [id])
+  EquipmentsOfAvaliation EquipmentsOfAvaliation[]
+  Cleaning               Cleaning[]
+}
+
+model EquipmentsOfAvaliation {
+  avaliationid String
+  equipamentId String
+
+  avaliation Avaliation @relation(fields: [avaliationid], references: [id])
+  equipament Equipment  @relation(fields: [equipamentId], references: [id])
+
+  @@id([avaliationid, equipamentId])
 }
 
 model Place {
@@ -93,14 +132,16 @@ model ObjectOfCleaning {
 }
 
 model Cleaning {
-  id        String    @id @default(uuid())
-  userId    String
-  placeId   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  status    Status    @default(PENDENTE)
+  id           String    @id @default(uuid())
+  userId       String
+  placeId      String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  status       Status    @default(PENDENTE)
+  avaliationId String?
 
+  avaliation       Avaliation?        @relation(fields: [avaliationId], references: [id])
   evidences        Evidence[]
   User             User               @relation(fields: [userId], references: [id])
   Place            Place              @relation(fields: [placeId], references: [id])
@@ -110,7 +151,7 @@ model Cleaning {
 model Schedule {
   id            String    @id @default(uuid())
   placeId       String
-  userId String
+  userId        String
   eventDate     DateTime
   repeatable    Boolean
   deactivatedAt DateTime?

@@ -16,6 +16,7 @@ export class ManagerDatabase {
                     password: hashPassword,
                     loginHash: hashToLogin,
                     role: 'MANAGER',
+                    firstAcess: true
 
                 }
             })
@@ -38,7 +39,8 @@ export class ManagerDatabase {
                     password: true,
                     name: true,
                     role: true,
-                    email: true
+                    email: true,
+                    firstAcess: true
                 }
             })
             const hashPassword = bcrypt.compareSync(password, pass.password);
@@ -49,7 +51,8 @@ export class ManagerDatabase {
                     companyId: pass.companyId,
                     name: pass.name,
                     role: pass.role,
-                    email: pass.email
+                    email: pass.email,
+                    firstAcess: pass.firstAcess
                 }
                 return retunrUser
             }
@@ -66,7 +69,7 @@ export class ManagerDatabase {
     async edit(datas) {
         delete datas.codigo;
         try {
-           return await this.prisma.user.update({
+            return await this.prisma.user.update({
                 where: {
                     id: datas.id
                 },
