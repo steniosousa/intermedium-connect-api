@@ -31,4 +31,9 @@ export class companyService {
     const deleteCompany = await this.database.deleteCompany(companyId);
     return deleteCompany;
   }
+
+  async recoverCompanies(managerId:string){
+    const recover = await this.database.recoverCompanies(managerId)
+    return recover
+  }
 }

@@ -41,24 +41,33 @@ model User {
   createdAt     DateTime  @default(now())
   deactivatedAt DateTime?
   deletedAt     DateTime?
-  companyId     String?
   role          Role      @default(EMPLOYEE)
   firstAcess    Boolean?
 
-  company    Company?     @relation(fields: [companyId], references: [id])
-  cleaning   Cleaning[]
-  schedule   Schedule[]
-  Avaliation Avaliation[]
+  cleaning       Cleaning[]
+  schedule       Schedule[]
+  Avaliation     Avaliation[]
+  userForCompany userForCompany[]
+}
+
+model userForCompany {
+  userId    String
+  companyId String
+
+  user    User    @relation(fields: [userId], references: [id])
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@id([userId, companyId])
 }
 
 model Company {
   id   String @id @default(uuid())
   name String
 
-  users  User[]
-  Epis   Equipment[]
-  Place  Place[]
-  Object Object[]
+  Epis           Equipment[]
+  Place          Place[]
+  Object         Object[]
+  userForCompany userForCompany[]
 }
 
 model Equipment {

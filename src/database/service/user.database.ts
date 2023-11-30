@@ -11,7 +11,6 @@ export class UserDatabase {
           loginHash: key,
         },
       });
-
       return user;
     } catch {
       throw new HttpException(
@@ -108,7 +107,11 @@ export class UserDatabase {
     try {
       const allUsers = await this.prisma.user.findMany({
         where: {
-          companyId,
+          userForCompany: {
+            every: {
+              companyId: companyId
+            }
+          },
           AND: {
             role: {
               equals: 'EMPLOYEE'
@@ -116,7 +119,7 @@ export class UserDatabase {
             deletedAt: {
               equals: null
             },
-            
+
           }
         },
         select: {
@@ -124,8 +127,8 @@ export class UserDatabase {
           loginHash: true,
           name: true,
           deletedAt: true,
-          companyId:true,
-          role:true
+          userForCompany: true,
+          role: true
         }
       });
       return allUsers;

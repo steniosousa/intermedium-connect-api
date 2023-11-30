@@ -51,4 +51,9 @@ export class ManagerService {
         const edit = await this.database.edit(datas)
         return edit
     }
+
+    async recover(userId) {
+        const recover = await this.database.recover(userId)
+        return recover
+    }
 }

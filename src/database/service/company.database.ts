@@ -67,4 +67,20 @@ export class companyDatabase {
       );
     }
   }
+
+  async recoverCompanies(managerId: string) {
+    try {
+      const recover = await this.prisma.userForCompany.findMany({
+        where: {
+          userId: managerId
+        },
+        select: {
+          company: true
+        }
+      })
+      return recover
+    } catch {
+      throw new Error('Unable found companies')
+    }
+  }
 }

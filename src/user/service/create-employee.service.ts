@@ -37,9 +37,9 @@ export class CreateUserService {
       role: 'EMPLOYEE',
       password: hashPassword,
       loginHash: hashToLogin,
-      company: {
-        connect: {
-          id: params.companyId,
+      userForCompany: {
+        create: {
+          companyId: params.companyId
         },
       },
       createdAt: new Date(),

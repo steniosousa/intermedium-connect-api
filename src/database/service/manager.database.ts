@@ -12,7 +12,11 @@ export class ManagerDatabase {
                 data: {
                     name,
                     email,
-                    companyId,
+                    userForCompany: {
+                        createMany: {
+                            data: companyId.map((item) => ({  companyId: item  }))
+                        }
+                    },
                     password: hashPassword,
                     loginHash: hashToLogin,
                     role: 'MANAGER',
@@ -21,7 +25,6 @@ export class ManagerDatabase {
                 }
             })
         } catch (error) {
-
             throw new HttpException(
                 'Error - Unable to create admin',
                 HttpStatus.BAD_REQUEST,
@@ -35,12 +38,12 @@ export class ManagerDatabase {
                 where: { email },
                 select: {
                     id: true,
-                    companyId: true,
                     password: true,
                     name: true,
                     role: true,
                     email: true,
-                    firstAcess: true
+                    firstAcess: true,
+                    userForCompany: true
                 }
             })
             const hashPassword = bcrypt.compareSync(password, pass.password);
@@ -48,7 +51,7 @@ export class ManagerDatabase {
             if (hashPassword) {
                 const retunrUser = {
                     id: pass.id,
-                    companyId: pass.companyId,
+                    companyId: pass.userForCompany,
                     name: pass.name,
                     role: pass.role,
                     email: pass.email,
@@ -78,6 +81,22 @@ export class ManagerDatabase {
         } catch (error) {
             throw new HttpException(
                 'Error - Unable to update admin',
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+    }
+
+    async recover(userId) {
+        try {
+            const recover = await this.prisma.user.findMany({
+                where: {
+                    id: userId
+                },
+            })
+            return recover
+        } catch (error) {
+            throw new HttpException(
+                'Error - Unable to found admin',
                 HttpStatus.BAD_REQUEST,
             );
         }

@@ -2,8 +2,8 @@ import { IsArray, IsBoolean, IsDate, IsEmail, IsNotEmpty, IsOptional, IsString }
 
 export class CreateManagerDto{
     @IsNotEmpty()
-    @IsString()
-    companyId:  String
+    @IsArray()
+    companyId:  String[]
 
     @IsNotEmpty()
     @IsString()

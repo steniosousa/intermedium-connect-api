@@ -6,7 +6,6 @@ export class scheduleAppDatabase {
     constructor(private readonly prisma: PrismaService) { }
 
     async create(Evidences) {
-        console.log(Evidences[0].id)
         try {
             await this.prisma.cleaning.update({
                 where: {
@@ -29,7 +28,6 @@ export class scheduleAppDatabase {
             })
 
         } catch (error) {
-            console.log(error)
             throw new Error('Error - Error when save evidences')
         }
     }

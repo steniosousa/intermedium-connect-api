@@ -25,7 +25,6 @@ export class AvaliationDatabase {
                 }
             })
         } catch (error) {
-            console.log(error)
             throw new Error('Unable create Avaliation')
         }
 

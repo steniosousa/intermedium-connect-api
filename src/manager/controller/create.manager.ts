@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Get, Query } from "@nestjs/common";
 import { CreateManagerDto } from "manager/dto/create.manager";
 import { EditManagerDto } from "manager/dto/edit.manager";
+import { recoverManagerDto } from "manager/dto/recover.manager";
 import { ManagerService } from "manager/service/create.manager";
 
 @Controller('/manager')
@@ -32,5 +33,11 @@ export class ManagerController {
     async edit(@Body() body: EditManagerDto) {
         const edit = await this.service.edit(body)
         return edit
+    }
+
+    @Get('/recover')
+    async recover(@Query() { userId }: recoverManagerDto) {
+        const recover = await this.service.recover(userId)
+        return recover
     }
 }

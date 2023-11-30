@@ -25,7 +25,6 @@ export class CleaningDatabase {
       }
 
     } catch (error) {
-      console.log(error)
       throw new HttpException(
         'Error - Error when registering service',
         HttpStatus.BAD_REQUEST,
@@ -50,7 +49,6 @@ export class CleaningDatabase {
 
       });
     } catch (error) {
-      console.log(error)
       throw new HttpException(
         'Error - Erro ao excluir solicitação',
         HttpStatus.BAD_REQUEST,

@@ -3,10 +3,11 @@ import { createCompanyDto } from '../dto/createCompany.dto';
 import { deleteCompanyDto } from '../dto/deleteCompany.dto';
 import { findCompanyDto } from '../dto/findCompany.dto';
 import { companyService } from '../service/company.service';
+import { recoverCompaniesDto } from 'company/dto/recoverCompanies.dto';
 
 @Controller('/companies')
 export class companyController {
-  constructor(readonly service: companyService) {}
+  constructor(readonly service: companyService) { }
 
   @Post('/create')
   async createCompany(@Body() body: createCompanyDto) {
@@ -33,5 +34,11 @@ export class companyController {
     const { companyId } = query;
     const deleteUser = await this.service.deleteCompany(companyId);
     return deleteUser;
+  }
+
+  @Get('/recover/companies')
+  async recoverCompanies(@Query() { managerId }: recoverCompaniesDto) {
+    const recover = await this.service.recoverCompanies(managerId)
+    return recover
   }
 }
