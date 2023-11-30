@@ -5,23 +5,27 @@ import { PrismaService } from './prisma.service';
 export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) { }
 
-  async create(userId, objectId, placeId) {
+  async create(userId, objectId, placeId, eventDate) {
+
     try {
-      const cleaning = await this.prisma.cleaning.create({
-        data: {
-          userId,
-          placeId,
-          ObjectOfCleaning: {
-            createMany: {
-              data: objectId.map((item: string) => ({ objectId: item }))
-            }
+      for (const date of eventDate) {
+        await this.prisma.cleaning.create({
+          data: {
+            userId,
+            placeId,
+            createdAt: new Date(date),
+            ObjectOfCleaning: {
+              createMany: {
+                data: objectId.map((item: string) => ({ objectId: item }))
+              }
+            },
           },
-        },
 
-      });
+        });
+      }
 
-      return cleaning;
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Error when registering service',
         HttpStatus.BAD_REQUEST,
@@ -74,7 +78,7 @@ export class CleaningDatabase {
               name: true,
             }
           },
-          evidences:true,
+          evidences: true,
           ObjectOfCleaning: {
             select: {
               object: {
