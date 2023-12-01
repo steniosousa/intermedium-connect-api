@@ -36,8 +36,8 @@ export class ManagerController {
     }
 
     @Get('/recover')
-    async recover(@Query() { userId }: recoverManagerDto) {
-        const recover = await this.service.recover(userId)
+    async recover(@Query() { companyId }: recoverManagerDto) {
+        const recover = await this.service.recover(companyId)
         return recover
     }
 }

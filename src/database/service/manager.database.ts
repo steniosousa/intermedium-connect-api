@@ -14,7 +14,7 @@ export class ManagerDatabase {
                     email,
                     userForCompany: {
                         createMany: {
-                            data: companyId.map((item) => ({  companyId: item  }))
+                            data: companyId.map((item) => ({ companyId: item }))
                         }
                     },
                     password: hashPassword,
@@ -86,12 +86,24 @@ export class ManagerDatabase {
         }
     }
 
-    async recover(userId) {
+    async recover(companyId) {
         try {
             const recover = await this.prisma.user.findMany({
                 where: {
-                    id: userId
-                },
+                    role: {
+                        not: 'EMPLOYEE'
+                    },
+                    userForCompany: {
+                        some: {
+                            companyId
+                        }
+                    }
+                }, select: {
+                    name: true,
+                    id: true,
+                    role: true,
+
+                }
             })
             return recover
         } catch (error) {
