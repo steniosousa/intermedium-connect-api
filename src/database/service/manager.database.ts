@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 export class ManagerDatabase {
     constructor(private readonly prisma: PrismaService) { }
 
-    async create(name, email, companyId, hashPassword, hashToLogin) {
+    async create(name, email, companyId, hashPassword, hashToLogin, role, permissions) {
         try {
             await this.prisma.user.create({
                 data: {
@@ -19,12 +19,16 @@ export class ManagerDatabase {
                     },
                     password: hashPassword,
                     loginHash: hashToLogin,
-                    role: 'MANAGER',
-                    firstAcess: true
+                    role,
+                    firstAcess: true,
+                    PermissionsForUsers: {
+                        createMany: { data: permissions.map((item: string) => ({ Permission: item })) }
+                    }
 
                 }
             })
         } catch (error) {
+            console.log(error)
             throw new HttpException(
                 'Error - Unable to create admin',
                 HttpStatus.BAD_REQUEST,

@@ -14,7 +14,9 @@ export class ManagerController {
             name: body.name,
             email: body.email,
             companyId: body.companyId,
-            password: body.password
+            password: body.password,
+            role:body.role,
+            permissions:body.permissions
         });
         return create
     }

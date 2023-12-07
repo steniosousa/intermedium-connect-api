@@ -6,7 +6,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 export class ManagerService {
     constructor(private readonly database: ManagerDatabase) { }
 
-    async create({ name, email, companyId, password }) {
+    async create({ name, email, companyId, password, role, permissions }) {
         function generateRandomAlphanumeric(digits: number) {
             let randomString = '';
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -27,7 +27,7 @@ export class ManagerService {
             hashPassword = await bcrypt.hash('intermedium', 12);
         }
         const hashToLogin = generateRandomAlphanumeric(6);
-        const create = await this.database.create(name, email, companyId, hashPassword, hashToLogin)
+        const create = await this.database.create(name, email, companyId, hashPassword, hashToLogin, role, permissions)
         return create
     }
 

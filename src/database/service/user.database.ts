@@ -142,4 +142,22 @@ export class UserDatabase {
     }
   }
 
+  async recover(userId: string) {
+    try {
+      const allUsers = await this.prisma.userForCompany.findMany({
+        where: {
+          userId
+        }
+      });
+      return allUsers;
+
+    } catch (error) {
+      let message = "Error to recover users"
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
 }

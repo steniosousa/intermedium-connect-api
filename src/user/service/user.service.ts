@@ -54,4 +54,9 @@ export class userService {
     const allReturn = await this.database.getUsers(companyId);
     return allReturn;
   }
+
+  async recover(userId: string) {
+    const recover = await this.database.recover(userId)
+    return recover
+  }
 }

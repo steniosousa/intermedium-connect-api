@@ -1,9 +1,9 @@
 import { IsArray, IsBoolean, IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
 
-export class CreateManagerDto{
+export class CreateManagerDto {
     @IsNotEmpty()
     @IsArray()
-    companyId:  String[]
+    companyId: String[]
 
     @IsNotEmpty()
     @IsString()
@@ -15,6 +15,14 @@ export class CreateManagerDto{
 
     @IsNotEmpty()
     @IsEmail()
-    email:String
+    email: String
+
+    @IsNotEmpty()
+    @IsString()
+    role: string
+
+    @IsArray()
+    @IsNotEmpty()
+    permissions:String[]
 
 }

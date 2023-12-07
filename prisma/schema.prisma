@@ -32,6 +32,13 @@ enum StatusAvaliacao {
   PERFEITO
 }
 
+enum Permissions {
+  OBJECTS
+  PLACES
+  COMPANIES
+  EPIS
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String
@@ -44,10 +51,18 @@ model User {
   role          Role      @default(EMPLOYEE)
   firstAcess    Boolean?
 
-  cleaning       Cleaning[]
-  schedule       Schedule[]
-  Avaliation     Avaliation[]
-  userForCompany userForCompany[]
+  cleaning            Cleaning[]
+  schedule            Schedule[]
+  Avaliation          Avaliation[]
+  userForCompany      userForCompany[]
+  PermissionsForUsers PermissionsForUsers[]
+}
+
+model PermissionsForUsers {
+  id         String      @id @default(uuid())
+  userId     String
+  Permission Permissions
+  user       User        @relation(fields: [userId], references: [id])
 }
 
 model userForCompany {
