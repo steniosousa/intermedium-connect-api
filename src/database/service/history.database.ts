@@ -13,8 +13,12 @@ export class HistoryDatabase {
                     AND: {
                         deletedAt: {
                             equals: null
+                        },
+                        status: {
+                            equals: 'CONCLUIDO'
                         }
-                    }
+                    },
+
                 },
                 select: {
                     ObjectOfCleaning: {
@@ -25,9 +29,9 @@ export class HistoryDatabase {
                     evidences: true,
                     avaliation: true,
                     Place: true,
-                    createdAt:true,
-                    id:true,
-                    updatedAt:true
+                    createdAt: true,
+                    id: true,
+                    updatedAt: true
 
                 }
             })
