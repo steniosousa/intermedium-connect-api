@@ -20,9 +20,16 @@ export class CleaningController {
     return find;
   }
 
+  @Get('/recover/app')
+  async getCleaningApp(@Query() query: findCleaningDto) {
+    const find = await this.service.findCleaning(query.userId);
+    return find;
+  }
+
   @Post('/update')
   async updateCleaning(@Body() body: any) {
     const update = await this.service.updateCleaning(body);
+
     return update;
   }
 

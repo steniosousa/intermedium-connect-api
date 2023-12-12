@@ -63,6 +63,9 @@ export class CleaningDatabase {
           AND: {
             deletedAt: {
               equals: null
+            },
+            status: {
+              not: 'CONCLUIDO'
             }
           }
         },
@@ -98,6 +101,33 @@ export class CleaningDatabase {
     }
   }
   async updateCleaning(params) {
+    console.log(params.body['Evidences'][0].id)
+    if (params.body['Evidences']) {
+      try {
+        const altered = await this.prisma.cleaning.update({
+          where: {
+            id: params.body['Evidences'][0].id,
+          },
+          data: {
+            evidences: {
+              createMany: {
+                data: params.body['Evidences'].map((item) => ({ evidenceUrl: item.evidenceUrl, type: item.type }))
+              }
+            },
+            status: 'CONCLUIDO'
+          }
+        });
+
+        return altered;
+      } catch (error) {
+        console.log(error)
+
+        throw new HttpException(
+          'Error - Error editing service',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
     try {
       const altered = await this.prisma.cleaning.update({
         where: {
