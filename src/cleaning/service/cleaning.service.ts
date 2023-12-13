@@ -22,6 +22,12 @@ export class cleaningService {
     return find;
   }
 
+  async findCleaningApp(userId: string) {
+    const find: any[] = await this.database.findCleaningApp(userId);
+
+    return find;
+  }
+
   async updateCleaning(params) {
     const update = await this.database.updateCleaning(params);
     return update;

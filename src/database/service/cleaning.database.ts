@@ -64,6 +64,49 @@ export class CleaningDatabase {
             deletedAt: {
               equals: null
             },
+          }
+        },
+        take:10,
+        orderBy: {
+          createdAt: 'asc'
+        },
+        include: {
+          Place: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
+          evidences: true,
+          ObjectOfCleaning: {
+            select: {
+              object: {
+                select: {
+                  name: true,
+                  id: true
+                }
+              }
+            }
+          }
+        }
+      });
+      return allCleaning;
+    } catch {
+      throw new HttpException(
+        'Error - Error recovering services',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+  async findCleaningApp(userId: string) {
+    try {
+      const allCleaning = await this.prisma.cleaning.findMany({
+        where: {
+          userId,
+          AND: {
+            deletedAt: {
+              equals: null
+            },
             status: {
               not: 'CONCLUIDO'
             }
@@ -100,9 +143,12 @@ export class CleaningDatabase {
       );
     }
   }
+
+
+
   async updateCleaning(params) {
-    console.log(params.body['Evidences'][0].id)
-    if (params.body['Evidences']) {
+    console.log(params)
+    if (params.body) {
       try {
         const altered = await this.prisma.cleaning.update({
           where: {
@@ -120,8 +166,6 @@ export class CleaningDatabase {
 
         return altered;
       } catch (error) {
-        console.log(error)
-
         throw new HttpException(
           'Error - Error editing service',
           HttpStatus.BAD_REQUEST,

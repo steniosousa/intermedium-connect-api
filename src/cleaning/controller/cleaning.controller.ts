@@ -22,7 +22,7 @@ export class CleaningController {
 
   @Get('/recover/app')
   async getCleaningApp(@Query() query: findCleaningDto) {
-    const find = await this.service.findCleaning(query.userId);
+    const find = await this.service.findCleaningApp(query.userId);
     return find;
   }
 
