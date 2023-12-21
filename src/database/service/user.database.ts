@@ -67,11 +67,11 @@ export class UserDatabase {
     return updateUser;
   }
 
-  async findUser(userId: string) {
+  async findUser(id: string) {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: userId
+          id
         }
       })
       return user

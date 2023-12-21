@@ -36,7 +36,13 @@ export class EpiDatabase {
         try {
             const recover = await this.prisma.equipment.findMany({
                 where: {
-                    companyId
+                    companyId,
+                    AND: {
+                        deleteAt: {
+                            equals: null
+                        }
+
+                    }
                 }
             })
             return recover

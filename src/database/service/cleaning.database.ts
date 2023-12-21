@@ -147,7 +147,6 @@ export class CleaningDatabase {
 
 
   async updateCleaning(params) {
-    console.log(params)
     if (params.body) {
       try {
         const altered = await this.prisma.cleaning.update({

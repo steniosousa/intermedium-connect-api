@@ -24,12 +24,13 @@ export class EpiController {
     @Delete('/delete')
     async delete(@Query() { episId }: deleteEpiDto) {
         const deleteEpi = await this.service.delete(episId)
+       
         return deleteEpi
     }
 
-    @Post('/edit')
-    async edit(@Body() { name, epiId }: editEpiDto) {
-        await this.service.edit(name, epiId)
+    @Post('/update')
+    async edit(@Body() { name, id }: editEpiDto) {
+        await this.service.edit(name, id)
     }
 
 }

@@ -7,5 +7,5 @@ export class editEpiDto {
 
     @IsString()
     @IsNotEmpty()
-    epiId: string
+    id: string
 }

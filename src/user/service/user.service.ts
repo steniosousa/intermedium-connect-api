@@ -23,9 +23,9 @@ export class userService {
   }
 
   async updateUser(params) {
-    const { userId } = params;
+    const { id } = params;
 
-    const indentify = await this.database.findUser(userId)
+    const indentify = await this.database.findUser(id)
     if (!indentify) {
       throw new HttpException(
         'Error - User not found',
