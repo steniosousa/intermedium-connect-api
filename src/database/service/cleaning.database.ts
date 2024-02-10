@@ -165,7 +165,6 @@ export class CleaningDatabase {
 
         return altered;
       } catch (error) {
-      console.log(error)
 
         throw new HttpException(
           'Error - Error editing service',
