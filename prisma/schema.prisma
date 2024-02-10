@@ -12,6 +12,8 @@ enum EvidenceType {
   ENTRANCE
   EXIT
   OBSERVATION
+  OBSERVATION1
+  OBSERVATION2
 }
 
 enum Status {

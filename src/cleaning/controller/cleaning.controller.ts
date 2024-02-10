@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
-import { GetAllCrons } from 'cleaning/dto/getAllCrons.dto';
 
 @Controller('/cleaning')
 export class CleaningController {

@@ -66,7 +66,7 @@ export class CleaningDatabase {
             },
           }
         },
-        take:10,
+        take: 10,
         orderBy: {
           createdAt: 'asc'
         },
@@ -165,6 +165,8 @@ export class CleaningDatabase {
 
         return altered;
       } catch (error) {
+      console.log(error)
+
         throw new HttpException(
           'Error - Error editing service',
           HttpStatus.BAD_REQUEST,
@@ -176,11 +178,31 @@ export class CleaningDatabase {
         where: {
           id: params.id,
         },
+        include: {
+          Place: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
+          evidences: true,
+          ObjectOfCleaning: {
+            select: {
+              object: {
+                select: {
+                  name: true,
+                  id: true
+                }
+              }
+            }
+          }
+        },
         data: params,
       });
 
       return altered;
     } catch (error) {
+
       throw new HttpException(
         'Error - Error editing service',
         HttpStatus.BAD_REQUEST,
