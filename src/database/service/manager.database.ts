@@ -28,6 +28,8 @@ export class ManagerDatabase {
                 }
             })
         } catch (error) {
+            console.log(companyId)
+
             throw new HttpException(
                 'Error - Unable to create admin',
                 HttpStatus.BAD_REQUEST,
@@ -47,7 +49,7 @@ export class ManagerDatabase {
                     email: true,
                     firstAcess: true,
                     userForCompany: true,
-                    PermissionsForUsers:true,
+                    PermissionsForUsers: true,
                 }
             })
             const hashPassword = bcrypt.compareSync(password, pass.password);
@@ -60,7 +62,7 @@ export class ManagerDatabase {
                     role: pass.role,
                     email: pass.email,
                     firstAcess: pass.firstAcess,
-                    permissions:pass.PermissionsForUsers
+                    permissions: pass.PermissionsForUsers
                 }
                 return retunrUser
             }

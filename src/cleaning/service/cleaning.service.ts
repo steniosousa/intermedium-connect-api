@@ -16,8 +16,8 @@ export class cleaningService {
     return deletion;
   }
 
-  async findCleaning(userId: string) {
-    const find: any[] = await this.database.findCleaning(userId);
+  async findCleaning(userId: string, page: number) {
+    const find: any = await this.database.findCleaning(userId, page);
 
     return find;
   }
@@ -34,7 +34,7 @@ export class cleaningService {
     if (verifyOfNull) {
       throw new Error("Limpeza já registrada")
     }
-    const update = await this.database.updateCleaning(id, Evidences,status);
+    const update = await this.database.updateCleaning(id, Evidences, status);
     return update;
   }
 

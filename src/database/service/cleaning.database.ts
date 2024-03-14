@@ -55,8 +55,18 @@ export class CleaningDatabase {
       );
     }
   }
-  async findCleaning(userId: string) {
+  async findCleaning(userId: string, page: any) {
     try {
+      const total = await this.prisma.cleaning.count({
+        where: {
+          userId,
+          AND: {
+            deletedAt: {
+              equals: null
+            },
+          }
+        },
+      })
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
           userId,
@@ -70,6 +80,7 @@ export class CleaningDatabase {
           createdAt: 'asc'
         },
         include: {
+
           Place: {
             select: {
               id: true,
@@ -87,9 +98,11 @@ export class CleaningDatabase {
               }
             }
           }
-        }
+        },
+        skip: (page - 1) * 5,
+        take: 5,
       });
-      return allCleaning;
+      return { cleanings: allCleaning, total };
     } catch {
       throw new HttpException(
         'Error - Error recovering services',

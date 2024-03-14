@@ -15,7 +15,7 @@ export class CleaningController {
 
   @Get('/recover')
   async getCleaning(@Query() query: findCleaningDto) {
-    const find = await this.service.findCleaning(query.userId);
+    const find = await this.service.findCleaning(query.userId, query.page);
     return find;
   }
 
