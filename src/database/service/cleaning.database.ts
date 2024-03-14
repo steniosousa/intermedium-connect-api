@@ -77,7 +77,7 @@ export class CleaningDatabase {
           }
         },
         orderBy: {
-          createdAt: 'asc'
+          createdAt: 'desc'
         },
         include: {
 
