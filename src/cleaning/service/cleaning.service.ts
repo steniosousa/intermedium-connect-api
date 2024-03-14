@@ -4,9 +4,9 @@ import { CleaningDatabase } from 'database/service/cleaning.database';
 @Injectable()
 export class cleaningService {
   constructor(private readonly database: CleaningDatabase) { }
-  async create({ userId, objectsId, placeId,eventDate }) {
+  async create({ userId, objectsId, placeId, eventDate }) {
 
-    const newCleaning = await this.database.create(userId, objectsId, placeId, eventDate );
+    const newCleaning = await this.database.create(userId, objectsId, placeId, eventDate);
 
     return newCleaning;
   }
@@ -29,8 +29,19 @@ export class cleaningService {
   }
 
   async updateCleaning(params) {
-    const update = await this.database.updateCleaning(params);
+    const { id, Evidences, status } = params.body
+    const verifyOfNull = await this.database.findCleaningWithoutEvidences(id)
+    if (verifyOfNull) {
+      throw new Error("Limpeza já registrada")
+    }
+    const update = await this.database.updateCleaning(id, Evidences,status);
     return update;
+  }
+
+  async updateStatus(body) {
+    const { status, id } = body
+    const updateStatus = await this.database.updateStatus(status, id)
+    return updateStatus
   }
 
 

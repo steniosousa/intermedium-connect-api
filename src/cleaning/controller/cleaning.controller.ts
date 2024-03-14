@@ -28,8 +28,13 @@ export class CleaningController {
   @Post('/update')
   async updateCleaning(@Body() body: any) {
     const update = await this.service.updateCleaning(body);
-
     return update;
+  }
+
+  @Post('/update/status')
+  async updateStatus(@Body() body: any) {
+    const updateStatus = await this.service.updateStatus(body)
+    return updateStatus
   }
 
   @Post('/delete')

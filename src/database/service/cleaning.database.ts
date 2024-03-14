@@ -66,7 +66,6 @@ export class CleaningDatabase {
             },
           }
         },
-        take: 10,
         orderBy: {
           createdAt: 'asc'
         },
@@ -146,57 +145,20 @@ export class CleaningDatabase {
 
 
 
-  async updateCleaning(params) {
-    if (params.body) {
-      try {
-        const altered = await this.prisma.cleaning.update({
-          where: {
-            id: params.body['Evidences'][0].id,
-          },
-          data: {
-            evidences: {
-              createMany: {
-                data: params.body['Evidences'].map((item) => ({ evidenceUrl: item.evidenceUrl, type: item.type }))
-              }
-            },
-            status: 'CONCLUIDO'
-          }
-        });
-
-        return altered;
-      } catch (error) {
-
-        throw new HttpException(
-          'Error - Error editing service',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-    }
+  async updateCleaning(id, evidences, status) {
     try {
       const altered = await this.prisma.cleaning.update({
         where: {
-          id: params.id,
+          id: id,
         },
-        include: {
-          Place: {
-            select: {
-              id: true,
-              name: true,
+        data: {
+          evidences: {
+            createMany: {
+              data: evidences.map((item) => ({ evidenceUrl: item.evidenceUrl, type: item.type }))
             }
           },
-          evidences: true,
-          ObjectOfCleaning: {
-            select: {
-              object: {
-                select: {
-                  name: true,
-                  id: true
-                }
-              }
-            }
-          }
-        },
-        data: params,
+          status
+        }
       });
 
       return altered;
@@ -204,6 +166,44 @@ export class CleaningDatabase {
 
       throw new HttpException(
         'Error - Error editing service',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+  }
+
+  async updateStatus(status, id) {
+    try {
+      const altered = await this.prisma.cleaning.update({
+        where: {
+          id: id,
+        },
+        data: {
+          status
+        },
+      });
+      return altered;
+    } catch (error) {
+      throw new HttpException(
+        'Error - Error editing service',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async findCleaningWithoutEvidences(id) {
+
+    try {
+      const altered = await this.prisma.evidence.findFirst({
+        where: {
+          cleaningId: id
+        },
+      });
+      return altered;
+    } catch (error) {
+
+      throw new HttpException(
+        'Error - Erro ao editar serviço',
         HttpStatus.BAD_REQUEST,
       );
     }
