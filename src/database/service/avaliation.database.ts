@@ -32,34 +32,31 @@ export class AvaliationDatabase {
 
     async recover(userId) {
         try {
-            const recover = await this.prisma.cleaning.findMany({
+            const recover = await this.prisma.avaliation.findMany({
                 where: {
-                    userId,
-                    AND: {
-                        status: 'CONCLUIDO'
-                    }
+                    managerId: userId,
                 },
-                select: {
-                    avaliation: {
-                        include: {
-                            EquipmentsOfAvaliation: {
-                                select: {
-                                    equipament: true
+                include:{
+                    EquipmentsOfAvaliation:{
+                        select:{
+                            equipament:{
+                                select:{
+                                    name:true
                                 }
                             }
                         }
                     },
-                    Place: true,
-                    ObjectOfCleaning: {
-                        select: { object: true }
-                    },
-                    status: true,
-                    _count: true,
-                    createdAt: true,
+                    _count:true,
+                    Cleaning:{
+                        select:{
+                            Place:{
+                                select:{
+                                    name:true,
+                                }
+                            }
+                        }
+                    }
 
-                },
-                orderBy: {
-                    createdAt: "asc"
                 }
             })
             return recover

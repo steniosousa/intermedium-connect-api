@@ -28,8 +28,6 @@ export class userController {
   async createUser(@Body() body: createServiceDto) {
     const user = await this.createUserService.execute({
       name: body.name,
-      email: body.email,
-      password: body.password,
       companyId: body.companyId,
     });
 
