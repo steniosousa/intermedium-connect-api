@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
 
 export class EditManagerDto {
     @IsNotEmpty()
@@ -16,9 +16,5 @@ export class EditManagerDto {
     @IsEmail()
     @IsOptional()
     email: String
-
-    @IsNotEmpty()
-    @IsString()
-    codigo: String
 
 }

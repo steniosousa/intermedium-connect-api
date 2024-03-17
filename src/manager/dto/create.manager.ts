@@ -9,10 +9,6 @@ export class CreateManagerDto {
     @IsString()
     name: String
 
-    @IsString()
-    @IsOptional()
-    password: String
-
     @IsNotEmpty()
     @IsEmail()
     email: String
@@ -23,6 +19,6 @@ export class CreateManagerDto {
 
     @IsArray()
     @IsNotEmpty()
-    permissions:String[]
+    permissions: String[]
 
 }

@@ -58,11 +58,16 @@ export class UserDatabase {
 
 
   async updateUser(userId, datas) {
+    const novaData = new Date()
     const updateUser = await this.prisma.user.update({
       where: {
         id: userId,
       },
-      data: { ...datas },
+      data: {
+        ...datas
+        ,
+        deactivatedAt: datas.deactivatedAt ? novaData : null
+      },
     });
     return updateUser;
   }
@@ -128,7 +133,8 @@ export class UserDatabase {
           name: true,
           deletedAt: true,
           userForCompany: true,
-          role: true
+          role: true,
+          deactivatedAt: true
         }
       });
       return allUsers;
@@ -147,6 +153,13 @@ export class UserDatabase {
       const allUsers = await this.prisma.userForCompany.findMany({
         where: {
           userId
+        },
+        select: {
+          user: {
+            select: {
+              deactivatedAt: true
+            }
+          }
         }
       });
       return allUsers;

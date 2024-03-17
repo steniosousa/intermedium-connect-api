@@ -12,11 +12,9 @@ export class updateUserDto {
   @IsString()
   @IsOptional()
   name: string;
-
   @IsString()
   @IsOptional()
   companyId: string;
-
   @IsString()
   @IsOptional()
   managerId: string;

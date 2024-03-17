@@ -6,9 +6,9 @@ import * as bcrypt from 'bcrypt';
 export class ManagerDatabase {
     constructor(private readonly prisma: PrismaService) { }
 
-    async create(name, email, companyId, hashPassword, hashToLogin, role, permissions) {
+    async create(email, companyId, role, permissions, name) {
         try {
-            await this.prisma.user.create({
+            const createUser = await this.prisma.user.create({
                 data: {
                     name,
                     email,
@@ -17,8 +17,7 @@ export class ManagerDatabase {
                             data: companyId.map((item) => ({ companyId: item }))
                         }
                     },
-                    password: hashPassword,
-                    loginHash: hashToLogin,
+                    password: "",
                     role,
                     firstAcess: true,
                     PermissionsForUsers: {
@@ -27,9 +26,9 @@ export class ManagerDatabase {
 
                 }
             })
+            return createUser
         } catch (error) {
-            console.log(companyId)
-
+            console.log(error)
             throw new HttpException(
                 'Error - Unable to create admin',
                 HttpStatus.BAD_REQUEST,
@@ -37,7 +36,7 @@ export class ManagerDatabase {
         }
     }
 
-    async find(email, password) {
+    async find(email: string, password: string) {
         try {
             const pass = await this.prisma.user.findUnique({
                 where: { email },
@@ -50,10 +49,10 @@ export class ManagerDatabase {
                     firstAcess: true,
                     userForCompany: true,
                     PermissionsForUsers: true,
+                    deactivatedAt: true,
                 }
             })
             const hashPassword = bcrypt.compareSync(password, pass.password);
-
             if (hashPassword) {
                 const retunrUser = {
                     id: pass.id,
@@ -62,8 +61,10 @@ export class ManagerDatabase {
                     role: pass.role,
                     email: pass.email,
                     firstAcess: pass.firstAcess,
-                    permissions: pass.PermissionsForUsers
+                    permissions: pass.PermissionsForUsers,
+                    deactivatedAt: pass.deactivatedAt,
                 }
+                if (pass.role == "EMPLOYEE") throw new Error('Usuário somente de aplicativo')
                 return retunrUser
             }
             throw new Error('User not Found')
@@ -77,7 +78,6 @@ export class ManagerDatabase {
     }
 
     async edit(datas) {
-        delete datas.codigo;
         try {
             return await this.prisma.user.update({
                 where: {
@@ -116,6 +116,24 @@ export class ManagerDatabase {
         } catch (error) {
             throw new HttpException(
                 'Error - Unable to found admin',
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+    }
+
+    async findWithEmail(email: string) {
+        try {
+            const pass = await this.prisma.user.findUnique({
+                where: { email },
+                select: {
+                    id:true,
+                    name:true
+                }
+            })
+            return pass
+        } catch {
+            throw new HttpException(
+                'Error - Erro ao recuperar usuário',
                 HttpStatus.BAD_REQUEST,
             );
         }
