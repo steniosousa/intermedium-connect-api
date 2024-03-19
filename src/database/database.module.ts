@@ -11,6 +11,7 @@ import { EpiDatabase } from './service/epi.database';
 import { AvaliationDatabase } from './service/avaliation.database';
 import { HistoryDatabase } from './service/history.database';
 import { scheduleAppDatabase } from './service/schudeleApp.database';
+import { TruckDatabase } from './service/truck.database';
 
 @Global()
 @Module({
@@ -26,7 +27,8 @@ import { scheduleAppDatabase } from './service/schudeleApp.database';
     EpiDatabase,
     AvaliationDatabase,
     HistoryDatabase,
-    scheduleAppDatabase
+    TruckDatabase,
+    scheduleAppDatabase,
 
   ],
   exports: [
@@ -41,7 +43,8 @@ import { scheduleAppDatabase } from './service/schudeleApp.database';
     EpiDatabase,
     AvaliationDatabase,
     HistoryDatabase,
-    scheduleAppDatabase
+    TruckDatabase,
+    scheduleAppDatabase,
   ],
 })
 export class DatabaseModule { }

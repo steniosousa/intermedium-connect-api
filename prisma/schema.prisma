@@ -185,3 +185,27 @@ model Schedule {
   place       Place @relation(fields: [placeId], references: [id])
   responsible User  @relation(fields: [userId], references: [id])
 }
+
+model Truck {
+  id             String           @id @default(uuid())
+  plate          String           @unique
+  coordsForTruck coordsForTruck[]
+}
+
+model Coords {
+  id             String           @id @default(uuid())
+  lat            Float
+  lng            Float
+  time           DateTime         @default(now())
+  coordsForTruck coordsForTruck[]
+}
+
+model coordsForTruck {
+  truckId  String
+  coordsId String
+
+  truck  Truck  @relation(fields: [truckId], references: [id])
+  coords Coords @relation(fields: [coordsId], references: [id])
+
+  @@id([truckId, coordsId])
+}
