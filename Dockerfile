@@ -7,8 +7,7 @@ EXPOSE ${PORT}
 
 FROM base as development
 ENV NODE_ENV development
-RUN --mount=type=cache,id=<cache-id> ...
-
+RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=cache,target=/root/go/pkg/mod
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
