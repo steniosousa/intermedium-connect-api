@@ -19,6 +19,7 @@ export class truckController {
     async startMonitoring(@Body() body: any) {
         const { plate } = body
         const monitoring = await this.service.start(plate, body.coords.lat, body.coords.lng);
+
         return monitoring
     }
 
@@ -33,6 +34,7 @@ export class truckController {
         const { plate } = Param
 
         const getCoords = await this.service.getCoords(plate)
+        if (!getCoords) return "Sem coordenadas"
         return getCoords
     }
 } 

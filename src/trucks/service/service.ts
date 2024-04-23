@@ -14,9 +14,10 @@ export class truckService {
         return recover
     }
 
-    async getCoords(plate){
+    async getCoords(plate) {
         const recoverCoords = await this.database.recoverCoords(plate)
-
-        return recoverCoords 
+        if (!recoverCoords) return null
+        const { coords } = recoverCoords
+        return coords
     }
 }

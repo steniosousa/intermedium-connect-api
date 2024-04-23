@@ -46,11 +46,13 @@ export class TruckDatabase {
 
 
     async recoverCoords(plate: string) {
+        const truckexistCoords = await this.findTruckIfExistCoords(plate)
+        if (!truckexistCoords) return
         try {
             const trucks = await this.prisma.coordsForTruck.findFirstOrThrow({
                 where: {
                     truck: {
-                        plate
+                        id: plate
                     }
                 },
                 select: {
@@ -61,18 +63,28 @@ export class TruckDatabase {
                             time: true
                         }
                     }
-                },
-                orderBy: {
-                    coords: {
-                        time: 'desc'
-                    }
                 }
             });
             return trucks
-        } catch (error){
-        console.log(error,plate)
-
+        } catch (error) {
             throw new Error('Erro ao recuperar caminhões');
+        }
+    }
+
+    async findTruckIfExistCoords(plate) {
+        try {
+            const exist = await this.prisma.coords.findFirst({
+                where: {
+                    coordsForTruck: {
+                        some: {
+                            truckId: plate
+                        }
+                    }
+                }
+            })
+            return exist ?? null
+        } catch (error) {
+            throw new Error("Erro ao recuperar caminhão")
         }
     }
 }
