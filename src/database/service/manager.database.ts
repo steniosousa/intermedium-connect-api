@@ -28,7 +28,6 @@ export class ManagerDatabase {
             })
             return createUser
         } catch (error) {
-            console.log(error)
             throw new HttpException(
                 'Error - Unable to create admin',
                 HttpStatus.BAD_REQUEST,
