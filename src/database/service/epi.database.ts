@@ -23,7 +23,10 @@ export class EpiDatabase {
             const epi = await this.prisma.equipment.findFirst({
                 where: {
                     companyId,
-                    name
+                    name,
+                    deleteAt: {
+                        equals: null
+                    }
                 }
             })
             return epi

@@ -28,7 +28,8 @@ export class objectDatabase {
             const object = await this.prisma.object.findFirst({
                 where: {
                     name,
-                    companyId
+                    companyId,
+                    
                 },
             });
             return object;

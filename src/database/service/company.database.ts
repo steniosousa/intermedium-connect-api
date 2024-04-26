@@ -25,6 +25,9 @@ export class companyDatabase {
       const company = await this.prisma.company.findFirst({
         where: {
           name,
+          desactiveAt: {
+            equals: null
+          }
         },
       });
       return company;
@@ -42,6 +45,11 @@ export class companyDatabase {
         orderBy: {
           name: 'asc'
         },
+        where: {
+          desactiveAt: {
+            equals: null
+          }
+        }
       });
       return all;
     } catch {
@@ -54,13 +62,17 @@ export class companyDatabase {
 
   async deleteCompany(companyId: string) {
     try {
-      const deleteCompany = await this.prisma.company.delete({
+      const deleteCompany = await this.prisma.company.update({
         where: {
           id: companyId,
         },
+        data: {
+          desactiveAt: new Date()
+        }
       });
       return deleteCompany;
-    } catch {
+    } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Unable to delete company',
         HttpStatus.BAD_REQUEST,
@@ -72,7 +84,14 @@ export class companyDatabase {
     try {
       const recover = await this.prisma.userForCompany.findMany({
         where: {
-          userId: managerId
+          userId: managerId,
+          company: {
+            desactiveAt: {
+              equals: null
+            }
+
+          }
+
         },
         select: {
           company: true

@@ -85,6 +85,7 @@ model Company {
   Place          Place[]
   Object         Object[]
   userForCompany userForCompany[]
+  desactiveAt    DateTime?
 }
 
 model Equipment {
