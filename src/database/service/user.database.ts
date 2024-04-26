@@ -124,6 +124,9 @@ export class UserDatabase {
             deletedAt: {
               equals: null
             },
+            deactivatedAt: {
+              equals: null
+            }
 
           }
         },

@@ -41,7 +41,6 @@ export class userController {
     return find;
   }
 
-  //validar rota
   @Get('/recuper')
   async findUserWithNameAndPass(
     @Query() query: findUserWithNameAndPasswordDto,
