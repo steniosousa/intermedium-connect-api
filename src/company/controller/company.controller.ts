@@ -4,6 +4,7 @@ import { deleteCompanyDto } from '../dto/deleteCompany.dto';
 import { findCompanyDto } from '../dto/findCompany.dto';
 import { companyService } from '../service/company.service';
 import { recoverCompaniesDto } from 'company/dto/recoverCompanies.dto';
+import { updateCompanyDto } from 'company/dto/updateCompany.dto';
 
 @Controller('/companies')
 export class companyController {
@@ -40,5 +41,11 @@ export class companyController {
   async recoverCompanies(@Query() { managerId }: recoverCompaniesDto) {
     const recover = await this.service.recoverCompanies(managerId)
     return recover
+  }
+
+  @Post('/update')
+  async updateCompany(@Body() { id, name }: updateCompanyDto) {
+    const updateCompany = await this.service.updateCompany(id, name)
+    return updateCompany
   }
 }

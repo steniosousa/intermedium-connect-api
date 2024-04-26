@@ -74,7 +74,7 @@ export class EmailService {
       <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
         <h1>Intermedium</h1>
         <h3>Click no botão para confirmar seu cadastro e definir sua senha</h3>
-        <a href="https://intermedium-duo-platform.vercel.app/resetPass/${userId}" style="text-decoration: none; color: #ffffff; background-color: #0073b7; padding: 10px 20px; font-size: 16px; border-radius: 5px; display: inline-block;">Confirmar Senha</a>
+        <a href="http://localhost:3000/resetPass/${userId}" style="text-decoration: none; color: #ffffff; background-color: #0073b7; padding: 10px 20px; font-size: 16px; border-radius: 5px; display: inline-block;">Confirmar Senha</a>
         <p style="margin-top: 20px;">Obrigado por usar o nosso serviço.</p>
         <p>Atenciosamente, <br> Equipe Any Software</p>
       </td>
@@ -152,7 +152,7 @@ export class EmailService {
   <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
     <h1>Intermedium</h1>
     <h3>Click para recuperar sua senha</h3>
-    <a href="https://intermedium-duo-platform.vercel.app/resetPass/${userId}" style="text-decoration: none; color: #ffffff; background-color: #0073b7; padding: 10px 20px; font-size: 16px; border-radius: 5px; display: inline-block;">Recuperar Senha</a>
+    <a href="http://localhost:3000/resetPass/${userId}" style="text-decoration: none; color: #ffffff; background-color: #0073b7; padding: 10px 20px; font-size: 16px; border-radius: 5px; display: inline-block;">Recuperar Senha</a>
     <p style="margin-top: 20px;">Obrigado por usar o nosso serviço.</p>
     <p>Atenciosamente, <br> Equipe Any Software</p>
   </td>

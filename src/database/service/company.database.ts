@@ -30,7 +30,7 @@ export class companyDatabase {
       return company;
     } catch {
       throw new HttpException(
-        'Error - Company not found',
+        'Error - Empresa não encontrada',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -81,6 +81,24 @@ export class companyDatabase {
       return recover
     } catch {
       throw new Error('Unable found companies')
+    }
+  }
+
+  async updateCompany(id: string, name: string) {
+    try {
+      const company = await this.prisma.company.update({
+        where: {
+          id,
+        }, data: {
+          name
+        }
+      });
+      return company;
+    } catch {
+      throw new HttpException(
+        'Error - Erro ao editar empresa',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

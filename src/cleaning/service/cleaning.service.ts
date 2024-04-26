@@ -29,13 +29,16 @@ export class cleaningService {
   }
 
   async updateCleaning(params) {
-    const { id, Evidences, status } = params.body
+    const { id, Evidences, status } = params
     const verifyOfNull = await this.database.findCleaningWithoutEvidences(id)
     if (verifyOfNull) {
-      throw new Error("Limpeza já registrada")
+      throw new HttpException(
+        'Error - Limpeza já registrada',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     const update = await this.database.updateCleaning(id, Evidences, status);
-    return update;
+    return ;
   }
 
   async updateStatus(body) {

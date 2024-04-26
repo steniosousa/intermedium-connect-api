@@ -170,7 +170,7 @@ export class CleaningDatabase {
               data: evidences.map((item) => ({ evidenceUrl: item.evidenceUrl, type: item.type }))
             }
           },
-          status
+          status: 'CONCLUIDO'
         }
       });
 
@@ -193,7 +193,7 @@ export class CleaningDatabase {
         },
         data: {
           status
-        },
+        }
       });
       return altered;
     } catch (error) {
@@ -212,6 +212,7 @@ export class CleaningDatabase {
           cleaningId: id
         },
       });
+      console.log(altered)
       return altered;
     } catch (error) {
 
