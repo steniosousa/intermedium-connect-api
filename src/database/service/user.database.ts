@@ -176,4 +176,111 @@ export class UserDatabase {
     }
   }
 
+  async recoverForPdf(companyId: string) {
+    try {
+      const allUsers = await this.prisma.userForCompany.findMany({
+        where: {
+          companyId,
+          company: {
+            desactiveAt: {
+              equals: null
+            }
+          }
+        },
+        select: {
+          user: {
+            select: {
+              cleaning: {
+                select: {
+                  Place: {
+                    select: {
+                      name: true
+                    }
+                  },
+                  status: true,
+                  createdAt: true,
+                },
+
+              },
+              name: true,
+              createdAt: true,
+              role: true,
+              email: true,
+              Avaliation: {
+                select:{
+                  status:true,
+                  observation:true,
+                  Cleaning:{
+                    select:{
+                      Place:{
+                        select:{
+                          name:true
+                        }
+                      }
+                    }
+                  },
+                  EquipmentsOfAvaliation:{
+                    select:{
+                      equipament:{
+                        select:{
+                          name:true,
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+
+            }
+          }
+        }
+      });
+      return allUsers;
+
+    } catch (error) {
+      let message = "Error to recover users"
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
+  async recoverAvaliation(companyId: string) {
+    try {
+      const allUsers = await this.prisma.userForCompany.findMany({
+        where: {
+          companyId,
+          company: {
+            desactiveAt: {
+              equals: null
+            }
+          }
+        },
+        select: {
+          user: {
+            select: {
+              cleaning: true,
+              name: true,
+              createdAt: true,
+              role: true,
+              email: true,
+
+            }
+          }
+        }
+      });
+      return allUsers;
+
+    } catch (error) {
+      let message = "Error to recover users"
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
+
+
 }

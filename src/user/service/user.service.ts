@@ -59,4 +59,24 @@ export class userService {
     const recover = await this.database.recover(userId)
     return recover
   }
+
+  async recoverForPdf(companyId: string) {
+    const dataReturn: any[] = await this.database.recoverForPdf(companyId)
+    const formater = dataReturn.map((item) => {
+      const model = {
+        user: {
+          "name": item.user.name,
+          "createdAt": item.user.createdAt,
+          "role": item.user.role,
+          "email": item.user.email
+        },
+        cleaning: item.user.cleaning,
+        avaliation: item.user.Avaliation
+
+      }
+
+      return model
+    })
+    return formater
+  }
 }

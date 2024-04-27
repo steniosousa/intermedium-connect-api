@@ -16,6 +16,7 @@ import { userService } from '../service/user.service';
 import { CreateUserService } from 'user/service/create-employee.service';
 import { recoverUserDto } from 'user/dto/recover.user';
 import { recoverAllUsersDto } from 'user/dto/recover.Allusers';
+import { generatePdfDto } from 'user/dto/generatePdf.dto';
 
 @Controller('/user')
 export class userController {
@@ -73,5 +74,12 @@ export class userController {
   async recoverAllUsers(@Query() { userId }: recoverAllUsersDto) {
     const recover = await this.service.recover(userId)
     return recover
+  }
+
+
+  @Get('/pdf')
+  async recoverForPdf(@Query() { companyId }: generatePdfDto) {
+    const recoverForPdf = await this.service.recoverForPdf(companyId)
+    return recoverForPdf
   }
 }
