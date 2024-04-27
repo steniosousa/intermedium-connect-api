@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Get, Query } from "@nestjs/common";
 import { CreateManagerDto } from "manager/dto/create.manager";
 import { EditManagerDto } from "manager/dto/edit.manager";
+import { recoverManagerDto } from "manager/dto/recover.manager";
 import { ManagerService } from "manager/service/create.manager";
 
 @Controller('/manager')
@@ -10,10 +11,11 @@ export class ManagerController {
     @Post('/create')
     async create(@Body() body: CreateManagerDto) {
         const create = await this.service.create({
-            name: body.name,
-            email: body.email,
             companyId: body.companyId,
-            password: body.password
+            email: body.email,
+            role: body.role,
+            permissions: body.permissions,
+            name: body.name
         });
         return create
     }
@@ -32,5 +34,16 @@ export class ManagerController {
     async edit(@Body() body: EditManagerDto) {
         const edit = await this.service.edit(body)
         return edit
+    }
+
+    @Get('/recover')
+    async recover(@Query() { companyId }: recoverManagerDto) {
+        const recover = await this.service.recover(companyId)
+        return recover
+    }
+
+    @Post('/recoverPass')
+    async recoverPass(@Body() body: { email: string }) {
+        const recoverPass = await this.service.recoverPass(body.email)
     }
 }

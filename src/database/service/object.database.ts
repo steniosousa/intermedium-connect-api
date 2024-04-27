@@ -28,7 +28,8 @@ export class objectDatabase {
             const object = await this.prisma.object.findFirst({
                 where: {
                     name,
-                    companyId
+                    companyId,
+                    
                 },
             });
             return object;
@@ -45,6 +46,7 @@ export class objectDatabase {
         try {
             const objects = await this.prisma.object.findMany({
                 where: {
+
                     companyId,
                 },
                 select: {
@@ -53,7 +55,7 @@ export class objectDatabase {
                 }
             });
             return objects;
-        } catch {
+        } catch (error) {
             throw new HttpException(
                 'Error - Erro ao buscar objetos',
                 HttpStatus.BAD_REQUEST,

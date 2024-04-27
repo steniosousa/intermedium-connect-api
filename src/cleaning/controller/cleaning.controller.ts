@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
 import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
-import { GetAllCrons } from 'cleaning/dto/getAllCrons.dto';
 
 @Controller('/cleaning')
 export class CleaningController {
@@ -16,7 +15,13 @@ export class CleaningController {
 
   @Get('/recover')
   async getCleaning(@Query() query: findCleaningDto) {
-    const find = await this.service.findCleaning(query.userId);
+    const find = await this.service.findCleaning(query.userId, query.page);
+    return find;
+  }
+
+  @Get('/recover/app')
+  async getCleaningApp(@Query() query: findCleaningDto) {
+    const find = await this.service.findCleaningApp(query.userId);
     return find;
   }
 
@@ -24,6 +29,12 @@ export class CleaningController {
   async updateCleaning(@Body() body: any) {
     const update = await this.service.updateCleaning(body);
     return update;
+  }
+
+  @Post('/update/status')
+  async updateStatus(@Body() body: any) {
+    const updateStatus = await this.service.updateStatus(body)
+    return updateStatus
   }
 
   @Post('/delete')

@@ -25,12 +25,15 @@ export class companyDatabase {
       const company = await this.prisma.company.findFirst({
         where: {
           name,
+          desactiveAt: {
+            equals: null
+          }
         },
       });
       return company;
     } catch {
       throw new HttpException(
-        'Error - Company not found',
+        'Error - Empresa não encontrada',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -42,6 +45,11 @@ export class companyDatabase {
         orderBy: {
           name: 'asc'
         },
+        where: {
+          desactiveAt: {
+            equals: null
+          }
+        }
       });
       return all;
     } catch {
@@ -54,15 +62,60 @@ export class companyDatabase {
 
   async deleteCompany(companyId: string) {
     try {
-      const deleteCompany = await this.prisma.company.delete({
+      const deleteCompany = await this.prisma.company.update({
         where: {
           id: companyId,
         },
+        data: {
+          desactiveAt: new Date()
+        }
       });
       return deleteCompany;
-    } catch {
+    } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Unable to delete company',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async recoverCompanies(managerId: string) {
+    try {
+      const recover = await this.prisma.userForCompany.findMany({
+        where: {
+          userId: managerId,
+          company: {
+            desactiveAt: {
+              equals: null
+            }
+
+          }
+
+        },
+        select: {
+          company: true
+        }
+      })
+      return recover
+    } catch {
+      throw new Error('Unable found companies')
+    }
+  }
+
+  async updateCompany(id: string, name: string) {
+    try {
+      const company = await this.prisma.company.update({
+        where: {
+          id,
+        }, data: {
+          name
+        }
+      });
+      return company;
+    } catch {
+      throw new HttpException(
+        'Error - Erro ao editar empresa',
         HttpStatus.BAD_REQUEST,
       );
     }

@@ -12,6 +12,8 @@ enum EvidenceType {
   ENTRANCE
   EXIT
   OBSERVATION
+  OBSERVATION1
+  OBSERVATION2
 }
 
 enum Status {
@@ -32,6 +34,13 @@ enum StatusAvaliacao {
   PERFEITO
 }
 
+enum Permissions {
+  OBJECTS
+  PLACES
+  COMPANIES
+  EPIS
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String
@@ -41,24 +50,42 @@ model User {
   createdAt     DateTime  @default(now())
   deactivatedAt DateTime?
   deletedAt     DateTime?
-  companyId     String?
   role          Role      @default(EMPLOYEE)
   firstAcess    Boolean?
 
-  company    Company?     @relation(fields: [companyId], references: [id])
-  cleaning   Cleaning[]
-  schedule   Schedule[]
-  Avaliation Avaliation[]
+  cleaning            Cleaning[]
+  schedule            Schedule[]
+  Avaliation          Avaliation[]
+  userForCompany      userForCompany[]
+  PermissionsForUsers PermissionsForUsers[]
+}
+
+model PermissionsForUsers {
+  id         String      @id @default(uuid())
+  userId     String
+  Permission Permissions
+  user       User        @relation(fields: [userId], references: [id])
+}
+
+model userForCompany {
+  userId    String
+  companyId String
+
+  user    User    @relation(fields: [userId], references: [id])
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@id([userId, companyId])
 }
 
 model Company {
   id   String @id @default(uuid())
   name String
 
-  users  User[]
-  Epis   Equipment[]
-  Place  Place[]
-  Object Object[]
+  Epis           Equipment[]
+  Place          Place[]
+  Object         Object[]
+  userForCompany userForCompany[]
+  desactiveAt    DateTime?
 }
 
 model Equipment {
@@ -158,4 +185,28 @@ model Schedule {
 
   place       Place @relation(fields: [placeId], references: [id])
   responsible User  @relation(fields: [userId], references: [id])
+}
+
+model Truck {
+  id             String           @id @default(uuid())
+  plate          String           @unique
+  coordsForTruck coordsForTruck[]
+}
+
+model Coords {
+  id             String           @id @default(uuid())
+  lat            Float
+  lng            Float
+  time           DateTime         @default(now())
+  coordsForTruck coordsForTruck[]
+}
+
+model coordsForTruck {
+  truckId  String
+  coordsId String
+
+  truck  Truck  @relation(fields: [truckId], references: [id])
+  coords Coords @relation(fields: [coordsId], references: [id])
+
+  @@id([truckId, coordsId])
 }

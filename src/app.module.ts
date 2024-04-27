@@ -14,6 +14,8 @@ import { AvaliationModule } from 'avaliation/avaliation.module';
 import { emailModule } from 'Email/email.module';
 import { historyModule } from 'App/history/history.module';
 import { SchudeleAppModule } from 'App/schudele/schudeleApp.module';
+import { AuthModule } from 'auth/auth.module';
+import { TruckModule } from 'trucks/truck.module';
 
 @Module({
   imports: [
@@ -31,7 +33,9 @@ import { SchudeleAppModule } from 'App/schudele/schudeleApp.module';
     EpiModule,
     AvaliationModule,
     historyModule,
-    SchudeleAppModule
+    SchudeleAppModule,
+    AuthModule,
+    TruckModule
   ],
   controllers: [],
 })

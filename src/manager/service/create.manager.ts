@@ -1,34 +1,21 @@
 import { ManagerDatabase } from 'database/service/manager.database';
 import * as bcrypt from 'bcrypt';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { EmailService } from 'Email/service/email.service';
 
 @Injectable()
 export class ManagerService {
-    constructor(private readonly database: ManagerDatabase) { }
+    constructor(private readonly database: ManagerDatabase, private readonly email: EmailService) { }
 
-    async create({ name, email, companyId, password }) {
-        function generateRandomAlphanumeric(digits: number) {
-            let randomString = '';
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            const charactersLength = characters.length;
-
-            for (let i = 0; i < digits; i++) {
-                const randomIndex = Math.floor(Math.random() * charactersLength);
-                randomString += characters.charAt(randomIndex);
-            }
-
-            return randomString;
-        }
-        let hashPassword;
-        if (password) {
-            hashPassword = await bcrypt.hash(password, 12);
-
-        } else {
-            hashPassword = await bcrypt.hash('intermedium', 12);
-        }
-        const hashToLogin = generateRandomAlphanumeric(6);
-        const create = await this.database.create(name, email, companyId, hashPassword, hashToLogin)
+    async create({ email, companyId, role, permissions, name }) {
+        const create = await this.database.create(email, companyId, role, permissions, name)
+        await this.email.createUser(email, create.id, name)
         return create
+    }
+
+    async recoverPass(email: string) {
+        const { id, name } = await this.database.findWithEmail(email)
+        await this.email.recoverPass(email, id, name)
     }
 
     async find(email: string, password: string) {
@@ -43,12 +30,16 @@ export class ManagerService {
     }
 
     async edit(datas) {
-
         if (datas.password) {
             const hashPassword = await bcrypt.hash(datas.password, 12);
             datas['password'] = hashPassword
         }
         const edit = await this.database.edit(datas)
         return edit
+    }
+
+    async recover(companyId) {
+        const recover = await this.database.recover(companyId)
+        return recover
     }
 }

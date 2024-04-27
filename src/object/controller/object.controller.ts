@@ -25,9 +25,9 @@ export class ObjectController {
     }
 
     @Get('/recover')
-    async recover(@Query() companyId: recoverObjectDto) {
+    async recover(@Query() {companyId}: recoverObjectDto) {
         try {
-            const foundObjects = await this.service.recover(companyId.companyId)
+            const foundObjects = await this.service.recover(companyId)
             return foundObjects
         } catch (error) {
             let messager = 'Unable to found object'

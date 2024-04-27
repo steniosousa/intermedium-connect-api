@@ -11,7 +11,6 @@ export class UserDatabase {
           loginHash: key,
         },
       });
-
       return user;
     } catch {
       throw new HttpException(
@@ -59,20 +58,25 @@ export class UserDatabase {
 
 
   async updateUser(userId, datas) {
+    const novaData = new Date()
     const updateUser = await this.prisma.user.update({
       where: {
         id: userId,
       },
-      data: { ...datas },
+      data: {
+        ...datas
+        ,
+        deactivatedAt: datas.deactivatedAt ? novaData : null
+      },
     });
     return updateUser;
   }
 
-  async findUser(userId: string) {
+  async findUser(id: string) {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id: userId
+          id
         }
       })
       return user
@@ -108,7 +112,11 @@ export class UserDatabase {
     try {
       const allUsers = await this.prisma.user.findMany({
         where: {
-          companyId,
+          userForCompany: {
+            every: {
+              companyId: companyId
+            }
+          },
           AND: {
             role: {
               equals: 'EMPLOYEE'
@@ -116,7 +124,10 @@ export class UserDatabase {
             deletedAt: {
               equals: null
             },
-            
+            deactivatedAt: {
+              equals: null
+            }
+
           }
         },
         select: {
@@ -124,8 +135,9 @@ export class UserDatabase {
           loginHash: true,
           name: true,
           deletedAt: true,
-          companyId:true,
-          role:true
+          userForCompany: true,
+          role: true,
+          deactivatedAt: true
         }
       });
       return allUsers;
@@ -138,5 +150,137 @@ export class UserDatabase {
       throw new Error(message)
     }
   }
+
+  async recover(userId: string) {
+    try {
+      const allUsers = await this.prisma.userForCompany.findMany({
+        where: {
+          userId
+        },
+        select: {
+          user: {
+            select: {
+              deactivatedAt: true
+            }
+          }
+        }
+      });
+      return allUsers;
+
+    } catch (error) {
+      let message = "Error to recover users"
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
+  async recoverForPdf(companyId: string) {
+    try {
+      const allUsers = await this.prisma.userForCompany.findMany({
+        where: {
+          companyId,
+          company: {
+            desactiveAt: {
+              equals: null
+            }
+          }
+        },
+        select: {
+          user: {
+            select: {
+              cleaning: {
+                select: {
+                  Place: {
+                    select: {
+                      name: true
+                    }
+                  },
+                  status: true,
+                  createdAt: true,
+                },
+
+              },
+              name: true,
+              createdAt: true,
+              role: true,
+              email: true,
+              Avaliation: {
+                select:{
+                  status:true,
+                  observation:true,
+                  Cleaning:{
+                    select:{
+                      Place:{
+                        select:{
+                          name:true
+                        }
+                      }
+                    }
+                  },
+                  EquipmentsOfAvaliation:{
+                    select:{
+                      equipament:{
+                        select:{
+                          name:true,
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+
+            }
+          }
+        }
+      });
+      return allUsers;
+
+    } catch (error) {
+      let message = "Error to recover users"
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
+  async recoverAvaliation(companyId: string) {
+    try {
+      const allUsers = await this.prisma.userForCompany.findMany({
+        where: {
+          companyId,
+          company: {
+            desactiveAt: {
+              equals: null
+            }
+          }
+        },
+        select: {
+          user: {
+            select: {
+              cleaning: true,
+              name: true,
+              createdAt: true,
+              role: true,
+              email: true,
+
+            }
+          }
+        }
+      });
+      return allUsers;
+
+    } catch (error) {
+      let message = "Error to recover users"
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
+
 
 }

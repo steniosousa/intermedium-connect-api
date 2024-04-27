@@ -11,6 +11,7 @@ export class PlaceDatabase {
         data: {
           name,
           companyId,
+          
         },
       });
       return save;
@@ -38,6 +39,62 @@ export class PlaceDatabase {
         'Error - Error recovering environments',
         HttpStatus.BAD_REQUEST,
       );
+    }
+  }
+
+  async updatePlace(id, name) {
+    try {
+      await this.prisma.place.update({
+        where: {
+          id
+        }, data: {
+          name
+        }
+      })
+    } catch {
+      throw new Error(' Error - Error when update environment')
+    }
+  }
+
+  async deletePlace(id) {
+    try {
+      await this.prisma.place.delete({
+        where: {
+          id
+        }
+      })
+    } catch (error) {
+      let message = ' Error - Error when delete environment'
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
+    }
+  }
+
+  async placeInUse(id) {
+    try {
+     const inUse =  await this.prisma.place.findFirst({
+        where: {
+          Cleaning: {
+            some: {
+              placeId: id
+            }
+          },
+          Schedule: {
+            some: {
+              placeId: id
+            }
+          }
+        }
+      })
+      return inUse
+    } catch (error) {
+      let message = ' Error - Error when delete environment'
+      if (error instanceof Error) {
+        message = error.message
+      }
+      throw new Error(message)
     }
   }
 }

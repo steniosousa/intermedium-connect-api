@@ -19,6 +19,7 @@ export class createAvaliationDto {
 
     @IsArray()
     @IsNotEmpty()
+    @IsOptional()
     episId: string[];
 
 }
