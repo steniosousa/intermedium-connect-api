@@ -5,7 +5,7 @@ import { PrismaService } from './prisma.service';
 export class AvaliationDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(episId, managerId, observation, status, scheduleId) {
+  async create(episId:string[], managerId:string, observation:string, status:any, scheduleId:string) {
     try {
       await this.prisma.avaliation.create({
         data: {
@@ -29,7 +29,7 @@ export class AvaliationDatabase {
     }
   }
 
-  async recover(userId) {
+  async recover(userId:string) {
     try {
       const recover = await this.prisma.avaliation.findMany({
         where: {

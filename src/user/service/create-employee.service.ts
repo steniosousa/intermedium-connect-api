@@ -1,5 +1,5 @@
+import { PrismaUsersRepository } from '@/database/prisma/repositories/prisma-users.repository';
 import { Injectable } from '@nestjs/common';
-import { PrismaUsersRepository } from 'database/prisma/repositories/prisma-users.repository';
 import * as bcrypt from 'bcrypt';
 
 export interface CreateUserServiceParams {

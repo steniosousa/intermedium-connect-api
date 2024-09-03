@@ -3,15 +3,15 @@ import { IsArray, IsDate, IsNotEmpty, IsString } from 'class-validator';
 export class CreateCleaningDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  userId: string = '';
   @IsString()
   @IsNotEmpty()
-  placeId: string;
+  placeId: string = '';
   @IsArray()
   @IsNotEmpty()
-  objectsId: string[];
+  objectsId: string[] = [''];
 
   @IsNotEmpty()
   @IsArray()
-  eventDate: string[];
+  eventDate: string[] = [''];
 }

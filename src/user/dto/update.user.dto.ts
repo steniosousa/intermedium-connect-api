@@ -3,19 +3,19 @@ import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class updateUserDto {
   @IsNotEmpty()
   @IsString()
-  id: string;
+  id: string = '';
   @IsOptional()
-  deletedAt: Date;
+  deletedAt: Date = new Date();
   @IsString()
   @IsOptional()
-  password: string;
+  password: string = '';
   @IsString()
   @IsOptional()
-  name: string;
+  name: string = '';
   @IsString()
   @IsOptional()
-  companyId: string;
+  companyId: string = '';
   @IsString()
   @IsOptional()
-  managerId: string;
+  managerId: string = '';
 }

@@ -1,5 +1,5 @@
+import { PrismaService } from '@/database/service/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'database/service/prisma.service';
 import * as dayjs from 'dayjs';
 
 @Injectable()

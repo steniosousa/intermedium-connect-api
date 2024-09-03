@@ -13,10 +13,10 @@ import { findUserDto } from '../dto/find.user.dto';
 import { findUserWithNameAndPasswordDto } from '../dto/findWithNameAndPassword';
 import { updateUserDto } from '../dto/update.user.dto';
 import { userService } from '../service/user.service';
-import { CreateUserService } from 'user/service/create-employee.service';
-import { recoverUserDto } from 'user/dto/recover.user';
-import { recoverAllUsersDto } from 'user/dto/recover.Allusers';
-import { generatePdfDto } from 'user/dto/generatePdf.dto';
+import { CreateUserService } from '../service/create-employee.service';
+import { recoverUserDto } from '../dto/recover.user';
+import { recoverAllUsersDto } from '../dto/recover.Allusers';
+import { generatePdfDto } from '../dto/generatePdf.dto';
 
 @Controller('/user')
 export class userController {

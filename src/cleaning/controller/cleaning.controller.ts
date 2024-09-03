@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CreateCleaningDto } from '../dto/createCleaning.dto';
-import { findCleaningDto } from '../dto/findCleaning.dto';
 import { cleaningService } from '../service/cleaning.service';
+import { FindCleaningDto } from '../dto/findCleaning.dto';
 
 @Controller('/cleaning')
 export class CleaningController {
@@ -14,13 +14,13 @@ export class CleaningController {
   }
 
   @Get('/recover')
-  async getCleaning(@Query() query: findCleaningDto) {
+  async getCleaning(@Query() query: FindCleaningDto) {
     const find = await this.service.findCleaning(query.userId, query.page);
     return find;
   }
 
   @Get('/recover/app')
-  async getCleaningApp(@Query() query: findCleaningDto) {
+  async getCleaningApp(@Query() query: FindCleaningDto) {
     const find = await this.service.findCleaningApp(query.userId);
     return find;
   }

@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { EmailService } from 'Email/service/email.service';
+import { EmailService } from '../service/email.service';
 
 @Controller('/email')
 export class EmailController {
@@ -19,7 +19,7 @@ export class EmailController {
   }
 
   @Post('/receiver')
-  async receiver(@Body() datas) {
+  async receiver(@Body() datas:{email:string}) {
     const { email } = datas;
     const cat = this.emailService.create(email);
     await this.emailService.receiveCod(cat);

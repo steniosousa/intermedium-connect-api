@@ -1,11 +1,11 @@
+import { AvaliationDatabase } from '@/database/service/avaliation.database';
 import { Injectable } from '@nestjs/common';
-import { AvaliationDatabase } from 'database/service/avaliation.database';
 
 @Injectable()
 export class AvaliationService {
   constructor(private readonly database: AvaliationDatabase) {}
 
-  async create(episId, managerId, observation, status, scheduleId) {
+  async create(episId:string[], managerId:string, observation:string, status:any, scheduleId:string) {
     await this.database.create(
       episId,
       managerId,
@@ -14,7 +14,7 @@ export class AvaliationService {
       scheduleId,
     );
   }
-  async recover(userId) {
+  async recover(userId:string) {
     const recover = await this.database.recover(userId);
     return recover;
   }

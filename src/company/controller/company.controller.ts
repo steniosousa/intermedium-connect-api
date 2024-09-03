@@ -3,8 +3,8 @@ import { createCompanyDto } from '../dto/createCompany.dto';
 import { deleteCompanyDto } from '../dto/deleteCompany.dto';
 import { findCompanyDto } from '../dto/findCompany.dto';
 import { companyService } from '../service/company.service';
-import { recoverCompaniesDto } from 'company/dto/recoverCompanies.dto';
-import { updateCompanyDto } from 'company/dto/updateCompany.dto';
+import { recoverCompaniesDto } from '../dto/recoverCompanies.dto';
+import { updateCompanyDto } from '../dto/updateCompany.dto';
 
 @Controller('/companies')
 export class companyController {

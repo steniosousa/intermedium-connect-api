@@ -1,5 +1,5 @@
+import { companyDatabase } from '@/database/service/company.database';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { companyDatabase } from 'database/service/company.database';
 
 @Injectable()
 export class companyService {

@@ -41,7 +41,7 @@ export class PlaceDatabase {
     }
   }
 
-  async updatePlace(id, name) {
+  async updatePlace(id:string, name:string) {
     try {
       await this.prisma.place.update({
         where: {
@@ -56,7 +56,7 @@ export class PlaceDatabase {
     }
   }
 
-  async deletePlace(id) {
+  async deletePlace(id:string) {
     try {
       await this.prisma.place.delete({
         where: {
@@ -72,7 +72,7 @@ export class PlaceDatabase {
     }
   }
 
-  async placeInUse(id) {
+  async placeInUse(id:string) {
     try {
       const inUse = await this.prisma.place.findFirst({
         where: {

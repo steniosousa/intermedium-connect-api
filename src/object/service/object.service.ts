@@ -1,11 +1,11 @@
+import { objectDatabase } from '@/database/service/object.database';
 import { Injectable } from '@nestjs/common';
-import { objectDatabase } from 'database/service/object.database';
 
 @Injectable()
 export class ObjectService {
   constructor(private readonly idatabase: objectDatabase) {}
 
-  async create(name, companyId) {
+  async create(name:string, companyId:string) {
     try {
       const verify = await this.idatabase.findWithName(name, companyId);
       if (verify) {

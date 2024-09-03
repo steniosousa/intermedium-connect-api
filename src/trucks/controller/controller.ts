@@ -7,7 +7,7 @@ import {
   Headers,
   Query,
 } from '@nestjs/common';
-import { truckService } from 'trucks/service/service';
+import { truckService } from '../service/service';
 
 @Controller('/truck')
 export class truckController {

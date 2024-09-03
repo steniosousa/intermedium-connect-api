@@ -1,5 +1,5 @@
+import { EpiDatabase } from '@/database/service/epi.database';
 import { Injectable } from '@nestjs/common';
-import { EpiDatabase } from 'database/service/epi.database';
 
 @Injectable()
 export class EpiService {

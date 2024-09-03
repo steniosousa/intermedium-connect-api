@@ -5,7 +5,7 @@ import { PrismaService } from './prisma.service';
 export class EpiDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(companyId, name) {
+  async create(companyId:string, name:string) {
     try {
       await this.prisma.equipment.create({
         data: {
@@ -18,7 +18,7 @@ export class EpiDatabase {
     }
   }
 
-  async findEpiWithNameAndCompanyId(companyId, name) {
+  async findEpiWithNameAndCompanyId(companyId:string, name:string) {
     try {
       const epi = await this.prisma.equipment.findFirst({
         where: {
@@ -35,7 +35,7 @@ export class EpiDatabase {
     }
   }
 
-  async recover(companyId) {
+  async recover(companyId:string) {
     try {
       const recover = await this.prisma.equipment.findMany({
         where: {
@@ -53,7 +53,7 @@ export class EpiDatabase {
     }
   }
 
-  async delete(episId) {
+  async delete(episId:string) {
     try {
       await this.prisma.equipment.update({
         where: {
@@ -68,7 +68,7 @@ export class EpiDatabase {
     }
   }
 
-  async edit(name, epiId) {
+  async edit(name:string, epiId:string) {
     try {
       await this.prisma.equipment.update({
         data: {

@@ -1,5 +1,5 @@
+import { TruckDatabase } from '@/database/service/truck.database';
 import { Injectable } from '@nestjs/common';
-import { TruckDatabase } from 'database/service/truck.database';
 @Injectable()
 export class truckService {
   constructor(readonly database: TruckDatabase) {}
@@ -14,7 +14,7 @@ export class truckService {
     return recover;
   }
 
-  async getCoords(plate) {
+  async getCoords(plate:any) {
     const recoverCoords = await this.database.recoverCoords(plate);
     if (!recoverCoords) return null;
     const { coords } = recoverCoords;

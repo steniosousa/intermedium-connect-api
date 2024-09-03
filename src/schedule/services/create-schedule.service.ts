@@ -1,11 +1,11 @@
-import { PrismaService } from 'database/service/prisma.service';
+import { PrismaService } from '@/database/service/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export default class CreateScheduleService {
   constructor(private readonly Prisma: PrismaService) {}
 
-  async create(data) {
+  async create(data:any) {
     try {
       for (const date of data.eventDate) {
         await this.Prisma.schedule.create({
@@ -66,7 +66,7 @@ export default class CreateScheduleService {
     }
   }
 
-  async edit(scheduleId) {
+  async edit(scheduleId:string) {
     try {
       const date = await this.Prisma.schedule.findUnique({
         where: {

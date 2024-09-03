@@ -1,5 +1,5 @@
+import { PrismaService } from '@/database/service/prisma.service';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'database/service/prisma.service';
 
 interface ScheduleCleaningParams {
   placeId: string;

@@ -1,31 +1,28 @@
 import {
   IsArray,
-  IsBoolean,
-  IsDate,
   IsEmail,
   IsNotEmpty,
-  IsOptional,
   IsString,
 } from 'class-validator';
 
 export class CreateManagerDto {
   @IsNotEmpty()
   @IsArray()
-  companyId: string[];
+  companyId: string[] = [''];
 
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string = '';
 
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email: string = '';
 
   @IsNotEmpty()
   @IsString()
-  role: string;
+  role: string = '';
 
   @IsArray()
   @IsNotEmpty()
-  permissions: string[];
+  permissions: string[] = [''];
 }

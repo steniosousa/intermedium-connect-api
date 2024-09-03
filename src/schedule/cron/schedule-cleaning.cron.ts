@@ -1,8 +1,8 @@
+import { PrismaService } from '@/database/service/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { PrismaService } from 'database/service/prisma.service';
 import * as dayjs from 'dayjs';
-import { ListTodayScheduleService } from 'schedule/services/list-today-schedule.service';
+import { ListTodayScheduleService } from '../services/list-today-schedule.service';
 
 @Injectable()
 export class ScheduleCleaningCron {

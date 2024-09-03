@@ -1,4 +1,4 @@
-import { PrismaUsersRepository } from 'database/prisma/repositories/prisma-users.repository';
+import { PrismaUsersRepository } from "@/database/prisma/repositories/prisma-users.repository";
 
 export class DeleteUserService {
   constructor(private readonly usersRepository: PrismaUsersRepository) {}

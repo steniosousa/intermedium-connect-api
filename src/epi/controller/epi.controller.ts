@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Post, Query, Delete } from '@nestjs/common';
-import { createEpiDto } from 'epi/dto/create.epi.dto';
-import { deleteEpiDto } from 'epi/dto/delete.epi.dto';
-import { editEpiDto } from 'epi/dto/edit.epi.dto';
-import { recoverEpiDto } from 'epi/dto/recover.epi';
-import { EpiService } from 'epi/service/epi.service';
+import { EpiService } from '../service/epi.service';
+import { createEpiDto } from '../dto/create.epi.dto';
+import { recoverEpiDto } from '../dto/recover.epi';
+import { deleteEpiDto } from '../dto/delete.epi.dto';
+import { editEpiDto } from '../dto/edit.epi.dto';
 
 @Controller('/epis')
 export class EpiController {

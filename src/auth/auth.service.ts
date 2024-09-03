@@ -1,6 +1,6 @@
+import { PrismaService } from '@/database/service/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { compare } from 'bcrypt';
-import { PrismaService } from 'database/service/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -8,7 +8,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     try {
-      const user = await this.prisma.user.findUnique({
+      const user:any = await this.prisma.user.findUnique({
         where: {
           email,
         },

@@ -1,5 +1,5 @@
+import { HistoryDatabase } from '@/database/service/history.database';
 import { Injectable } from '@nestjs/common';
-import { HistoryDatabase } from 'database/service/history.database';
 
 @Injectable()
 export class HistoryService {

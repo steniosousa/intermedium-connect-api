@@ -1,6 +1,6 @@
+import { CleaningDatabase } from '@/database/service/cleaning.database';
+import { UserDatabase } from '@/database/service/user.database';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CleaningDatabase } from 'database/service/cleaning.database';
-import { UserDatabase } from 'database/service/user.database';
 
 @Injectable()
 export class userService {
@@ -9,8 +9,8 @@ export class userService {
     readonly databaseCleaning: CleaningDatabase,
   ) {}
 
-  async findUserWithNameAndPass(params) {
-    const { userId, password } = params;
+  async findUserWithNameAndPass(params:any) {
+    const { userId, password } = params
     const findUser = await this.database.findUserWithNameAndPassword(
       userId,
       password,
@@ -23,7 +23,7 @@ export class userService {
     return findUser;
   }
 
-  async updateUser(params) {
+  async updateUser(params:{id:string}) {
     const { id } = params;
 
     const indentify = await this.database.findUser(id);
@@ -40,7 +40,7 @@ export class userService {
       1,
     );
     const inProgress = userWithCleaning.cleanings.find(
-      (item) => item.deletedAt == null,
+      (item:any) => item.deletedAt == null,
     );
     if (inProgress) {
       throw new HttpException(

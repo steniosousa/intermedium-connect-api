@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
-import { createPlaceDto } from 'place/dto/createPlace.dto';
-import { findPlacesDto } from 'place/dto/findPlaces.dto';
-import { PlaceService } from 'place/service/place.service';
+import { PlaceService } from '../service/place.service';
+import { createPlaceDto } from '../dto/createPlace.dto';
+import { findPlacesDto } from '../dto/findPlaces.dto';
 
 @Controller('/place')
 export class PlaceController {
@@ -21,13 +21,13 @@ export class PlaceController {
   }
 
   @Post('/update')
-  async update(@Body() { id, name }) {
+  async update(@Body() { id, name }:{id:string, name:string}) {
     const update = await this.service.updatePlace(id, name);
     return update;
   }
 
   @Delete('/delete')
-  async delete(@Query() { placeId }) {
+  async delete(@Query() { placeId  }:{placeId:string}) {
     try {
       const deletePlace = await this.service.deletePlace(placeId);
       return deletePlace;

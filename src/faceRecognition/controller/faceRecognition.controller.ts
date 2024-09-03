@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Query, Delete } from '@nestjs/common';
+import { Body, Controller, Post, Get } from '@nestjs/common';
 import { createUserFaceRecognitiontDto } from '../dto/create.faceRecognition.dto';
 import { faceRecognitiontService } from '../service/faceRecognition.service';
 

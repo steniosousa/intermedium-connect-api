@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from 'database/database.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailController } from './controller/email.controller';
 import { EmailService } from './service/email.service';
+import { DatabaseModule } from '@/database/database.module';
 
 @Module({
   controllers: [EmailController],

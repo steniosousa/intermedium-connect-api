@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { UserDatabase } from 'database/service/user.database';
+import { UserDatabase } from '@/database/service/user.database';
 
 @Injectable()
 export class EmailService {
-  private readonly cats = [];
+  private readonly cats:string[] = [];
 
   constructor(
     private readonly mailerService: MailerService,
@@ -14,7 +14,7 @@ export class EmailService {
     return this.cats;
   }
 
-  create(cat: any) {
+  create(cat: string) {
     this.cats.push(cat);
     return cat;
   }
@@ -37,7 +37,7 @@ export class EmailService {
 
   async receiveCod(cat: any) {
     const resetPassword = await this.dabatase.findUserWithEmail(cat);
-
+    if(!resetPassword) return
     await this.mailerService.sendMail({
       to: cat,
       subject: 'Alteração de senha - Intermedium',

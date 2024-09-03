@@ -70,7 +70,7 @@ export class TruckDatabase {
     }
   }
 
-  async findTruckIfExistCoords(plate) {
+  async findTruckIfExistCoords(plate:string) {
     try {
       const exist = await this.prisma.coords.findFirst({
         where: {

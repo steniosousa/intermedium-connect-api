@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { createAvaliationDto } from 'avaliation/dto/create.avaliation';
-import { recoverAvaliationDto } from 'avaliation/dto/recover.avaliation';
-import { AvaliationService } from 'avaliation/service/avalition.service';
+import { AvaliationService } from '../service/avalition.service';
+import { createAvaliationDto } from '../dto/create.avaliation';
+import { recoverAvaliationDto } from '../dto/recover.avaliation';
 
 @Controller('/avaliation')
 export class AvaliationController {

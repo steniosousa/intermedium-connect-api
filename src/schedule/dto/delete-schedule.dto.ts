@@ -3,5 +3,5 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class DeleteScheduleDto {
   @IsNotEmpty()
   @IsString()
-  scheduleId: string;
+  scheduleId: string =' ';
 }

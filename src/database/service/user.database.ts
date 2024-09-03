@@ -47,7 +47,7 @@ export class UserDatabase {
     }
   }
 
-  async updateUser(userId, datas) {
+  async updateUser(userId:string, datas:any) {
     const novaData = new Date();
     const updateUser = await this.prisma.user.update({
       where: {

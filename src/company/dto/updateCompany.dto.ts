@@ -3,9 +3,9 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class updateCompanyDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  name: string = '';
 
   @IsNotEmpty()
   @IsString()
-  id: string;
+  id: string = '';
 }

@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 export class ManagerDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(email, companyId, role, permissions, name) {
+  async create(email:string, companyId:string[], role:any, permissions:any, name:string) {
     try {
       const createUser = await this.prisma.user.create({
         data: {
@@ -14,7 +14,7 @@ export class ManagerDatabase {
           email,
           userForCompany: {
             createMany: {
-              data: companyId.map((item) => ({ companyId: item })),
+              data: companyId.map((item:any) => ({ companyId: item })),
             },
           },
           password: '',
@@ -38,7 +38,7 @@ export class ManagerDatabase {
 
   async find(email: string, password: string) {
     try {
-      const pass = await this.prisma.user.findUnique({
+      const pass:any = await this.prisma.user.findUnique({
         where: { email },
         select: {
           id: true,
@@ -77,7 +77,7 @@ export class ManagerDatabase {
     }
   }
 
-  async edit(datas) {
+  async edit(datas:any) {
     try {
       return await this.prisma.user.update({
         where: {
@@ -93,7 +93,7 @@ export class ManagerDatabase {
     }
   }
 
-  async recover(companyId) {
+  async recover(companyId:string) {
     try {
       const recover = await this.prisma.user.findMany({
         where: {

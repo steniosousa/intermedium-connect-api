@@ -1,10 +1,10 @@
+import { CleaningDatabase } from '@/database/service/cleaning.database';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CleaningDatabase } from 'database/service/cleaning.database';
 
 @Injectable()
 export class cleaningService {
   constructor(private readonly database: CleaningDatabase) {}
-  async create({ userId, objectsId, placeId, eventDate }) {
+  async create({ userId, objectsId, placeId, eventDate }:any) {
     const newCleaning = await this.database.create(
       userId,
       objectsId,
@@ -15,7 +15,7 @@ export class cleaningService {
     return newCleaning;
   }
 
-  async deletionCleaning(id) {
+  async deletionCleaning(id:string) {
     const deletion = await this.database.deletion(id);
     return deletion;
   }
@@ -32,7 +32,7 @@ export class cleaningService {
     return find;
   }
 
-  async updateCleaning(params) {
+  async updateCleaning(params:any) {
     const { id, Evidences, status } = params;
     const verifyOfNull = await this.database.findCleaningWithoutEvidences(id);
     if (verifyOfNull) {
@@ -45,7 +45,7 @@ export class cleaningService {
     return;
   }
 
-  async updateStatus(body) {
+  async updateStatus(body:any) {
     const { status, id } = body;
     const updateStatus = await this.database.updateStatus(status, id);
     return updateStatus;

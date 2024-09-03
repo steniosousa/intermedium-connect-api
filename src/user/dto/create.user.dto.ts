@@ -3,9 +3,9 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class createServiceDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name: string = '';
 
   @IsString()
   @IsNotEmpty()
-  companyId: string;
+  companyId: string = '';
 }

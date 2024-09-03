@@ -1,10 +1,10 @@
+import { PlaceDatabase } from '@/database/service/place.database';
 import { Injectable } from '@nestjs/common';
-import { PlaceDatabase } from 'database/service/place.database';
 
 @Injectable()
 export class PlaceService {
   constructor(private readonly database: PlaceDatabase) {}
-  async createPlace(body) {
+  async createPlace(body:{name:string, companyId:string}) {
     const { name, companyId } = body;
     const save = await this.database.createPlace(name, companyId);
     return save;
@@ -15,12 +15,12 @@ export class PlaceService {
     return findAll;
   }
 
-  async updatePlace(id, name) {
+  async updatePlace(id:string, name:string) {
     const updatePlace = await this.database.updatePlace(id, name);
     return updatePlace;
   }
 
-  async deletePlace(id) {
+  async deletePlace(id:string) {
     const verifyInUse = await this.database.placeInUse(id);
     if (verifyInUse) {
       return 'Place in use';

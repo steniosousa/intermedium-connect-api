@@ -5,7 +5,7 @@ import { PrismaService } from './prisma.service';
 export class CleaningDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(userId, objectId, placeId, eventDate) {
+  async create(userId:string, objectId:string[], placeId:string, eventDate:Date[]) {
     try {
       for (const date of eventDate) {
         await this.prisma.cleaning.create({
@@ -187,7 +187,7 @@ export class CleaningDatabase {
     }
   }
 
-  async updateCleaning(id, evidences, status) {
+  async updateCleaning(id:string, evidences:any, status:any) {
     try {
       const altered = await this.prisma.cleaning.update({
         where: {
@@ -196,7 +196,7 @@ export class CleaningDatabase {
         data: {
           evidences: {
             createMany: {
-              data: evidences.map((item) => ({
+              data: evidences.map((item:any) => ({
                 evidenceUrl: item.evidenceUrl,
                 type: item.type,
               })),
@@ -215,7 +215,7 @@ export class CleaningDatabase {
     }
   }
 
-  async updateStatus(status, id) {
+  async updateStatus(status:any, id:string) {
     try {
       const altered = await this.prisma.cleaning.update({
         where: {
@@ -234,7 +234,7 @@ export class CleaningDatabase {
     }
   }
 
-  async findCleaningWithoutEvidences(id) {
+  async findCleaningWithoutEvidences(id:string) {
     try {
       const altered = await this.prisma.evidence.findFirst({
         where: {

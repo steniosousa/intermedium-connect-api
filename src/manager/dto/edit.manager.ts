@@ -3,17 +3,17 @@ import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class EditManagerDto {
   @IsNotEmpty()
   @IsString()
-  id: string;
+  id: string = '';
 
   @IsString()
   @IsOptional()
-  name: string;
+  name: string = '';
 
   @IsString()
   @IsOptional()
-  password: string;
+  password: string = '';
 
   @IsEmail()
   @IsOptional()
-  email: string;
+  email: string = '';
 }

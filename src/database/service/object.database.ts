@@ -22,7 +22,7 @@ export class objectDatabase {
     }
   }
 
-  async findWithName(name, companyId) {
+  async findWithName(name:string, companyId:string) {
     try {
       const object = await this.prisma.object.findFirst({
         where: {

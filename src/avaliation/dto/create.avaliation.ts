@@ -3,22 +3,22 @@ import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class createAvaliationDto {
   @IsNotEmpty()
   @IsString()
-  scheduleId: string;
+  scheduleId: string = '';
 
   @IsNotEmpty()
   @IsString()
-  managerId: string;
+  managerId: string = '';
 
   @IsNotEmpty()
   @IsString()
-  status: string;
+  status: string = '';
 
   @IsString()
   @IsOptional()
-  observation: string;
+  observation: string = '';
 
   @IsArray()
   @IsNotEmpty()
   @IsOptional()
-  episId: string[];
+  episId: string[] = [''];
 }

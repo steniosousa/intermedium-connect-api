@@ -7,10 +7,10 @@ import {
   Get,
   Param,
 } from '@nestjs/common';
-import { CreateScheduleDto } from 'schedule/dto/create-schedule.dto';
-import { DeleteScheduleDto } from 'schedule/dto/delete-schedule.dto';
-import { recoverScheduleDto } from 'schedule/dto/recover.schedule';
-import CreateScheduleService from 'schedule/services/create-schedule.service';
+import CreateScheduleService from '../services/create-schedule.service';
+import { CreateScheduleDto } from '../dto/create-schedule.dto';
+import { DeleteScheduleDto } from '../dto/delete-schedule.dto';
+import { recoverScheduleDto } from '../dto/recover.schedule';
 
 @Controller('/schedule')
 export class ScheduleController {

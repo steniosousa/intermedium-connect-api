@@ -1,8 +1,8 @@
 import { Body, Controller, Post, Get, Query } from '@nestjs/common';
-import { CreateManagerDto } from 'manager/dto/create.manager';
-import { EditManagerDto } from 'manager/dto/edit.manager';
-import { recoverManagerDto } from 'manager/dto/recover.manager';
-import { ManagerService } from 'manager/service/create.manager';
+import { ManagerService } from '../service/create.manager';
+import { CreateManagerDto } from '../dto/create.manager';
+import { EditManagerDto } from '../dto/edit.manager';
+import { recoverManagerDto } from '../dto/recover.manager';
 
 @Controller('/manager')
 export class ManagerController {

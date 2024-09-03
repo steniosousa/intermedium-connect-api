@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Get, Query, Delete } from '@nestjs/common';
-import { createObjectDto } from 'object/dto/create.object.dto';
-import { deleteObjectDto } from 'object/dto/delete.object';
-import { recoverObjectDto } from 'object/dto/recover.object';
-import { updateObjectDto } from 'object/dto/update.object';
-import { ObjectService } from 'object/service/object.service';
+import { ObjectService } from '../service/object.service';
+import { createObjectDto } from '../dto/create.object.dto';
+import { recoverObjectDto } from '../dto/recover.object';
+import { deleteObjectDto } from '../dto/delete.object';
+import { updateObjectDto } from '../dto/update.object';
 
 @Controller('/objects')
 export class ObjectController {

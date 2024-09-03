@@ -5,7 +5,7 @@ import { PrismaService } from './prisma.service';
 export class scheduleAppDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(Evidences) {
+  async create(Evidences:any) {
     try {
       await this.prisma.cleaning.update({
         where: {
@@ -14,7 +14,7 @@ export class scheduleAppDatabase {
         data: {
           evidences: {
             createMany: {
-              data: Evidences.map((item) => ({
+              data: Evidences.map((item:any) => ({
                 evidenceUrl: item.evidenceUrl,
                 type: item.type,
                 createdAt: new Date(),

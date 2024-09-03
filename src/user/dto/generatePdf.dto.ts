@@ -9,13 +9,13 @@ import {
 export class generatePdfDto {
   @IsNotEmpty()
   @IsString()
-  companyId: string;
+  companyId: string = '';
 
   @IsNotEmpty()
   @IsDateString()
-  startDate: Date;
+  startDate: Date  = new Date();
 
   @IsNotEmpty()
   @IsDateString()
-  endDate: Date;
+  endDate: Date = new Date();
 }
