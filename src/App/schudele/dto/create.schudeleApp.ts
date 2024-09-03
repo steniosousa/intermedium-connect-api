@@ -1,13 +1,7 @@
-import {
-    IsArray,
-    IsNotEmpty,
-    IsString,
-  } from 'class-validator';
-  
-  export class CreateSchudeleDto {
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
-    @IsArray()
-    @IsNotEmpty()
-    Evidences: object[];
-  }
-  
+export class CreateSchudeleDto {
+  @IsArray()
+  @IsNotEmpty()
+  Evidences: object[];
+}

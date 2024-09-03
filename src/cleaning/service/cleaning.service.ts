@@ -3,10 +3,14 @@ import { CleaningDatabase } from 'database/service/cleaning.database';
 
 @Injectable()
 export class cleaningService {
-  constructor(private readonly database: CleaningDatabase) { }
+  constructor(private readonly database: CleaningDatabase) {}
   async create({ userId, objectsId, placeId, eventDate }) {
-
-    const newCleaning = await this.database.create(userId, objectsId, placeId, eventDate);
+    const newCleaning = await this.database.create(
+      userId,
+      objectsId,
+      placeId,
+      eventDate,
+    );
 
     return newCleaning;
   }
@@ -29,8 +33,8 @@ export class cleaningService {
   }
 
   async updateCleaning(params) {
-    const { id, Evidences, status } = params
-    const verifyOfNull = await this.database.findCleaningWithoutEvidences(id)
+    const { id, Evidences, status } = params;
+    const verifyOfNull = await this.database.findCleaningWithoutEvidences(id);
     if (verifyOfNull) {
       throw new HttpException(
         'Error - Limpeza já registrada',
@@ -38,15 +42,12 @@ export class cleaningService {
       );
     }
     const update = await this.database.updateCleaning(id, Evidences, status);
-    return ;
+    return;
   }
 
   async updateStatus(body) {
-    const { status, id } = body
-    const updateStatus = await this.database.updateStatus(status, id)
-    return updateStatus
+    const { status, id } = body;
+    const updateStatus = await this.database.updateStatus(status, id);
+    return updateStatus;
   }
-
-
-
 }

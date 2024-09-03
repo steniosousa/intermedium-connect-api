@@ -3,7 +3,7 @@ import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class PlaceDatabase {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async createPlace(name: string, companyId: string) {
     try {
@@ -11,7 +11,6 @@ export class PlaceDatabase {
         data: {
           name,
           companyId,
-          
         },
       });
       return save;
@@ -30,8 +29,8 @@ export class PlaceDatabase {
           companyId,
         },
         orderBy: {
-          name: 'asc'
-        }
+          name: 'asc',
+        },
       });
       return find;
     } catch {
@@ -46,13 +45,14 @@ export class PlaceDatabase {
     try {
       await this.prisma.place.update({
         where: {
-          id
-        }, data: {
-          name
-        }
-      })
+          id,
+        },
+        data: {
+          name,
+        },
+      });
     } catch {
-      throw new Error(' Error - Error when update environment')
+      throw new Error(' Error - Error when update environment');
     }
   }
 
@@ -60,41 +60,41 @@ export class PlaceDatabase {
     try {
       await this.prisma.place.delete({
         where: {
-          id
-        }
-      })
+          id,
+        },
+      });
     } catch (error) {
-      let message = ' Error - Error when delete environment'
+      let message = ' Error - Error when delete environment';
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      throw new Error(message)
+      throw new Error(message);
     }
   }
 
   async placeInUse(id) {
     try {
-     const inUse =  await this.prisma.place.findFirst({
+      const inUse = await this.prisma.place.findFirst({
         where: {
           Cleaning: {
             some: {
-              placeId: id
-            }
+              placeId: id,
+            },
           },
           Schedule: {
             some: {
-              placeId: id
-            }
-          }
-        }
-      })
-      return inUse
+              placeId: id,
+            },
+          },
+        },
+      });
+      return inUse;
     } catch (error) {
-      let message = ' Error - Error when delete environment'
+      let message = ' Error - Error when delete environment';
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      throw new Error(message)
+      throw new Error(message);
     }
   }
 }

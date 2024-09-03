@@ -12,6 +12,7 @@ import { AvaliationDatabase } from './service/avaliation.database';
 import { HistoryDatabase } from './service/history.database';
 import { scheduleAppDatabase } from './service/schudeleApp.database';
 import { TruckDatabase } from './service/truck.database';
+import { FaceRecognitionDatabase } from './service/faceRecognition.database';
 
 @Global()
 @Module({
@@ -29,7 +30,7 @@ import { TruckDatabase } from './service/truck.database';
     HistoryDatabase,
     TruckDatabase,
     scheduleAppDatabase,
-
+    FaceRecognitionDatabase,
   ],
   exports: [
     UserDatabase,
@@ -45,6 +46,7 @@ import { TruckDatabase } from './service/truck.database';
     HistoryDatabase,
     TruckDatabase,
     scheduleAppDatabase,
+    FaceRecognitionDatabase,
   ],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

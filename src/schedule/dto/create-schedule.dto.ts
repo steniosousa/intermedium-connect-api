@@ -1,19 +1,18 @@
-import { IsBoolean, IsArray, IsNotEmpty, IsString } from "class-validator"
+import { IsBoolean, IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateScheduleDto {
-    @IsNotEmpty()
-    @IsString()
-    placeId: String
+  @IsNotEmpty()
+  @IsString()
+  placeId: string;
 
-    @IsNotEmpty()
-    @IsString()
-    userId: String
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 
-    @IsNotEmpty()
-    @IsArray()
-    eventDate: String[];
+  @IsNotEmpty()
+  @IsArray()
+  eventDate: string[];
 
-    @IsBoolean()
-    repeatable: Boolean
-
+  @IsBoolean()
+  repeatable: boolean;
 }

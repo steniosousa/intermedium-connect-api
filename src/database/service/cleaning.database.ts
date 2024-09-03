@@ -3,10 +3,9 @@ import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class CleaningDatabase {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(userId, objectId, placeId, eventDate) {
-
     try {
       for (const date of eventDate) {
         await this.prisma.cleaning.create({
@@ -16,14 +15,12 @@ export class CleaningDatabase {
             createdAt: new Date(date),
             ObjectOfCleaning: {
               createMany: {
-                data: objectId.map((item: string) => ({ objectId: item }))
-              }
+                data: objectId.map((item: string) => ({ objectId: item })),
+              },
             },
           },
-
         });
       }
-
     } catch (error) {
       throw new HttpException(
         'Error - Error when registering service',
@@ -39,14 +36,13 @@ export class CleaningDatabase {
           id,
           AND: {
             status: {
-              equals: 'PENDENTE'
-            }
-          }
+              equals: 'PENDENTE',
+            },
+          },
         },
         data: {
-          deletedAt: new Date()
-        }
-
+          deletedAt: new Date(),
+        },
       });
     } catch (error) {
       throw new HttpException(
@@ -62,47 +58,82 @@ export class CleaningDatabase {
           userId,
           AND: {
             deletedAt: {
-              equals: null
+              equals: null,
             },
-          }
-        },
-      })
-      const allCleaning = await this.prisma.cleaning.findMany({
-        where: {
-          userId,
-          AND: {
-            deletedAt: {
-              equals: null
-            },
-          }
-        },
-        orderBy: {
-          createdAt: 'desc'
-        },
-        include: {
-
-          Place: {
-            select: {
-              id: true,
-              name: true,
-            }
           },
-          evidences: true,
-          ObjectOfCleaning: {
-            select: {
-              object: {
-                select: {
-                  name: true,
-                  id: true
-                }
-              }
-            }
-          }
         },
-        skip: (page - 1) * 5,
-        take: 5,
       });
-      return { cleanings: allCleaning, total };
+      if (page) {
+        const allCleaning = await this.prisma.cleaning.findMany({
+          where: {
+            userId,
+            AND: {
+              deletedAt: {
+                equals: null,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            Place: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            evidences: true,
+            ObjectOfCleaning: {
+              select: {
+                object: {
+                  select: {
+                    name: true,
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+          skip: (page - 1) * 5,
+          take: 5,
+        });
+        return { cleanings: allCleaning, total };
+      } else {
+        const allCleaningWithoutPage = await this.prisma.cleaning.findMany({
+          where: {
+            userId,
+            AND: {
+              deletedAt: {
+                equals: null,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            Place: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            evidences: true,
+            ObjectOfCleaning: {
+              select: {
+                object: {
+                  select: {
+                    name: true,
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+        return { cleanings: allCleaningWithoutPage, total };
+      }
     } catch {
       throw new HttpException(
         'Error - Error recovering services',
@@ -117,22 +148,22 @@ export class CleaningDatabase {
           userId,
           AND: {
             deletedAt: {
-              equals: null
+              equals: null,
             },
             status: {
-              not: 'CONCLUIDO'
-            }
-          }
+              not: 'CONCLUIDO',
+            },
+          },
         },
         orderBy: {
-          createdAt: 'asc'
+          createdAt: 'asc',
         },
         include: {
           Place: {
             select: {
               id: true,
               name: true,
-            }
+            },
           },
           evidences: true,
           ObjectOfCleaning: {
@@ -140,12 +171,12 @@ export class CleaningDatabase {
               object: {
                 select: {
                   name: true,
-                  id: true
-                }
-              }
-            }
-          }
-        }
+                  id: true,
+                },
+              },
+            },
+          },
+        },
       });
       return allCleaning;
     } catch {
@@ -156,8 +187,6 @@ export class CleaningDatabase {
     }
   }
 
-
-
   async updateCleaning(id, evidences, status) {
     try {
       const altered = await this.prisma.cleaning.update({
@@ -167,22 +196,23 @@ export class CleaningDatabase {
         data: {
           evidences: {
             createMany: {
-              data: evidences.map((item) => ({ evidenceUrl: item.evidenceUrl, type: item.type }))
-            }
+              data: evidences.map((item) => ({
+                evidenceUrl: item.evidenceUrl,
+                type: item.type,
+              })),
+            },
           },
-          status: 'CONCLUIDO'
-        }
+          status: 'CONCLUIDO',
+        },
       });
 
       return altered;
     } catch (error) {
-
       throw new HttpException(
         'Error - Error editing service',
         HttpStatus.BAD_REQUEST,
       );
     }
-
   }
 
   async updateStatus(status, id) {
@@ -192,8 +222,8 @@ export class CleaningDatabase {
           id: id,
         },
         data: {
-          status
-        }
+          status,
+        },
       });
       return altered;
     } catch (error) {
@@ -205,22 +235,19 @@ export class CleaningDatabase {
   }
 
   async findCleaningWithoutEvidences(id) {
-
     try {
       const altered = await this.prisma.evidence.findFirst({
         where: {
-          cleaningId: id
+          cleaningId: id,
         },
       });
-      console.log(altered)
+      console.log(altered);
       return altered;
     } catch (error) {
-
       throw new HttpException(
         'Error - Erro ao editar serviço',
         HttpStatus.BAD_REQUEST,
       );
     }
   }
-
 }

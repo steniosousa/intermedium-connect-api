@@ -1,8 +1,7 @@
-import { IsNotEmpty,  IsString } from "class-validator"
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class recoverManagerDto {
-    @IsNotEmpty()
-    @IsString()
-    companyId: string
-
+  @IsNotEmpty()
+  @IsString()
+  companyId: string;
 }

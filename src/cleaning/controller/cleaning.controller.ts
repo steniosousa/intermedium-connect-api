@@ -5,7 +5,7 @@ import { cleaningService } from '../service/cleaning.service';
 
 @Controller('/cleaning')
 export class CleaningController {
-  constructor(readonly service: cleaningService) { }
+  constructor(readonly service: cleaningService) {}
 
   @Post('/create')
   async createCleaning(@Body() body: CreateCleaningDto) {
@@ -33,8 +33,8 @@ export class CleaningController {
 
   @Post('/update/status')
   async updateStatus(@Body() body: any) {
-    const updateStatus = await this.service.updateStatus(body)
-    return updateStatus
+    const updateStatus = await this.service.updateStatus(body);
+    return updateStatus;
   }
 
   @Post('/delete')
@@ -43,7 +43,4 @@ export class CleaningController {
     const deletion = await this.service.deletionCleaning(id);
     return deletion;
   }
-
-
-
 }

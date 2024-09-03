@@ -4,8 +4,10 @@ import { UserDatabase } from 'database/service/user.database';
 
 @Injectable()
 export class userService {
-  constructor(private readonly database: UserDatabase,
-    readonly databaseCleaning: CleaningDatabase) { }
+  constructor(
+    private readonly database: UserDatabase,
+    readonly databaseCleaning: CleaningDatabase,
+  ) {}
 
   async findUserWithNameAndPass(params) {
     const { userId, password } = params;
@@ -17,7 +19,6 @@ export class userService {
   }
 
   async findUser(key: string) {
-
     const findUser = await this.database.authenticateUser(key);
     return findUser;
   }
@@ -25,20 +26,22 @@ export class userService {
   async updateUser(params) {
     const { id } = params;
 
-    const indentify = await this.database.findUser(id)
+    const indentify = await this.database.findUser(id);
     if (!indentify) {
-      throw new HttpException(
-        'Error - User not found',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Error - User not found', HttpStatus.BAD_REQUEST);
     }
     const updateUser = await this.database.updateUser(indentify.id, params);
     return updateUser;
   }
 
   async delete(userId: string) {
-    const userWithCleaning = await this.databaseCleaning.findCleaning(userId, 1)
-    const inProgress = userWithCleaning.cleanings.find(item => item.deletedAt == null)
+    const userWithCleaning = await this.databaseCleaning.findCleaning(
+      userId,
+      1,
+    );
+    const inProgress = userWithCleaning.cleanings.find(
+      (item) => item.deletedAt == null,
+    );
     if (inProgress) {
       throw new HttpException(
         'Error - User with a schedule in progress',
@@ -50,33 +53,52 @@ export class userService {
     return deleteUser;
   }
 
-  async getAllUsers(companyId) {
+  async getAllUsers(companyId:string) {
+    
     const allReturn = await this.database.getUsers(companyId);
     return allReturn;
   }
 
   async recover(userId: string) {
-    const recover = await this.database.recover(userId)
-    return recover
+    const recover = await this.database.recover(userId);
+    return recover;
   }
 
-  async recoverForPdf(companyId: string) {
-    const dataReturn: any[] = await this.database.recoverForPdf(companyId)
+  async recoverForPdf(companyId: string, startDate: Date, endDate: Date) {
+    const dataReturn: any[] = await this.database.recoverForPdf(
+      companyId,
+      startDate,
+      endDate,
+    );
+
     const formater = dataReturn.map((item) => {
+      if (
+        item.user.cleaning.length === 0 &&
+        item.user.Avaliation.length === 0
+      ) {
+        return;
+      }
       const model = {
         user: {
-          "name": item.user.name,
-          "createdAt": item.user.createdAt,
-          "role": item.user.role,
-          "email": item.user.email
+          name: item.user.name,
+          createdAt: item.user.createdAt,
+          role: item.user.role,
+          email: item.user.email,
         },
         cleaning: item.user.cleaning,
-        avaliation: item.user.Avaliation
+        avaliation: item.user.Avaliation,
+      };
+      return model;
+    });
+    console.log(formater);
+    const filterFormater = formater.filter((item) => item !== undefined);
+    if (filterFormater.length === 0) {
+      throw new HttpException(
+        'Sem cadastros para essa data',
+        HttpStatus.FORBIDDEN,
+      );
+    }
 
-      }
-
-      return model
-    })
-    return formater
+    return filterFormater;
   }
 }

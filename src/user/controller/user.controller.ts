@@ -23,7 +23,7 @@ export class userController {
   constructor(
     readonly service: userService,
     private readonly createUserService: CreateUserService,
-  ) { }
+  ) {}
 
   @Post('/create')
   async createUser(@Body() body: createServiceDto) {
@@ -37,7 +37,7 @@ export class userController {
 
   @Get('/find')
   async findUser(@Query() query: findUserDto) {
-    const { key } = query
+    const { key } = query;
     const find = await this.service.findUser(key);
     return find;
   }
@@ -58,7 +58,7 @@ export class userController {
 
   @Delete('/delete')
   async deleteUser(@Query() Query: deleteUserDto) {
-    const { userId } = Query
+    const { userId } = Query;
     const deleteUser = await this.service.delete(userId);
 
     return deleteUser;
@@ -72,14 +72,19 @@ export class userController {
 
   @Get('/allUsers')
   async recoverAllUsers(@Query() { userId }: recoverAllUsersDto) {
-    const recover = await this.service.recover(userId)
-    return recover
+    const recover = await this.service.recover(userId);
+    return recover;
   }
 
-
   @Get('/pdf')
-  async recoverForPdf(@Query() { companyId }: generatePdfDto) {
-    const recoverForPdf = await this.service.recoverForPdf(companyId)
-    return recoverForPdf
+  async recoverForPdf(
+    @Query() { companyId, startDate, endDate }: generatePdfDto,
+  ) {
+    const recoverForPdf = await this.service.recoverForPdf(
+      companyId,
+      startDate,
+      endDate,
+    );
+    return recoverForPdf;
   }
 }

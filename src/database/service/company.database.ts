@@ -3,7 +3,7 @@ import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class companyDatabase {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
   async createCompany(name: string) {
     try {
       const create = await this.prisma.company.create({
@@ -26,8 +26,8 @@ export class companyDatabase {
         where: {
           name,
           desactiveAt: {
-            equals: null
-          }
+            equals: null,
+          },
         },
       });
       return company;
@@ -43,13 +43,13 @@ export class companyDatabase {
     try {
       const all = await this.prisma.company.findMany({
         orderBy: {
-          name: 'asc'
+          name: 'asc',
         },
         where: {
           desactiveAt: {
-            equals: null
-          }
-        }
+            equals: null,
+          },
+        },
       });
       return all;
     } catch {
@@ -67,12 +67,12 @@ export class companyDatabase {
           id: companyId,
         },
         data: {
-          desactiveAt: new Date()
-        }
+          desactiveAt: new Date(),
+        },
       });
       return deleteCompany;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new HttpException(
         'Error - Unable to delete company',
         HttpStatus.BAD_REQUEST,
@@ -87,19 +87,17 @@ export class companyDatabase {
           userId: managerId,
           company: {
             desactiveAt: {
-              equals: null
-            }
-
-          }
-
+              equals: null,
+            },
+          },
         },
         select: {
-          company: true
-        }
-      })
-      return recover
+          company: true,
+        },
+      });
+      return recover;
     } catch {
-      throw new Error('Unable found companies')
+      throw new Error('Unable found companies');
     }
   }
 
@@ -108,9 +106,10 @@ export class companyDatabase {
       const company = await this.prisma.company.update({
         where: {
           id,
-        }, data: {
-          name
-        }
+        },
+        data: {
+          name,
+        },
       });
       return company;
     } catch {

@@ -1,9 +1,4 @@
-import {
-  IsArray,
-  IsDate,
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCleaningDto {
   @IsString()
@@ -11,12 +6,12 @@ export class CreateCleaningDto {
   userId: string;
   @IsString()
   @IsNotEmpty()
-  placeId: string
+  placeId: string;
   @IsArray()
   @IsNotEmpty()
   objectsId: string[];
 
   @IsNotEmpty()
   @IsArray()
-  eventDate: String[];
+  eventDate: string[];
 }

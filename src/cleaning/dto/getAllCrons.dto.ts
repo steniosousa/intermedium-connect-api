@@ -1,8 +1,7 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class GetAllCrons{
-    @IsNotEmpty()
-    @IsString()
-    userId:string
-
+export class GetAllCrons {
+  @IsNotEmpty()
+  @IsString()
+  userId: string;
 }

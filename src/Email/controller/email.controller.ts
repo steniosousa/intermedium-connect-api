@@ -3,7 +3,7 @@ import { EmailService } from 'Email/service/email.service';
 
 @Controller('/email')
 export class EmailController {
-  constructor(private readonly emailService: EmailService) { }
+  constructor(private readonly emailService: EmailService) {}
 
   @Get()
   async findAll() {
@@ -20,8 +20,8 @@ export class EmailController {
 
   @Post('/receiver')
   async receiver(@Body() datas) {
-    const { email } = datas
+    const { email } = datas;
     const cat = this.emailService.create(email);
-    await this.emailService.receiveCod(cat)
+    await this.emailService.receiveCod(cat);
   }
 }

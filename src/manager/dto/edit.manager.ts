@@ -1,20 +1,19 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class EditManagerDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string
+  @IsNotEmpty()
+  @IsString()
+  id: string;
 
-    @IsString()
-    @IsOptional()
-    name: String
+  @IsString()
+  @IsOptional()
+  name: string;
 
-    @IsString()
-    @IsOptional()
-    password: String
+  @IsString()
+  @IsOptional()
+  password: string;
 
-    @IsEmail()
-    @IsOptional()
-    email: String
-
+  @IsEmail()
+  @IsOptional()
+  email: string;
 }

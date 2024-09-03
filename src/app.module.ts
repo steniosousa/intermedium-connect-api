@@ -16,6 +16,7 @@ import { historyModule } from 'App/history/history.module';
 import { SchudeleAppModule } from 'App/schudele/schudeleApp.module';
 import { AuthModule } from 'auth/auth.module';
 import { TruckModule } from 'trucks/truck.module';
+import { faceRecognitionModule } from './faceRecognition/faceRecognition.module';
 
 @Module({
   imports: [
@@ -35,8 +36,9 @@ import { TruckModule } from 'trucks/truck.module';
     historyModule,
     SchudeleAppModule,
     AuthModule,
-    TruckModule
+    TruckModule,
+    faceRecognitionModule,
   ],
   controllers: [],
 })
-export class AppModule { }
+export class AppModule {}

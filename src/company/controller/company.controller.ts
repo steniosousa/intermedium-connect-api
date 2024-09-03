@@ -8,7 +8,7 @@ import { updateCompanyDto } from 'company/dto/updateCompany.dto';
 
 @Controller('/companies')
 export class companyController {
-  constructor(readonly service: companyService) { }
+  constructor(readonly service: companyService) {}
 
   @Post('/create')
   async createCompany(@Body() body: createCompanyDto) {
@@ -39,13 +39,13 @@ export class companyController {
 
   @Get('/recover/companies')
   async recoverCompanies(@Query() { managerId }: recoverCompaniesDto) {
-    const recover = await this.service.recoverCompanies(managerId)
-    return recover
+    const recover = await this.service.recoverCompanies(managerId);
+    return recover;
   }
 
   @Post('/update')
   async updateCompany(@Body() { id, name }: updateCompanyDto) {
-    const updateCompany = await this.service.updateCompany(id, name)
-    return updateCompany
+    const updateCompany = await this.service.updateCompany(id, name);
+    return updateCompany;
   }
 }

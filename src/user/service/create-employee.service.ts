@@ -9,7 +9,7 @@ export interface CreateUserServiceParams {
 
 @Injectable()
 export class CreateUserService {
-  constructor(private readonly usersRepository: PrismaUsersRepository) { }
+  constructor(private readonly usersRepository: PrismaUsersRepository) {}
 
   private generateRandomAlphanumeric(digits: number) {
     let randomString = '';
@@ -36,11 +36,11 @@ export class CreateUserService {
       loginHash: hashToLogin,
       userForCompany: {
         create: {
-          companyId: params.companyId
+          companyId: params.companyId,
         },
       },
       createdAt: new Date(),
     });
-    return newUser
+    return newUser;
   }
 }

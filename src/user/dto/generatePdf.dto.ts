@@ -1,8 +1,21 @@
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsDate,
+  IsDateString,
+  IsNotEmpty,
+  IsString,
+} from 'class-validator';
 
 export class generatePdfDto {
-    @IsNotEmpty()
-    @IsString()
-    companyId: string;
+  @IsNotEmpty()
+  @IsString()
+  companyId: string;
 
+  @IsNotEmpty()
+  @IsDateString()
+  startDate: Date;
+
+  @IsNotEmpty()
+  @IsDateString()
+  endDate: Date;
 }

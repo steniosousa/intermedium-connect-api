@@ -210,3 +210,12 @@ model coordsForTruck {
 
   @@id([truckId, coordsId])
 }
+
+
+model userFaceRecognition {
+  id             String           @id @default(uuid())
+  name String
+  plate String   @unique
+  photo String?
+  descritor String?
+}

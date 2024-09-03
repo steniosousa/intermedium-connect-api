@@ -3,10 +3,10 @@ import { companyDatabase } from 'database/service/company.database';
 
 @Injectable()
 export class companyService {
-  constructor(private readonly database: companyDatabase) { }
+  constructor(private readonly database: companyDatabase) {}
 
   async createCompany(name: string) {
-    const verify = await this.database.findCompany(name)
+    const verify = await this.database.findCompany(name);
     if (verify) {
       throw new HttpException(
         'Error - Company already registered',
@@ -33,12 +33,12 @@ export class companyService {
   }
 
   async recoverCompanies(managerId: string) {
-    const recover = await this.database.recoverCompanies(managerId)
-    return recover
+    const recover = await this.database.recoverCompanies(managerId);
+    return recover;
   }
 
   async updateCompany(id: string, name: string) {
-    const update = await this.database.updateCompany(id, name)
-    return update
+    const update = await this.database.updateCompany(id, name);
+    return update;
   }
 }

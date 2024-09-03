@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export default class CreateScheduleService {
-  constructor(private readonly Prisma: PrismaService) { }
+  constructor(private readonly Prisma: PrismaService) {}
 
   async create(data) {
     try {
@@ -18,7 +18,7 @@ export default class CreateScheduleService {
         });
       }
     } catch {
-      throw new Error('Erro')
+      throw new Error('Erro');
     }
   }
 
@@ -27,8 +27,8 @@ export default class CreateScheduleService {
       await this.Prisma.schedule.delete({
         where: {
           id: scheduleId,
-        }
-      })
+        },
+      });
     } catch (error) {
       throw new HttpException(
         'Error - Error when deleting schedule',
@@ -42,28 +42,27 @@ export default class CreateScheduleService {
       const recoverSchedule = await this.Prisma.schedule.findMany({
         where: {
           userId,
-
         },
         include: {
           place: {
             select: {
               name: true,
-              id: true
-            }
-          }
+              id: true,
+            },
+          },
         },
 
         orderBy: {
-          eventDate: 'asc'
-        }
-      })
-      return recoverSchedule
+          eventDate: 'asc',
+        },
+      });
+      return recoverSchedule;
     } catch (error) {
-      let message = 'Error ao recuperar agendamentos'
+      let message = 'Error ao recuperar agendamentos';
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      throw new Error(message)
+      throw new Error(message);
     }
   }
 
@@ -71,9 +70,9 @@ export default class CreateScheduleService {
     try {
       const date = await this.Prisma.schedule.findUnique({
         where: {
-          id: scheduleId
-        }
-      })
+          id: scheduleId,
+        },
+      });
       if (!date) {
         throw new HttpException(
           'Error - Schedule not found',
@@ -85,9 +84,9 @@ export default class CreateScheduleService {
           id: scheduleId,
         },
         data: {
-          deactivatedAt: date.deactivatedAt ? null : new Date()
-        }
-      })
+          deactivatedAt: date.deactivatedAt ? null : new Date(),
+        },
+      });
     } catch (error) {
       throw new HttpException(
         'Error - Error when deleting schedule',

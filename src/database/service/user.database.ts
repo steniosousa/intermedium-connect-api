@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
 @Injectable()
 export class UserDatabase {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async authenticateUser(key: string) {
     try {
@@ -13,10 +13,7 @@ export class UserDatabase {
       });
       return user;
     } catch {
-      throw new HttpException(
-        'Error - User not found',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Error - User not found', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -30,10 +27,7 @@ export class UserDatabase {
       });
       return user;
     } catch {
-      throw new HttpException(
-        'Error - User not found',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Error - User not found', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -41,32 +35,27 @@ export class UserDatabase {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          email
+          email,
         },
         select: {
-          password: true
-        }
+          password: true,
+        },
       });
       return user;
     } catch {
-      throw new HttpException(
-        'Error - User not found',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Error - User not found', HttpStatus.BAD_REQUEST);
     }
   }
 
-
   async updateUser(userId, datas) {
-    const novaData = new Date()
+    const novaData = new Date();
     const updateUser = await this.prisma.user.update({
       where: {
         id: userId,
       },
       data: {
-        ...datas
-        ,
-        deactivatedAt: datas.deactivatedAt ? novaData : null
+        ...datas,
+        deactivatedAt: datas.deactivatedAt ? novaData : null,
       },
     });
     return updateUser;
@@ -76,16 +65,12 @@ export class UserDatabase {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
-          id
-        }
-      })
-      return user
-
+          id,
+        },
+      });
+      return user;
     } catch (error) {
-      throw new HttpException(
-        'Error - User not found',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Error - User not found', HttpStatus.BAD_REQUEST);
     }
   }
   async deleteUser(userId: string) {
@@ -95,11 +80,10 @@ export class UserDatabase {
           id: userId,
         },
         data: {
-          deletedAt: new Date()
-        }
+          deletedAt: new Date(),
+        },
       });
       return deleteUser;
-
     } catch {
       throw new HttpException(
         'Error - Error when deleting user',
@@ -114,21 +98,20 @@ export class UserDatabase {
         where: {
           userForCompany: {
             every: {
-              companyId: companyId
-            }
+              companyId: companyId,
+            },
           },
           AND: {
             role: {
-              equals: 'EMPLOYEE'
+              equals: 'EMPLOYEE',
             },
             deletedAt: {
-              equals: null
+              equals: null,
             },
             deactivatedAt: {
-              equals: null
-            }
-
-          }
+              equals: null,
+            },
+          },
         },
         select: {
           id: true,
@@ -137,17 +120,16 @@ export class UserDatabase {
           deletedAt: true,
           userForCompany: true,
           role: true,
-          deactivatedAt: true
-        }
+          deactivatedAt: true,
+        },
       });
       return allUsers;
-
     } catch (error) {
-      let message = "Error to recover users"
+      let message = 'Error to recover users';
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      throw new Error(message)
+      throw new Error(message);
     }
   }
 
@@ -155,37 +137,46 @@ export class UserDatabase {
     try {
       const allUsers = await this.prisma.userForCompany.findMany({
         where: {
-          userId
+          userId,
         },
         select: {
           user: {
             select: {
-              deactivatedAt: true
-            }
-          }
-        }
+              deactivatedAt: true,
+            },
+          },
+        },
       });
       return allUsers;
-
     } catch (error) {
-      let message = "Error to recover users"
+      let message = 'Error to recover users';
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      throw new Error(message)
+      throw new Error(message);
     }
   }
 
-  async recoverForPdf(companyId: string) {
+  async recoverForPdf(companyId: string, startDate: Date, endDate: Date) {
     try {
       const allUsers = await this.prisma.userForCompany.findMany({
         where: {
           companyId,
           company: {
             desactiveAt: {
-              equals: null
-            }
-          }
+              equals: null,
+            },
+          },
+          user: {
+            cleaning: {
+              every: {
+                AND: [
+                  { createdAt: { gte: new Date(startDate) } },
+                  { createdAt: { lte: new Date(endDate) } },
+                ],
+              },
+            },
+          },
         },
         select: {
           user: {
@@ -194,55 +185,52 @@ export class UserDatabase {
                 select: {
                   Place: {
                     select: {
-                      name: true
-                    }
+                      name: true,
+                    },
                   },
                   status: true,
                   createdAt: true,
                 },
-
               },
               name: true,
               createdAt: true,
               role: true,
               email: true,
               Avaliation: {
-                select:{
-                  status:true,
-                  observation:true,
-                  Cleaning:{
-                    select:{
-                      Place:{
-                        select:{
-                          name:true
-                        }
-                      }
-                    }
+                select: {
+                  status: true,
+                  observation: true,
+                  Cleaning: {
+                    select: {
+                      Place: {
+                        select: {
+                          name: true,
+                        },
+                      },
+                    },
                   },
-                  EquipmentsOfAvaliation:{
-                    select:{
-                      equipament:{
-                        select:{
-                          name:true,
-                        }
-                      }
-                    }
-                  }
-                }
+                  EquipmentsOfAvaliation: {
+                    select: {
+                      equipament: {
+                        select: {
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
               },
-
-            }
-          }
-        }
+            },
+          },
+        },
       });
       return allUsers;
-
     } catch (error) {
-      let message = "Error to recover users"
+      let message = 'Error to recover users';
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      throw new Error(message)
+      throw new Error(message);
     }
   }
 
@@ -253,9 +241,9 @@ export class UserDatabase {
           companyId,
           company: {
             desactiveAt: {
-              equals: null
-            }
-          }
+              equals: null,
+            },
+          },
         },
         select: {
           user: {
@@ -265,22 +253,17 @@ export class UserDatabase {
               createdAt: true,
               role: true,
               email: true,
-
-            }
-          }
-        }
+            },
+          },
+        },
       });
       return allUsers;
-
     } catch (error) {
-      let message = "Error to recover users"
+      let message = 'Error to recover users';
       if (error instanceof Error) {
-        message = error.message
+        message = error.message;
       }
-      throw new Error(message)
+      throw new Error(message);
     }
   }
-
-
-
 }

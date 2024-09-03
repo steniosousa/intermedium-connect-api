@@ -7,5 +7,4 @@ export function configureApp(app: INestApplication) {
   configureCors(app);
   configureSwagger(app);
   configureClassValidator(app);
-  
 }

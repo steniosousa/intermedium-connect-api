@@ -6,7 +6,10 @@ import { UserDatabase } from 'database/service/user.database';
 export class EmailService {
   private readonly cats = [];
 
-  constructor(private readonly mailerService: MailerService, private readonly dabatase: UserDatabase) { }
+  constructor(
+    private readonly mailerService: MailerService,
+    private readonly dabatase: UserDatabase,
+  ) {}
   findAll() {
     return this.cats;
   }
@@ -17,7 +20,7 @@ export class EmailService {
   }
 
   async sendNotificationEmail(cat: any) {
-    const resetPassword = await this.dabatase.findUserWithEmail(cat)
+    const resetPassword = await this.dabatase.findUserWithEmail(cat);
     await this.mailerService.sendMail({
       to: cat,
       subject: 'Recuperação de senha - Intermedium',
@@ -33,7 +36,7 @@ export class EmailService {
   }
 
   async receiveCod(cat: any) {
-    const resetPassword = await this.dabatase.findUserWithEmail(cat)
+    const resetPassword = await this.dabatase.findUserWithEmail(cat);
 
     await this.mailerService.sendMail({
       to: cat,
@@ -46,7 +49,6 @@ export class EmailService {
               <p>Atenciosamente, <br> Equipe Any Software</p>
             `,
     });
-
   }
 
   async createUser(email: string, userId: string, name: string) {
@@ -111,7 +113,6 @@ export class EmailService {
             </html>
             `,
     });
-
   }
 
   async recoverPass(email: string, userId: string, name: string) {
@@ -177,6 +178,5 @@ export class EmailService {
         </html>
         `,
     });
-
   }
 }
