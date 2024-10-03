@@ -47,6 +47,12 @@ export class ManagerService {
     return edit;
   }
 
+  async resetPass(password:string, id:string){
+    const hashPassword = await bcrypt.hash(password, 12);
+    const edit = await this.database.resetPass(hashPassword,id);
+    return edit;
+  }
+
   async recover(companyId:string) {
     const recover = await this.database.recover(companyId);
     return recover;

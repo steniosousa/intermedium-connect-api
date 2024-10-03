@@ -93,6 +93,25 @@ export class ManagerDatabase {
     }
   }
 
+  async resetPass(password:string,id:string){
+    try {
+      return await this.prisma.user.update({
+        where: {
+          id
+        },
+        data: {
+          password
+        },
+      });
+    } catch (error) {
+      throw new HttpException(
+        'Error - Unable to update admin',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+
   async recover(companyId:string) {
     try {
       const recover = await this.prisma.user.findMany({

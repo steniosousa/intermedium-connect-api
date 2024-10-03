@@ -33,6 +33,12 @@ export class ManagerController {
     return edit;
   }
 
+  @Post('/resetPass')
+  async resetPass(@Body() {password, id}: {password:string, id:string}) {
+    const edit = await this.service.resetPass(password,id);
+    return edit;
+  }
+
   @Get('/recover')
   async recover(@Query() { companyId }: recoverManagerDto) {
     const recover = await this.service.recover(companyId);
