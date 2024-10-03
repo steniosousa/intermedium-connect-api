@@ -26,7 +26,6 @@ export class TruckDatabase {
           },
         });
         return cords;
-        console.log('Nova coordenada associada ao caminhão existente.');
       } else {
         throw new Error('Caminhão não encontrado.');
       }

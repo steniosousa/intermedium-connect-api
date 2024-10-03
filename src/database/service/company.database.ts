@@ -72,7 +72,6 @@ export class companyDatabase {
       });
       return deleteCompany;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Error - Unable to delete company',
         HttpStatus.BAD_REQUEST,

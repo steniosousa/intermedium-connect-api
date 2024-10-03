@@ -9,19 +9,16 @@ export class faceRecognitiontService {
     name,
     plate,
     photo,
-    descritor,
   }: {
     name: string;
     plate: string;
     photo: string;
-    descritor: string;
   }) {
     try {
       const createUser = await this.idatabase.create({
         name,
         plate,
         photo,
-        descritor,
       });
       return createUser;
     } catch (error) {
@@ -40,6 +37,46 @@ export class faceRecognitiontService {
       return foundObjects;
     } catch (error) {
       let messager = 'Erro ao buscar todos os usuarios';
+      if (error instanceof Error) {
+        messager = error.message;
+      }
+      throw new Error(messager);
+    }
+  }
+
+  async list() {
+    try {
+      const foundObjects = await this.idatabase.listInsiders();
+
+      return foundObjects;
+    } catch (error) {
+      let messager = 'Erro ao buscar todos os usuarios';
+      if (error instanceof Error) {
+        messager = error.message;
+      }
+      throw new Error(messager);
+    }
+  }
+
+  async edit(driverId:string){
+    try {
+      const editDriver = await this.idatabase.Edit(driverId);
+      return editDriver;
+    } catch (error) {
+      let messager = 'Erro ao editar motorista';
+      if (error instanceof Error) {
+        messager = error.message;
+      }
+      throw new Error(messager);
+    }
+  }
+
+
+  async delete(driverId:string){
+    try{
+      await this.idatabase.delete(driverId)
+    }catch(error){
+      let messager = 'Erro ao deletar motorista';
       if (error instanceof Error) {
         messager = error.message;
       }

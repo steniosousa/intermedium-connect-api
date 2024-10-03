@@ -241,7 +241,6 @@ export class CleaningDatabase {
           cleaningId: id,
         },
       });
-      console.log(altered);
       return altered;
     } catch (error) {
       throw new HttpException(

@@ -90,7 +90,6 @@ export class userService {
       };
       return model;
     });
-    console.log(formater);
     const filterFormater = formater.filter((item) => item !== undefined);
     if (filterFormater.length === 0) {
       throw new HttpException(
