@@ -21,7 +21,6 @@ export class faceRecognitionController {
   }))
   async create(@Body() body: any, 
 ) {
-    try {
       const { name, plate, photo } = body;
       if(!photo || !name || !plate  ) throw new Error("Envie a todos os campos necessários")
       const createUser = await this.service.create({
@@ -30,13 +29,7 @@ export class faceRecognitionController {
         plate,
       });
      return createUser;
-    } catch (error) {
-      let messager = 'Unable to save object';
-      if (error instanceof Error) {
-        messager = error.message;
-      }
-      throw new Error(messager);
-    }
+    
   }
 
   @Get('/recover')

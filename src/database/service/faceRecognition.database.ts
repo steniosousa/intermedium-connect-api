@@ -15,9 +15,9 @@ export class FaceRecognitionDatabase {
         data,
       });
       return newUser;
-    } catch {
+    } catch (error){
       throw new HttpException(
-        'Error - Erro ao cadastrar usuário',
+        `Error - Verifique se a placa já está em uso`,
         HttpStatus.BAD_REQUEST,
       );
     }

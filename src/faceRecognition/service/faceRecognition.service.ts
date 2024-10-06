@@ -14,20 +14,14 @@ export class faceRecognitiontService {
     plate: string;
     photo: string;
   }) {
-    try {
+   
       const createUser = await this.idatabase.create({
         name,
         plate,
         photo,
       });
       return createUser;
-    } catch (error) {
-      let messager = 'Erro ao salvar usuario';
-      if (error instanceof Error) {
-        messager = error.message;
-      }
-      throw new Error(messager);
-    }
+    
   }
 
   async recover() {
