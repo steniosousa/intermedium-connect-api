@@ -27,9 +27,9 @@ export class CleaningController {
 
   @Post('/update')
   async updateCleaning(@Body() body: any) {
-    console.log(body)
+    console.log(body.body)
 
-    const update = await this.service.updateCleaning(body);
+    const update = await this.service.updateCleaning(body.body);
     return update;
   }
 
