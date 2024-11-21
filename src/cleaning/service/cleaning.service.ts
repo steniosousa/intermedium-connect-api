@@ -35,7 +35,6 @@ export class cleaningService {
   async updateCleaning(params:any) {
     const { id, Evidences, status } = params;
     const verifyOfNull = await this.database.findCleaningWithoutEvidences(id);
-    console.log(id, Evidences)
 
     if (verifyOfNull) {
       throw new HttpException(
