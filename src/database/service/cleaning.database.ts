@@ -53,87 +53,109 @@ export class CleaningDatabase {
   }
   async findCleaning(userId: string, page: any) {
     try {
-      const total = await this.prisma.cleaning.count({
-        where: {
-          userId,
-          AND: {
-            deletedAt: {
-              equals: null,
+const total = await this.prisma.cleaning.count({
+  where: {
+    userId,
+    AND: {
+      deletedAt: {
+        equals: null,
+      },
+    },
+  },
+});
+
+if (page) {
+  const allCleaning = await this.prisma.cleaning.findMany({
+    where: {
+      userId,
+      AND: {
+        deletedAt: {
+          equals: null,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      Place: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      evidences: true,
+      ObjectOfCleaning: {
+        select: {
+          object: {
+            select: {
+              name: true,
+              id: true,
             },
           },
         },
-      });
-      if (page) {
-        const allCleaning = await this.prisma.cleaning.findMany({
-          where: {
-            userId,
-            AND: {
-              deletedAt: {
-                equals: null,
-              },
+      },
+    },
+    skip: (page - 1) * 5,
+    take: 5,
+  });
+
+  const formattedAllCleaning = allCleaning.map(cleaning => {
+    return {
+      ...cleaning,
+      createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+      }),
+    };
+  });
+
+  return { cleanings: formattedAllCleaning, total };
+} else {
+  const allCleaningWithoutPage = await this.prisma.cleaning.findMany({
+    where: {
+      userId,
+      AND: {
+        deletedAt: {
+          equals: null,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      Place: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      evidences: true,
+      ObjectOfCleaning: {
+        select: {
+          object: {
+            select: {
+              name: true,
+              id: true,
             },
           },
-          orderBy: {
-            createdAt: 'desc',
-          },
-          include: {
-            Place: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            evidences: true,
-            ObjectOfCleaning: {
-              select: {
-                object: {
-                  select: {
-                    name: true,
-                    id: true,
-                  },
-                },
-              },
-            },
-          },
-          skip: (page - 1) * 5,
-          take: 5,
-        });
-        return { cleanings: allCleaning, total };
-      } else {
-        const allCleaningWithoutPage = await this.prisma.cleaning.findMany({
-          where: {
-            userId,
-            AND: {
-              deletedAt: {
-                equals: null,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-          include: {
-            Place: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-            evidences: true,
-            ObjectOfCleaning: {
-              select: {
-                object: {
-                  select: {
-                    name: true,
-                    id: true,
-                  },
-                },
-              },
-            },
-          },
-        });
-        return { cleanings: allCleaningWithoutPage, total };
-      }
+        },
+      },
+    },
+  });
+
+  const formattedAllCleaningWithoutPage = allCleaningWithoutPage.map(cleaning => {
+    return {
+      ...cleaning,
+      createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
+        timeZone: 'America/Sao_Paulo',
+      }),
+    };
+  });
+
+  return { cleanings: formattedAllCleaningWithoutPage, total };
+}
+
     } catch {
       throw new HttpException(
         'Error - Error recovering services',
@@ -178,7 +200,18 @@ export class CleaningDatabase {
           },
         },
       });
-      return allCleaning;
+      
+      const formattedAllCleaning = allCleaning.map(cleaning => {
+        return {
+          ...cleaning,
+          createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
+            timeZone: 'America/Sao_Paulo', 
+          }),
+        };
+      });
+      
+      return formattedAllCleaning;
+      
     } catch {
       throw new HttpException(
         'Error - Error recovering services',
