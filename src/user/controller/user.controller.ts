@@ -52,6 +52,7 @@ export class userController {
 
   @Post('/update')
   async updateUser(@Body() query: updateUserDto) {
+
     const update = await this.service.updateUser(query);
     return update;
   }

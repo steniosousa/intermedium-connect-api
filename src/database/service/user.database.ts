@@ -49,14 +49,26 @@ export class UserDatabase {
 
   async updateUser(userId:string, datas:any) {
     const novaData = new Date();
+
+if(datas.deletedAt){
+  const updateUser = await this.prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      deletedAt: datas.deletedAt ? novaData : null,
+    },
+  });
+  return updateUser;
+}
+
+
     const updateUser = await this.prisma.user.update({
       where: {
         id: userId,
       },
       data: {
-        ...datas,
-        deactivatedAt: datas.deactivatedAt ? novaData : null,
-      },
+        ...datas      },
     });
     return updateUser;
   }
