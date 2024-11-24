@@ -103,9 +103,9 @@ if (page) {
   const formattedAllCleaning = allCleaning.map(cleaning => {
     return {
       ...cleaning,
-      createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
-        timeZone: 'America/Sao_Paulo',
-      }),
+        createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
+          timeZone: 'America/Sao_Paulo',
+        }),
     };
   });
 
@@ -257,6 +257,13 @@ if (page) {
         data: {
           status,
         },
+        include:{
+          ObjectOfCleaning:{
+            include:{
+              object:true
+            }            
+          }
+        }
       });
       return altered;
     } catch (error) {

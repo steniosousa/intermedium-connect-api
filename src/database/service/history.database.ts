@@ -28,12 +28,25 @@ export class HistoryDatabase {
           evidences: true,
           avaliation: true,
           Place: true,
-          createdAt: true,
+          createdAt: true, // Retorna a data de criação
           id: true,
-          updatedAt: true,
+          updatedAt: true, // Retorna a data de atualização
         },
       });
-      return recover;
+      
+      // Formatação das datas após o retorno dos dados
+      const formattedRecover = recover.map(item => ({
+        ...item,
+        createdAt: item.createdAt
+          ? new Date(item.createdAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+          : null, // Formata a data de criação
+        updatedAt: item.updatedAt
+          ? new Date(item.updatedAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+          : null, // Formata a data de atualização
+      }));
+      
+      return formattedRecover;
+      
     } catch (error) {
       let message = 'Error to recover history';
       if (error instanceof Error) {
