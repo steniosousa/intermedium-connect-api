@@ -8,4 +8,8 @@ export class createServiceDto {
   @IsString()
   @IsNotEmpty()
   companyId: string = '';
+
+  @IsString()
+  @IsNotEmpty()
+  password: string = '';
 }

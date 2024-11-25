@@ -30,6 +30,7 @@ export class userController {
     const user = await this.createUserService.execute({
       name: body.name,
       companyId: body.companyId,
+      password:body.password
     });
 
     return user;

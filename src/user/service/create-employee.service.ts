@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 export interface CreateUserServiceParams {
   name: string;
+  password:string;
   companyId: string;
 }
 
@@ -26,7 +27,13 @@ export class CreateUserService {
 
   async execute(params: CreateUserServiceParams) {
     const { name } = params;
-    const hashPassword = await bcrypt.hash('intermedium', 12);
+    let hashPassword;
+    if(params.password){
+      hashPassword = await bcrypt.hash(params.password, 12);
+
+    }else{
+      hashPassword = await bcrypt.hash('intermedium', 12);
+    }
     const hashToLogin = this.generateRandomAlphanumeric(6);
 
     const newUser = await this.usersRepository.create({
