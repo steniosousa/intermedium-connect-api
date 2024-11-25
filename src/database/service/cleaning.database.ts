@@ -165,17 +165,35 @@ if (page) {
   }
   async findCleaningApp(userId: string) {
     try {
+      // Calculando o intervalo de hoje
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0); // Início do dia (00:00:00)
+    
+      const endOfDay = new Date();
+      endOfDay.setHours(23, 59, 59, 999); // Fim do dia (23:59:59)
+    
+      // Consulta ajustada para retornar apenas as solicitações de hoje
       const allCleaning = await this.prisma.cleaning.findMany({
         where: {
           userId,
-          AND: {
-            deletedAt: {
-              equals: null,
+          AND: [
+            {
+              deletedAt: {
+                equals: null,
+              },
             },
-            status: {
-              not: 'CONCLUIDO',
+            {
+              status: {
+                not: 'CONCLUIDO',
+              },
             },
-          },
+            {
+              createdAt: {
+                gte: startOfDay, // Maior ou igual ao início de hoje
+                lte: endOfDay,   // Menor ou igual ao final de hoje
+              },
+            },
+          ],
         },
         orderBy: {
           createdAt: 'asc',
@@ -200,24 +218,26 @@ if (page) {
           },
         },
       });
-      
-      const formattedAllCleaning = allCleaning.map(cleaning => {
+    
+      // Formatando a data para o formato pt-BR
+      const formattedAllCleaning = allCleaning.map((cleaning) => {
         return {
           ...cleaning,
           createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
-            timeZone: 'America/Sao_Paulo', 
+            timeZone: 'America/Sao_Paulo',
           }),
         };
       });
-      
+    
       return formattedAllCleaning;
-      
-    } catch {
+    
+    } catch (error) {
       throw new HttpException(
         'Error - Error recovering services',
         HttpStatus.BAD_REQUEST,
       );
     }
+    
   }
 
   async updateCleaning(id:string, evidences:any, status:any) {

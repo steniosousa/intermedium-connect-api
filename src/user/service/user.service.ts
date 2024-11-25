@@ -10,10 +10,10 @@ export class userService {
   ) {}
 
   async findUserWithNameAndPass(params:any) {
-    const { userId, password } = params
+    const { name, password } = params
 
     const findUser = await this.database.findUserWithNameAndPassword(
-      userId,
+      name,
       password
     );
     return findUser;

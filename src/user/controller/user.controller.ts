@@ -47,6 +47,7 @@ export class userController {
   async findUserWithNameAndPass(
     @Query() query: findUserWithNameAndPasswordDto,
   ) {
+
     const find = await this.service.findUserWithNameAndPass(query);
     return find;
   }
