@@ -26,6 +26,7 @@ enum Role {
   ADMIN
   MANAGER
   EMPLOYEE
+  VIEWR
 }
 
 enum StatusAvaliacao {
@@ -42,17 +43,16 @@ enum Permissions {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  name          String
-  email         String?   @unique
-  password      String
-  loginHash     String?   @unique
-  createdAt     DateTime  @default(now())
-  deactivatedAt DateTime?
-  deletedAt     DateTime?
-  role          Role      @default(EMPLOYEE)
-  firstAcess    Boolean?
-
+  id                  String                @id @default(uuid())
+  name                String
+  email               String?               @unique
+  password            String
+  loginHash           String?               @unique
+  createdAt           DateTime              @default(now())
+  deactivatedAt       DateTime?
+  deletedAt           DateTime?
+  role                Role                  @default(EMPLOYEE)
+  firstAcess          Boolean?
   cleaning            Cleaning[]
   schedule            Schedule[]
   Avaliation          Avaliation[]
