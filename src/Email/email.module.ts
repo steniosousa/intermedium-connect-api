@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailController } from './controller/email.controller';
 import { EmailService } from './service/email.service';
 import { DatabaseModule } from '@/database/database.module';
@@ -7,22 +6,6 @@ import { DatabaseModule } from '@/database/database.module';
 @Module({
   controllers: [EmailController],
   providers: [EmailService],
-  imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-          user: 'steniosousaf@gmail.com',
-          pass: 'olykoikefmhjalqz',
-        },
-      },
-      defaults: {
-        from: '"stenio" <macacovelho.ss@gmail.com>',
-      },
-    }),
-    DatabaseModule,
-  ],
+  imports: [DatabaseModule],
 })
 export class emailModule {}

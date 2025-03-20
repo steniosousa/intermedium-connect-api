@@ -100,7 +100,7 @@ if (page) {
     take: 5,
   });
 
-  const formattedAllCleaning = allCleaning.map(cleaning => {
+  const formattedAllCleaning = allCleaning.map((cleaning:any) => {
     return {
       ...cleaning,
         createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
@@ -144,7 +144,7 @@ if (page) {
     },
   });
 
-  const formattedAllCleaningWithoutPage = allCleaningWithoutPage.map(cleaning => {
+  const formattedAllCleaningWithoutPage = allCleaningWithoutPage.map((cleaning : any) => {
     return {
       ...cleaning,
       createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {
@@ -220,7 +220,7 @@ if (page) {
       });
     
       // Formatando a data para o formato pt-BR
-      const formattedAllCleaning = allCleaning.map((cleaning) => {
+      const formattedAllCleaning = allCleaning.map((cleaning:any) => {
         return {
           ...cleaning,
           createdAt: new Date(cleaning.createdAt).toLocaleString('pt-BR', {

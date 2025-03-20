@@ -6,7 +6,7 @@ import { Prisma } from '@prisma/client';
 export class PrismaUsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(filters?: Prisma.UserFindManyArgs['where']) {
+  async list(filters:any) {
     const users = await this.prisma.user.findMany({
       where: filters,
     });
@@ -14,7 +14,7 @@ export class PrismaUsersRepository {
     return users;
   }
 
-  async create(userData: Prisma.UserCreateInput) {
+  async create(userData:any) {
     const user = await this.prisma.user.create({ data: userData });
     return user;
   }

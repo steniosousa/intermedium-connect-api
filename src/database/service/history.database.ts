@@ -35,7 +35,7 @@ export class HistoryDatabase {
       });
       
       // Formatação das datas após o retorno dos dados
-      const formattedRecover = recover.map(item => ({
+      const formattedRecover = recover.map((item:any) => ({
         ...item,
         createdAt: item.createdAt
           ? new Date(item.createdAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
