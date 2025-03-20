@@ -10,6 +10,7 @@ export class ManagerController {
 
   @Post('/create')
   async create(@Body() body: CreateManagerDto) {
+
     const create = await this.service.create({
       companyId: body.companyId,
       email: body.email,

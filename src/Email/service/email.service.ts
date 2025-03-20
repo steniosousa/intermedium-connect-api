@@ -33,8 +33,8 @@ export class EmailService {
     const resetPassword = await this.database.findUserWithEmail(cat);
 
     const mailOptions = {
-      from: 'your-email@example.com', // Remetente
-      to: cat, // Destinatário
+      from: 'Intermedium', 
+      to: cat, 
       subject: 'Recuperação de senha - Intermedium',
       html: `
         <h1>Intermedium</h1>
@@ -58,7 +58,7 @@ export class EmailService {
     if (!resetPassword) return;
 
     const mailOptions = {
-      from: 'your-email@example.com',
+      from: 'Intermedium',
       to: cat,
       subject: 'Alteração de senha - Intermedium',
       html: `
@@ -80,7 +80,7 @@ export class EmailService {
 
   async createUser(email: string, userId: string, name: string) {
     const mailOptions = {
-      from: 'your-email@example.com',
+      from: 'intermedium',
       to: email,
       subject: 'Cadastro de novo usuário - Intermedium',
       html: `
@@ -127,7 +127,6 @@ export class EmailService {
     try {
       await this.transporter.sendMail(mailOptions);
     } catch (error) {
-      console.error('Erro ao enviar e-mail de cadastro:', error);
       throw new Error('Falha ao enviar o e-mail de cadastro.');
     }
   }

@@ -94,7 +94,6 @@ export class companyDatabase {
           company: true,
         },
       });
-      console.log(managerId,recover)
       return recover;
     } catch  {
       throw new Error('Unable found companies');

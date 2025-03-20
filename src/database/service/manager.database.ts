@@ -7,6 +7,7 @@ export class ManagerDatabase {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(email:string, companyId:string[], role:any, permissions:any, name:string) {
+
     try {
       const createUser = await this.prisma.user.create({
         data: {
@@ -29,6 +30,7 @@ export class ManagerDatabase {
       });
       return createUser;
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         'Error - Unable to create admin',
         HttpStatus.BAD_REQUEST,
